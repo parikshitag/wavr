@@ -1,0 +1,40 @@
+x	HEAD->TIME
+
+------------------------------------------------------------
+		MESSAGE
+
+message = msg->toHtml->encodeSmileys->toPlainText
+
+check MessageType{
+	if(GroupMessage)
+		HEAD->FROM->TO->MESSAGEID->TYPE
+		localId->peerId->msgId->groupmessage
+
+		BODY->FONT->COLOR->THREAD->GROUPMESSAGE
+		font->messageColor.name->threadId->message->
+
+	if(Message)
+		BODY->FONT->COLOR->MESSAGE->
+		font->messageColor.name->message->
+}
+
+DatagramType
+DT_Message(data->cipherdata)
+
+file jumps
+chatwindow->lmc->messagingproc->network->tcpnetwork->MsgStream
+
+Note: actually cipherdata is wrapped under datagram type is sent to the respective socket ie MsgStream
+msgId: auto increment by 1
+encodeSmileys: replace all emoticon images with corresponiding text code.
+
+-----------------------------------------------------------------------
+			FILE/FOLDER
+
+check MessageType{
+	if(FILE)	
+
+}
+
+
+	
