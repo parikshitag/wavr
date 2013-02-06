@@ -1,5 +1,10 @@
 #include "network.h"
 
+/**
+ * @brief wavrNetwork::wavrNetwork
+ * Creates object of TcpNetwork and UdpNetwork, connect their signals with respective slots.
+ * Initializes all variables.
+ */
 wavrNetwork::wavrNetwork(void) {
     pUdpNetwork = new wavrUdpNetwork();
     pTcpNetwork = new wavrTcpNetwork();
@@ -22,5 +27,11 @@ wavrNetwork::wavrNetwork(void) {
     canReceive = false;
 }
 
+/**
+ * @brief wavrNetwork::~wavrNetwork
+ * Destroys the network object.
+ */
 wavrNetwork::~wavrNetwork(void) {
 }
+
+void wavrNetwork::init(

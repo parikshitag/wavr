@@ -20,7 +20,13 @@ SOURCES += main.cpp\
     udpnetwork.cpp \
     channelMessaging.cpp \
     datagram.cpp \
-    shared.cpp
+    shared.cpp \
+    libWavr/network.cpp \
+    libWavr/udpnetwork.cpp \
+    libWavr/tcpnetwork.cpp \
+    libWavr/channelMessaging.cpp \
+    libWavr/shared.cpp \
+    libWavr/datagram.cpp
 
 HEADERS  += mainwindow.h \
     QProgressIndicator.h \
@@ -31,7 +37,15 @@ HEADERS  += mainwindow.h \
     udpnetwork.h \
     settings.h \
     channelMessaging.h \
-    datagram.h
+    datagram.h \
+    libWavr/network.h \
+    libWavr/udpnetwork.h \
+    libWavr/tcpnetwork.h \
+    libWavr/channelMessaging.h \
+    libWavr/shared.h \
+    libWavr/settings.h \
+    libWavr/definitions.h \
+    libWavr/datagram.h
 
 FORMS    += \
     mainwindow.ui
