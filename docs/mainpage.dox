@@ -1,0 +1,21 @@
+/**
+* @mainpage Wavr Documentation
+* @section intro_sec Introduction
+* ‘Wavr’ project is started in the aim of developing a cross platform instant chat messaging
+*  application for the local LAN network based upon the idea that a user can able to chat
+*  irrespective of the underlying architecture both in terms of hardware and software in
+*  his/her network.
+*
+* The main objectives of this project is to develop a fully chat application that works as an
+* expert system. This system provides an easy-to-use, faster, efficient and robust platform for
+* the users. The Other objective of this project is to provide users a cheap, reliable, and
+* convenient way to communicate with each other using computer systems.
+* 
+* @section tech_sec Technical Details
+* Wavr IM Application is proposed in C++ using Qt Framwork.
+* 
+* @section meth_sec Methodology/Planning of work
+* The project will be based upon MVC (Model-view-controller) software architecture and is shown below.
+* @image html Architecture.png
+* 
+*/

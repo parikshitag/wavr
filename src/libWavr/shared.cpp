@@ -1,7 +1,6 @@
 #include "shared.h"
 
 /**
- * @brief wavrHelper::indexOf
  * @param array Array to be searched from.
  * @param size  Size uptil value is searched in array.
  * @param value Value to be searched in array.

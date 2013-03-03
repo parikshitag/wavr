@@ -2,7 +2,6 @@
 #include "tcpnetwork.h"
 
 /**
- * @brief wavrTcpNetwork::wavrTcpNetowork
  *  Creates object of QTcpServer.
  */
 wavrTcpNetwork::wavrTcpNetowork(void){
@@ -12,7 +11,6 @@ wavrTcpNetwork::wavrTcpNetowork(void){
 }
 
 /**
- * @brief wavrTcpNetwork::init
  *  Creates an object of settings.
  */
 void wavrTcpNetwork::init(){
@@ -21,7 +19,6 @@ void wavrTcpNetwork::init(){
 }
 
 /**
- * @brief wavrTcpNetwork::start
  * TcpServer listens for incoming connections over QHostAddress::Any and tcpPort specified.
  */
 void wavrTcpNetwork::start(void){
@@ -29,7 +26,6 @@ void wavrTcpNetwork::start(void){
 }
 
 /**
- * @brief wavrTcpNetwork::stop
  * Closes all open sockets ie server and messaging channels
  */
 void wavrTcpNetwork::stop(void) {
@@ -48,7 +44,6 @@ void wavrTcpNetwork::stop(void) {
 }
 
 /**
- * @brief wavrTcpNetwork::setLocalId
  * @param lpszLocalId   sets the localId
  */
 void wavrTcpNetwork::setLocalId(QString *lpszLocalId) {
@@ -56,7 +51,6 @@ void wavrTcpNetwork::setLocalId(QString *lpszLocalId) {
 }
 
 /**
- * @brief wavrTcpNetwork::addConnection
  * Opens the socket connection to a TCP server of received datagram source.
  * And creates a seperate channel and add that channel to the list.
  * @param lpszUserId    Id of the peer to connect
@@ -84,7 +78,6 @@ void wavrTcpNetwork::addConnection(QString* lpszUserId, QString* lpszAddress) {
 }
 
 /**
- * @brief wavrTcpNetwork::sendMessage
  * Sends a message to the destinee.
  * @param lpszReceiverId Id of the destinee
  * @param lpszData  Data to be sent
@@ -117,7 +110,6 @@ void wavrTcpNetwork::sendMessage(QString *lpszReceiverId, QString *lpszData) {
 }
 
 /**
- * @brief wavrTcpNetwork::setIPAddress
  * Setter method
  * @param szAddress sets the IP Address
  */
@@ -126,7 +118,6 @@ void wavrTcpNetwork::setIPAddress(const QString &szAddress) {
 }
 
 /**
- * @brief wavrTcpNetwork::server_newConnection
  * creates a socket against the incoming request.
  */
 void wavrTcpNetwork::server_newConnection(void) {
@@ -136,7 +127,6 @@ void wavrTcpNetwork::server_newConnection(void) {
 }
 
 /**
- * @brief wavrTcpNetwork::socket_readyRead
  *  Read the socket and assign it to correct channel ie message or file.
  */
 void wavrTcpNetwork::socket_readyRead(void) {
@@ -154,7 +144,6 @@ void wavrTcpNetwork::socket_readyRead(void) {
 }
 
 /**
- * @brief wavrTcpNetwork::msgStream_connectionLost
  *  Emits when a connection to remote peer is lost.
  * @param lpszUserId    user id of disconnected user.
  */
@@ -163,7 +152,6 @@ void wavrTcpNetwork::msgStream_connectionLost(QString *lpszUserId) {
 }
 
 /**
- * @brief wavrTcpNetwork::receiveMessage
  *  Receives the message, filters it according to the Datagram Type and emits messageReceived signal.
  * @param lpszUserId    user Id of the peer.
  * @param lpszAddress   Address of the peer.
@@ -196,7 +184,6 @@ void wavrTcpNetwork::receiveMessage(QString* lpszUserId, QString* lpszAddress, Q
 }
 
 /**
- * @brief wavrTcpNetwork::addMsgSocket
  *  Creates a new messaging channel against the request from the peer.
  * @param lpszUserId    User id of peer that sent the request.
  * @param pSocket       Socket of the peer that sent the request.

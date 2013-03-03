@@ -8,6 +8,7 @@
 #include "shared.h"
 #include "settings.h"
 
+
 class wavrUdpNetwork : public QObject {
     Q_OBJECT
 

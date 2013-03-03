@@ -1,6 +1,15 @@
-
 #include "udpnetwork.h"
+/**
+ *  \class wavrUdpNetwork
+ *  \ingroup    libWavr
+ *  \brief  The UdpNetwork class deals with all kinds of UDP network related tasks.
+ *
+ *  This class broadcast messages, sends and receives Datagrams.
+ */
 
+/**
+ * @brief Initializes all variables.
+ */
 wavrUdpNetwork::wavrUdpNetwork(void) {
     pUdpReceiver = new QUdpSocket(this);
     pUdpSender = new QUdpSocket(this);
@@ -60,7 +69,6 @@ void wavrUdpNetwork::stop(void) {
 }
 
 /**
- * @brief wavrUdpNetwork::setLocalId
  * @param lpszLocalId   Sets the localId
  */
 void wavrUdpNetwork::setLocalId(QString* lpszLocalId) {
@@ -68,7 +76,6 @@ void wavrUdpNetwork::setLocalId(QString* lpszLocalId) {
 }
 
 /**
- * @brief wavrUdpNetwork::sendBroadcast
  *  Sends datagram packet to a multicast address and broadcast list specified in settings.
  * @param lpszData  Datagram packet to be broadcasted.
  */
@@ -86,7 +93,6 @@ void wavrUdpNetwork::sendBroadcast(QString* lpszData) {
 }
 
 /**
- * @brief wavrUdpNetwork::settingsChanged
  *  checks for the multicast address change.
  *  If yes,
  *  1. Then leaves already associated multicast group and joins the new multicast address.
@@ -120,7 +126,6 @@ void wavrUdpNetwork::settingsChanged(void) {
 }
 
 /**
- * @brief wavrUdpNetwork::setMulticastInterface
  *  Sets the multicast interface variable.
  * @param networkInterface
  */
@@ -129,7 +134,6 @@ void wavrUdpNetwork::setMulticastInterface(const QNetworkInterface& networkInter
 }
 
 /**
- * @brief wavrUdpNetwork::setIPAddress
  *  Defines the broadcast address by ORing the host address and bit inversed subnet mask and appends this address in broadcastList
  * @param szAddress Sets the ipaddress variable
  * @param szSubnet  Sets the subnetmask variable
@@ -143,7 +147,6 @@ void wavrUdpNetwork::setIPAddress(const QString &szAddress, const QString &szSub
 }
 
 /**
- * @brief wavrUdpNetwork::processPendingDatagrams
  *  process the pending datagrams present in socket and ready & parse them
  */
 void wavrUdpNetwork::processPendingDatagrams(void) {
@@ -158,7 +161,6 @@ void wavrUdpNetwork::processPendingDatagrams(void) {
 }
 
 /**
- * @brief wavrUdpNetwork::sendDatagram
  *  writes the datagram to the socket and sends them to remoteAddress
  * @param remoteAddress Address of the destinee.
  * @param datagram  Data to be sent.
@@ -171,7 +173,6 @@ void wavrUdpNetwork::sendDatagram(QhostAddress remoteAddress, QByteArray& datagr
 }
 
 /**
- * @brief wavrUdpNetwork::startReceiving
  *  Joins the multicast group and listens for incoming packets.
  */
 void wavrUdpNetwork::startReceiving(void) {

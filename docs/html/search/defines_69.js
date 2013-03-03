@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['ida_5fcompany',['IDA_COMPANY',['../definitions_8h.html#ac9a8f5a3138e7bf19f5b074498c03b32',1,'definitions.h']]],
+  ['ida_5fcontact',['IDA_CONTACT',['../definitions_8h.html#a2e8790fbeb565e3d96a412ad5b314499',1,'definitions.h']]],
+  ['ida_5fdescription',['IDA_DESCRIPTION',['../definitions_8h.html#a09fbf18bec59ed82035d12ff63e8b544',1,'definitions.h']]],
+  ['ida_5fproduct',['IDA_PRODUCT',['../definitions_8h.html#a7fc01cc3205063d305577e26ccf6dd04',1,'definitions.h']]],
+  ['ida_5ftitle',['IDA_TITLE',['../definitions_8h.html#aae79328f91a96d0bbba12ea6ba746590',1,'definitions.h']]],
+  ['ida_5fversion',['IDA_VERSION',['../definitions_8h.html#aa26206e3f9651cbf44c592a4d71845bc',1,'definitions.h']]],
+  ['ids_5fbroadcast',['IDS_BROADCAST',['../settings_8h.html#a466369dd9ef0bd3d14bcc1ca76628fed',1,'settings.h']]],
+  ['ids_5fbroadcasthdr',['IDS_BROADCASTHDR',['../settings_8h.html#a266ff6954f150155072a3dedf5c38b4b',1,'settings.h']]],
+  ['ids_5fmulticast',['IDS_MULTICAST',['../settings_8h.html#a000c254613d81a1f53961ec4a054f62b',1,'settings.h']]],
+  ['ids_5fmulticast_5fval',['IDS_MULTICAST_VAL',['../settings_8h.html#a9536e14ce5d32c6b6901ae912b5113f0',1,'settings.h']]],
+  ['ids_5ftcpport',['IDS_TCPPORT',['../settings_8h.html#a9b7bbc5508c4ebdcec8ca5cb7ac0c27e',1,'settings.h']]],
+  ['ids_5ftcpport_5fval',['IDS_TCPPORT_VAL',['../settings_8h.html#a59296661a0759f1981c1bac19f1f10a1',1,'settings.h']]],
+  ['ids_5fudpport',['IDS_UDPPORT',['../settings_8h.html#ae375068d3ed194ae607ec663ec6cde42',1,'settings.h']]],
+  ['ids_5fudpport_5fval',['IDS_UDPPORT_VAL',['../settings_8h.html#acb708dd8670695073dc094ea86aabd9e',1,'settings.h']]],
+  ['ids_5fversion',['IDS_VERSION',['../settings_8h.html#a28752ef0b1ef4370677c7339213c0768',1,'settings.h']]],
+  ['ids_5fversion_5fval',['IDS_VERSION_VAL',['../settings_8h.html#ac10faca059ac3ec16ba59c8be3f19eb1',1,'settings.h']]]
+];

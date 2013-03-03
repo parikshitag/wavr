@@ -1,7 +1,6 @@
 #include "xmlmessage.h"
 
 /**
- * @brief wavrXmlMessage::wavrXmlMessage
  *  Creates root, head and body element of XML DOM.
  */
 wavrXmlMessage::wavrXmlMessage(){
@@ -16,7 +15,6 @@ wavrXmlMessage::wavrXmlMessage(){
 }
 
 /**
- * @brief wavrXmlMessage::wavrXmlMessage
  * @param text
  *  sets the content of XML Document.
  */
@@ -28,7 +26,6 @@ wavrXmlMessage::~wavrXmlMessage(void){
 }
 
 /**
- * @brief wavrXmlMessage::addHeader
  * @param nodeName  node name to be added.
  * @param nodeValue node value to be added.
  * @return
@@ -39,7 +36,6 @@ bool wavrXmlMessage::addHeader(const QString &nodeName, const QString &nodeValue
 }
 
 /**
- * @brief wavrXmlMessage::addData
  * @param nodeName  node name to be added.
  * @param nodeValue node value to be added.
  * @return
@@ -50,7 +46,6 @@ bool wavrXmlMessage::addData(const QString& nodeName, const QString& nodeValue) 
 }
 
 /**
- * @brief wavrXmlMessage::header
  * @param nodeName node name to be retrieved.
  * @return returns the node value associated with given node name.
  *  Get header node.
@@ -60,7 +55,6 @@ QString wavrXmlMessage::header(const QString& nodeName) {
 }
 
 /**
- * @brief wavrXmlMessage::data
  * @param nodeName node name to be retrieved.
  * @return reutrns the node value associated with given node name.
  *  Get Body node.
@@ -70,7 +64,6 @@ QString wavrXmlMessage::data(const QString& nodeName) {
 }
 
 /**
- * @brief wavrXmlMessage::removeHeader
  * @param nodeName  Node name to be removed.
  * @return Returns true if successfully removed else false.
  *  Removes the given Header node.
@@ -80,7 +73,6 @@ bool wavrXmlMessage::removeHeader(const QString& nodeName) {
 }
 
 /**
- * @brief wavrXmlMessage::removeData
  * @param nodeName  Node name to be removed.
  * @return Returns true if successfully removed else false.
  *  Removes the given Body node.
@@ -90,7 +82,6 @@ bool wavrXmlMessage::removeData(const QString& nodeName) {
 }
 
 /**
- * @brief wavrXmlMessage::headerExists
  * @param nodeName Node name to be searched.
  * @return Returns true if node exists else false.
  *  Searches for the given node in Head element.
@@ -100,7 +91,6 @@ bool wavrXmlMessage::headerExists(const QString& nodeName) {
 }
 
 /**
- * @brief wavrXmlMessage::dataExists
  * @param nodeName  Node name to be searched.
  * @return Returns true if node exists else false.
  *  Searches for the given node in Body element.
@@ -110,7 +100,6 @@ bool wavrXmlMessage::dataExists(const QString& nodeName) {
 }
 
 /**
- * @brief XmlMessage::clone
  * @return Returns the Cloned XML message class.
  *  Clones the XML Message.
  */
