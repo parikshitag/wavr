@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = Wavr
 TEMPLATE = app
 
+QT += xml
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -26,7 +27,8 @@ SOURCES += main.cpp\
     libWavr/tcpnetwork.cpp \
     libWavr/channelMessaging.cpp \
     libWavr/shared.cpp \
-    libWavr/datagram.cpp
+    libWavr/datagram.cpp \
+    libWavr/xmlmessage.cpp
 
 HEADERS  += mainwindow.h \
     QProgressIndicator.h \
@@ -45,7 +47,8 @@ HEADERS  += mainwindow.h \
     libWavr/shared.h \
     libWavr/settings.h \
     libWavr/definitions.h \
-    libWavr/datagram.h
+    libWavr/datagram.h \
+    libWavr/xmlmessage.h
 
 FORMS    += \
     mainwindow.ui
