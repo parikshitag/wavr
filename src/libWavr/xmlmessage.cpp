@@ -1,6 +1,13 @@
 #include "xmlmessage.h"
 
 /**
+ *  @class wavrXmlMessage
+ *  @ingroup  libWavr
+ *  @brief Creates a xml file that is transmitted over network.
+ *  Includes setter and getter methods for HEAD and BODY elements.
+ */
+
+/**
  *  Creates root, head and body element of XML DOM.
  */
 wavrXmlMessage::wavrXmlMessage(){
@@ -109,6 +116,10 @@ wavrXmlMessage XmlMessage::clone(void) {
     return newMsg;
 }
 
+/**
+ * @return Returns true if XML document is valid.
+ * Checks the root element if equals APP_MARKER then returns true else false.
+ */
 bool wavrXmlMessage::isValid(void) {
     QDomElement root = documentElement();
     if(root.isNull())
@@ -118,4 +129,82 @@ bool wavrXmlMessage::isValid(void) {
         return true;
 
     return false;
+}
+
+// adds the xmlNode for HEAD and BODY elements.
+bool wavrXmlMessage::addXmlNode(const QString& parentNode, const QString& nodeName, const QString& nodeValue) {
+    QDomElement root = documentElement();
+    if(root.isNull())
+        return false;
+
+    QDomNodeList nodes = root.elementsByTagName(parentNode);
+    if(nodes.isEmpty())
+        return false;
+
+    QDomElement parent = nodes.at(0).toElement();
+    QDomElement element = createElement(nodeName);
+    parent.appendChild(element);
+    QDomText elementText = createTextNode(nodeValue);
+    element.appendChild(elementText);
+    return true;
+}
+
+//Returns the XmlNode element for specified nodeName.
+QString wavrXmlMessage::getXmlNode(const QString& parentNode, const QString& nodeName) {
+    QDomElement root = documentElement();
+    if(root.isNull())
+        return QString::null;
+
+    QDomNodeList nodes = root.elementsByTagName(parentNode);
+    if(nodes.isEmpty())
+        return QString::null;
+
+    QDomElement parent = nodes.at(0).toElement();
+    nodes = parent.elementsByTagName(nodeName);
+    if(nodes.isEmpty())
+        return QString::null;
+
+    QDomElement element = nodes.at(0).toElement();
+    return element.text();
+}
+
+//Removes the XmlNode for given nodeName
+bool wavrXmlMessage::removeXmlNode(const QString& parentNode, const QString& nodeName) {
+    QDomElement root = documentElement();
+    if(root.isNull())
+        return false;
+
+    QDomNodeList nodes = root.elementsByTagName(parentNode);
+    if(nodes.isEmpty())
+        return false;
+
+    QDomElement parent = nodes.at(0).toElement();
+    nodes = parent.elementsByTagName(nodeName);
+    if(nodes.isEmpty())
+        return false;
+
+    QDomElement element = nodes.at(0).toElement();
+    QDomNode newNode = parent.removeChild(element);
+    if(newNode.isNull())
+        return false;
+
+    return true;
+}
+
+//Returns whether a given nodeName exists in Xml document or not.
+bool wavrXmlMessage::xmlNodeExists(const QString& parentNode, const QString& nodeName) {
+    QDomElement root = documentElement();
+    if(root.isNull())
+        return false;
+
+    QDomNodeList nodes = root.elementsByTagName(parentNode);
+    if(nodes.isEmpty())
+        return false;
+
+    QDomElement parent = nodes.at(0).toElement();
+    nodes = parent.elementsByTagName(nodeName);
+    if(nodes.isEmpty())
+        return false;
+
+    return true;
 }

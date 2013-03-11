@@ -10,6 +10,7 @@
 #define XN_FROM				"from"
 #define XN_TO				"to"
 
+#define XN_PORT             "port"
 
 class wavrXmlMessage : public QDomDocument
 {

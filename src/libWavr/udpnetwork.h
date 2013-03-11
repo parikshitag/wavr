@@ -16,7 +16,7 @@ public:
     wavrUdpNetwork(void);
     ~wavrUdpNetwork(void);
 
-    void init(void);
+    void init(int nPort = 0);
     void start(void);
     void stop(void);
     void setLocalId(QString* lpszLocalId);

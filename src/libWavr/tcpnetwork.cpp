@@ -13,9 +13,9 @@ wavrTcpNetwork::wavrTcpNetowork(void){
 /**
  *  Creates an object of settings.
  */
-void wavrTcpNetwork::init(){
+void wavrTcpNetwork::init(int nPort){
     pSettings = new wavrSettings();
-   // tcpPort = nPort > 0 ? nPort : pSettings->value()
+    tcpPort = nPort > 0 ? nPort : pSettings->value(IDS_TCPPORT, IDS_TCPPORT_VAL).toInt();
 }
 
 /**

@@ -9,6 +9,9 @@
 #define IDS_VERSION             "Application/Version"
 #define IDS_VERSION_VAL         "0.1.0"
 
+#define IDS_CONNECTION          "Connection/Connection"
+#define IDS_CONNECTION_VAL      "Auto"
+
 #define IDS_MULTICAST           "Connection/Multicast"
 #define IDS_MULTICAST_VAL       "239.255.100.100"
 #define IDS_UDPPORT             "Connection/UDPPort"

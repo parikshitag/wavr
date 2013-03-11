@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     libWavr/channelMessaging.cpp \
     libWavr/shared.cpp \
     libWavr/datagram.cpp \
-    libWavr/xmlmessage.cpp
+    libWavr/xmlmessage.cpp \
+    libWavr/messaging.cpp
 
 HEADERS  += mainwindow.h \
     QProgressIndicator.h \
@@ -48,7 +49,8 @@ HEADERS  += mainwindow.h \
     libWavr/settings.h \
     libWavr/definitions.h \
     libWavr/datagram.h \
-    libWavr/xmlmessage.h
+    libWavr/xmlmessage.h \
+    libWavr/messaging.h
 
 FORMS    += \
     mainwindow.ui

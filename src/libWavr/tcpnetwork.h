@@ -16,7 +16,7 @@ public:
     wavrTcpNetwork(void);
     ~wavrTcpNetwork(void)   {}
 
-    void init(int mPort = 0);
+    void init(int nPort = 0);
     void start(void);
     void stop(void);
     void setLocalId(QString* lpszLocalId);

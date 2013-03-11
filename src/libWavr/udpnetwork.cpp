@@ -27,9 +27,9 @@ wavrUdpNetwork::~wavrUdpNetwork(void) {
  * Initializes the udpnetwork class and creates a wavrSettings object.
  * Initializes udp port, multicast Address, and broadcastList variable with the broadcast list given by the user in the settings.
  */
-void wavrUdpNetwork::init(void) {
+void wavrUdpNetwork::init(int nPort) {
     pSettings = new wavrSettings();
-    nUdpPort = pSettings->value(IDS_UDPPORT, IDS_UDPPORT_VAL).toInt();
+    nUdpPort = nPort > 0 ? nPort : pSettings->value(IDS_UDPPORT, IDS_UDPPORT_VAL).toInt();
     multicastAddress = QHostAddress(pSettings->value(IDS_MULTICAST, IDS_MULTICAST_VAL).toString());
     int size = pSettings->beginReadArray(IDS_BROADCASTHDR);
     for (int index = 0; index < size; index++) {
