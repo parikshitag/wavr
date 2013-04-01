@@ -29,7 +29,9 @@ SOURCES += main.cpp\
     libWavr/shared.cpp \
     libWavr/datagram.cpp \
     libWavr/xmlmessage.cpp \
-    libWavr/messaging.cpp
+    libWavr/messaging.cpp \
+    messagingproc.cpp \
+    libWavr/messagingproc.cpp
 
 HEADERS  += mainwindow.h \
     QProgressIndicator.h \
