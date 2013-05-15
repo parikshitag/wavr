@@ -1,6 +1,8 @@
 var searchData=
 [
+  ['wavrcore',['wavrCore',['../classwavr_core.html',1,'']]],
   ['wavrdatagram',['wavrDatagram',['../classwavr_datagram.html',1,'']]],
+  ['wavrmessaging',['wavrMessaging',['../classwavr_messaging.html',1,'']]],
   ['wavrnetwork',['wavrNetwork',['../classwavr_network.html',1,'']]],
   ['wavrsettings',['wavrSettings',['../classwavr_settings.html',1,'']]],
   ['wavrsettingsbase',['wavrSettingsBase',['../classwavr_settings_base.html',1,'']]],

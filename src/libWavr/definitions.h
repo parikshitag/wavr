@@ -43,7 +43,17 @@ const QString DatagramTypeNames[] = {
     "MESSAG"
 };
 
+/****************************************************************************
+**	Message type definitions
+**	The enum and the string array should always be synced
+****************************************************************************/
+enum MessageType {
 
+};
+
+const QString MessageTypeNames[] = {
+
+};
 
 #endif // DEFINITIONS_H
 

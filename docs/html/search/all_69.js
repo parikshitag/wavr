@@ -8,6 +8,8 @@ var searchData=
   ['ida_5fversion',['IDA_VERSION',['../definitions_8h.html#aa26206e3f9651cbf44c592a4d71845bc',1,'definitions.h']]],
   ['ids_5fbroadcast',['IDS_BROADCAST',['../settings_8h.html#a466369dd9ef0bd3d14bcc1ca76628fed',1,'settings.h']]],
   ['ids_5fbroadcasthdr',['IDS_BROADCASTHDR',['../settings_8h.html#a266ff6954f150155072a3dedf5c38b4b',1,'settings.h']]],
+  ['ids_5fconnection',['IDS_CONNECTION',['../settings_8h.html#ab13df0d4de204084782426ac6f1b0e2f',1,'settings.h']]],
+  ['ids_5fconnection_5fval',['IDS_CONNECTION_VAL',['../settings_8h.html#a15c678a571a54459242985bdaba9b83d',1,'settings.h']]],
   ['ids_5fmulticast',['IDS_MULTICAST',['../settings_8h.html#a000c254613d81a1f53961ec4a054f62b',1,'settings.h']]],
   ['ids_5fmulticast_5fval',['IDS_MULTICAST_VAL',['../settings_8h.html#a9536e14ce5d32c6b6901ae912b5113f0',1,'settings.h']]],
   ['ids_5ftcpport',['IDS_TCPPORT',['../settings_8h.html#a9b7bbc5508c4ebdcec8ca5cb7ac0c27e',1,'settings.h']]],
@@ -17,10 +19,10 @@ var searchData=
   ['ids_5fversion',['IDS_VERSION',['../settings_8h.html#a28752ef0b1ef4370677c7339213c0768',1,'settings.h']]],
   ['ids_5fversion_5fval',['IDS_VERSION_VAL',['../settings_8h.html#ac10faca059ac3ec16ba59c8be3f19eb1',1,'settings.h']]],
   ['indexof',['indexOf',['../class_helper.html#ae85f33be57ae7a431553c854a0723451',1,'Helper']]],
-  ['init',['init',['../class_msg_stream.html#ae2b9e3981a938c78cf62d8457aa22903',1,'MsgStream::init(void)'],['../class_msg_stream.html#aa953745a538859f3ca81ce9498f42bc8',1,'MsgStream::init(QTcpSocket *socket)'],['../classwavr_network.html#a5b5500e1b82d3bd92feb6c6637547b5c',1,'wavrNetwork::init()'],['../classwavr_tcp_network.html#a956cf01e8414b051e53f411bf5cc0523',1,'wavrTcpNetwork::init()'],['../classwavr_udp_network.html#adc4643858b5945dd8719372781e10aaf',1,'wavrUdpNetwork::init()'],['../class_main_window.html#a671e7e5b0a3a7a3fb1cf44c5c8377952',1,'MainWindow::init()']]],
+  ['init',['init',['../class_chat_window.html#abd5642399963e89a496afae1faf3c68e',1,'ChatWindow::init()'],['../classwavr_core.html#a006ec46de27efae143523ac4658d13f2',1,'wavrCore::init()'],['../class_msg_stream.html#ae2b9e3981a938c78cf62d8457aa22903',1,'MsgStream::init(void)'],['../class_msg_stream.html#aa953745a538859f3ca81ce9498f42bc8',1,'MsgStream::init(QTcpSocket *socket)'],['../classwavr_messaging.html#af9653517d0eeafea66af558c8c75498b',1,'wavrMessaging::init()'],['../classwavr_network.html#a8b5acbaefc1b67fcf9b73d4761a605bc',1,'wavrNetwork::init()'],['../classwavr_tcp_network.html#a96f18c3b8ca5a8743a0d67f85456845f',1,'wavrTcpNetwork::init()'],['../classwavr_udp_network.html#a6394b6e21c9724ae491bd80d7b6971f8',1,'wavrUdpNetwork::init()'],['../class_main_window.html#a671e7e5b0a3a7a3fb1cf44c5c8377952',1,'MainWindow::init()']]],
   ['ipaddress',['ipAddress',['../classwavr_network.html#a6d6df14a05e568fe980157bfc14edf2c',1,'wavrNetwork']]],
   ['isanimated',['isAnimated',['../class_q_progress_indicator.html#aae9ecced306af7013847de32f36b811c',1,'QProgressIndicator']]],
-  ['isconnected',['isConnected',['../classwavr_network.html#adc5b20662ce3f73959bb42d950fae6d3',1,'wavrNetwork::isConnected()'],['../classwavr_udp_network.html#aa2bff19523368f969b88c8909f3a1068',1,'wavrUdpNetwork::isConnected()']]],
+  ['isconnected',['isConnected',['../classwavr_network.html#adc5b20662ce3f73959bb42d950fae6d3',1,'wavrNetwork::isConnected()'],['../classwavr_udp_network.html#aa2bff19523368f969b88c8909f3a1068',1,'wavrUdpNetwork::isConnected()'],['../classwavr_messaging.html#a31415089d9587b2a9d0c0a00097649a1',1,'wavrMessaging::isConnected()']]],
   ['isdisplayedwhenstopped',['isDisplayedWhenStopped',['../class_q_progress_indicator.html#a73b805fe001b2c3bd15e21e128160c56',1,'QProgressIndicator']]],
   ['isvalid',['isValid',['../classwavr_xml_message.html#a26d7799220a6a6bd0663716672bf76d0',1,'wavrXmlMessage']]]
 ];

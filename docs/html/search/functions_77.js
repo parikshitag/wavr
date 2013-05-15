@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['wavrcore',['wavrCore',['../classwavr_core.html#a9ffe45cb2380539759018b08276e3e61',1,'wavrCore']]],
+  ['wavrmessaging',['wavrMessaging',['../classwavr_messaging.html#a75a766f3e1a40c8fde106e88d0934e59',1,'wavrMessaging']]],
   ['wavrnetwork',['wavrNetwork',['../classwavr_network.html#a5b3f03401f73d4e9bfedf72072b67421',1,'wavrNetwork']]],
   ['wavrsettings',['wavrSettings',['../classwavr_settings.html#a92f02560f7fd5433b63734d260c395ab',1,'wavrSettings']]],
   ['wavrsettingsbase',['wavrSettingsBase',['../classwavr_settings_base.html#a02efe4845a652df7323e9749eac7039d',1,'wavrSettingsBase::wavrSettingsBase(void)'],['../classwavr_settings_base.html#aa3371ed45067e18de418c3d994e13460',1,'wavrSettingsBase::wavrSettingsBase(const QString &amp;fileName, Format format)'],['../classwavr_settings_base.html#acc20844e701db5bd23de79c8cfc8dbc7',1,'wavrSettingsBase::wavrSettingsBase(Format format, Scope scope, const QString &amp;organization, const QString &amp;application)']]],

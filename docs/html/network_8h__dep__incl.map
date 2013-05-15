@@ -1,3 +1,8 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$network_8cpp.html" title="/home/parikshit/Projects/wavr/src/libWavr/network.cpp" alt="" coords="5,83,344,112"/>
+<map id="/home/parikshit/Projects/wavr/src/libWavr/network.h" name="/home/parikshit/Projects/wavr/src/libWavr/network.h">
+<area shape="rect" id="node3" href="$messaging_8h.html" title="/home/parikshit/Projects\l/wavr/src/libWavr/messaging.h" alt="" coords="199,102,401,149"/>
+<area shape="rect" id="node13" href="$network_8cpp.html" title="/home/parikshit/Projects\l/wavr/src/libWavr/network.cpp" alt="" coords="425,102,623,149"/>
+<area shape="rect" id="node5" href="$core_8h.html" title="/home/parikshit/Projects\l/wavr/src/core.h" alt="" coords="5,198,168,245"/>
+<area shape="rect" id="node9" href="$messaging_8cpp.html" title="/home/parikshit/Projects\l/wavr/src/libWavr/messaging.cpp" alt="" coords="192,198,408,245"/>
+<area shape="rect" id="node11" href="$messagingproc_8cpp.html" title="/home/parikshit/Projects\l/wavr/src/libWavr/messagingproc.cpp" alt="" coords="432,198,672,245"/>
+<area shape="rect" id="node7" href="$core_8cpp.html" title="/home/parikshit/Projects\l/wavr/src/core.cpp" alt="" coords="5,294,168,341"/>
 </map>

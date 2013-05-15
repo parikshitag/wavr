@@ -1,11 +1,18 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$datagram_8h.html" title="/home/parikshit/Projects/wavr/src/libWavr/datagram.h" alt="" coords="177,83,511,112"/>
-<area shape="rect" id="node7" href="$tcpnetwork_8h.html" title="/home/parikshit/Projects/wavr/src/libWavr/tcpnetwork.h" alt="" coords="376,160,720,189"/>
-<area shape="rect" id="node15" href="$udpnetwork_8h.html" title="/home/parikshit/Projects/wavr/src/libWavr/udpnetwork.h" alt="" coords="585,83,932,112"/>
-<area shape="rect" id="node21" href="$shared_8cpp.html" title="/home/parikshit/Projects/wavr/src/libWavr/shared.cpp" alt="" coords="956,83,1289,112"/>
-<area shape="rect" id="node5" href="$datagram_8cpp.html" title="/home/parikshit/Projects/wavr/src/libWavr/datagram.cpp" alt="" coords="5,160,352,189"/>
-<area shape="rect" id="node9" href="$network_8h.html" title="/home/parikshit/Projects/wavr/src/libWavr/network.h" alt="" coords="595,237,920,267"/>
-<area shape="rect" id="node13" href="$tcpnetwork_8cpp.html" title="/home/parikshit/Projects/wavr/src/libWavr/tcpnetwork.cpp" alt="" coords="213,237,571,267"/>
-<area shape="rect" id="node11" href="$network_8cpp.html" title="/home/parikshit/Projects/wavr/src/libWavr/network.cpp" alt="" coords="588,315,927,344"/>
-<area shape="rect" id="node18" href="$udpnetwork_8cpp.html" title="/home/parikshit/Projects/wavr/src/libWavr/udpnetwork.cpp" alt="" coords="795,160,1155,189"/>
+<map id="/home/parikshit/Projects/wavr/src/libWavr/shared.h" name="/home/parikshit/Projects/wavr/src/libWavr/shared.h">
+<area shape="rect" id="node3" href="$chatwindow_8h.html" title="/home/parikshit/Projects\l/wavr/src/chatwindow.h" alt="" coords="13,102,176,149"/>
+<area shape="rect" id="node7" href="$core_8h.html" title="/home/parikshit/Projects\l/wavr/src/core.h" alt="" coords="135,486,297,533"/>
+<area shape="rect" id="node11" href="$datagram_8h.html" title="/home/parikshit/Projects\l/wavr/src/libWavr/datagram.h" alt="" coords="335,102,527,149"/>
+<area shape="rect" id="node15" href="$tcpnetwork_8h.html" title="/home/parikshit/Projects\l/wavr/src/libWavr/tcpnetwork.h" alt="" coords="533,198,736,245"/>
+<area shape="rect" id="node19" href="$messaging_8h.html" title="/home/parikshit/Projects\l/wavr/src/libWavr/messaging.h" alt="" coords="340,390,543,437"/>
+<area shape="rect" id="node31" href="$udpnetwork_8h.html" title="/home/parikshit/Projects\l/wavr/src/libWavr/udpnetwork.h" alt="" coords="743,102,948,149"/>
+<area shape="rect" id="node37" href="$shared_8cpp.html" title="/home/parikshit/Projects\l/wavr/src/libWavr/shared.cpp" alt="" coords="972,102,1164,149"/>
+<area shape="rect" id="node5" href="$chatwindow_8cpp.html" title="/home/parikshit/Projects\l/wavr/src/chatwindow.cpp" alt="" coords="5,198,179,245"/>
+<area shape="rect" id="node9" href="$core_8cpp.html" title="/home/parikshit/Projects\l/wavr/src/core.cpp" alt="" coords="135,582,297,629"/>
+<area shape="rect" id="node13" href="$datagram_8cpp.html" title="/home/parikshit/Projects\l/wavr/src/libWavr/datagram.cpp" alt="" coords="304,198,509,245"/>
+<area shape="rect" id="node17" href="$network_8h.html" title="/home/parikshit/Projects\l/wavr/src/libWavr/network.h" alt="" coords="669,294,853,341"/>
+<area shape="rect" id="node28" href="$tcpnetwork_8cpp.html" title="/home/parikshit/Projects\l/wavr/src/libWavr/tcpnetwork.cpp" alt="" coords="429,294,645,341"/>
+<area shape="rect" id="node26" href="$network_8cpp.html" title="/home/parikshit/Projects\l/wavr/src/libWavr/network.cpp" alt="" coords="663,390,860,437"/>
+<area shape="rect" id="node22" href="$messaging_8cpp.html" title="/home/parikshit/Projects\l/wavr/src/libWavr/messaging.cpp" alt="" coords="585,486,801,533"/>
+<area shape="rect" id="node24" href="$messagingproc_8cpp.html" title="/home/parikshit/Projects\l/wavr/src/libWavr/messagingproc.cpp" alt="" coords="321,486,561,533"/>
+<area shape="rect" id="node34" href="$udpnetwork_8cpp.html" title="/home/parikshit/Projects\l/wavr/src/libWavr/udpnetwork.cpp" alt="" coords="760,198,979,245"/>
 </map>

@@ -6,7 +6,7 @@ var classwavr_network =
     [ "broadcastReceived", "classwavr_network.html#aa3ad7429ca5a377957d0a9542e897511", null ],
     [ "connectionLost", "classwavr_network.html#a90d876feede30e0c9a2bf50a646ca384", null ],
     [ "connectionStateChanged", "classwavr_network.html#ad02ea2c0d64328751c93281ddb9e0fb1", null ],
-    [ "init", "classwavr_network.html#a5b5500e1b82d3bd92feb6c6637547b5c", null ],
+    [ "init", "classwavr_network.html#a8b5acbaefc1b67fcf9b73d4761a605bc", null ],
     [ "messageReceived", "classwavr_network.html#a26a9447990bc177ee755f1c28ea2303d", null ],
     [ "newConnection", "classwavr_network.html#aface9bf69e142bf95c3360ddae38f4e5", null ],
     [ "physicalAddress", "classwavr_network.html#a1d3d2b9ab99e80c3c971a3cc51f4f2da", null ],

@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['active',['active',['../struct_pending_msg.html#af4ca28a87a6acb8ef102baf71b590a6b',1,'PendingMsg']]],
   ['addconnection',['addConnection',['../classwavr_network.html#a3677b56de173f1231fc1a20dc01762e3',1,'wavrNetwork::addConnection()'],['../classwavr_tcp_network.html#aae4766ae9d9f2c4bd62b3c69de79188a',1,'wavrTcpNetwork::addConnection()']]],
   ['adddata',['addData',['../classwavr_xml_message.html#a9feb47ada3008f540c2c000662d374d8',1,'wavrXmlMessage']]],
   ['addheader',['addHeader',['../classwavr_datagram.html#ad46be6f7a17051c750db0547dc235bb2',1,'wavrDatagram::addHeader()'],['../classwavr_xml_message.html#acef3cb00ad620fd977d8b6c1ed18bfa8',1,'wavrXmlMessage::addHeader()']]],

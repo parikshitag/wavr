@@ -8,6 +8,13 @@ var definitions_8h =
     [ "IDA_VERSION", "definitions_8h.html#aa26206e3f9651cbf44c592a4d71845bc", null ],
     [ "ST_FILE", "definitions_8h.html#a368a50ee85a602d735dc02e8e41c0a9c", null ],
     [ "ST_MESSAGE", "definitions_8h.html#a8aa0210f443ec5a65a5fef04853ce000", null ],
-    [ "DatagramType", "definitions_8h.html#ae89346e32a2939bd13fed974dc288ad8", null ],
-    [ "DatagramTypeNames", "definitions_8h.html#a8604023bc19c3c64f250d2889c0ac502", null ]
+    [ "DatagramType", "definitions_8h.html#ae89346e32a2939bd13fed974dc288ad8", [
+      [ "DT_None", "definitions_8h.html#ae89346e32a2939bd13fed974dc288ad8aa4ea9ad0fc35386edbfee048900cd24d", null ],
+      [ "DT_Broadcast", "definitions_8h.html#ae89346e32a2939bd13fed974dc288ad8ab84eb3f744d929ab1e339659fd688343", null ],
+      [ "DT_Message", "definitions_8h.html#ae89346e32a2939bd13fed974dc288ad8aeebf5c3eb1039b35d621b81284683d0c", null ],
+      [ "DT_Max", "definitions_8h.html#ae89346e32a2939bd13fed974dc288ad8a0413ad6507dce8cfa2d9e9eb975ed0b0", null ]
+    ] ],
+    [ "MessageType", "definitions_8h.html#ac6606ebe91c8ac66a2c314c79f5ab013", null ],
+    [ "DatagramTypeNames", "definitions_8h.html#a8604023bc19c3c64f250d2889c0ac502", null ],
+    [ "MessageTypeNames", "definitions_8h.html#a48e39cb073a7a8030dd5853072563b28", null ]
 ];

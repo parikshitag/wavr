@@ -1,4 +1,6 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$main_8cpp.html" title="/home/parikshit/Projects/wavr/src/main.cpp" alt="" coords="5,83,280,112"/>
-<area shape="rect" id="node5" href="$mainwindow_8cpp.html" title="/home/parikshit/Projects/wavr/src/mainwindow.cpp" alt="" coords="304,83,621,112"/>
+<map id="/home/parikshit/Projects/wavr/src/mainwindow.h" name="/home/parikshit/Projects/wavr/src/mainwindow.h">
+<area shape="rect" id="node3" href="$core_8h.html" title="/home/parikshit/Projects\l/wavr/src/core.h" alt="" coords="5,102,168,149"/>
+<area shape="rect" id="node7" href="$main_8cpp.html" title="/home/parikshit/Projects\l/wavr/src/main.cpp" alt="" coords="192,102,355,149"/>
+<area shape="rect" id="node9" href="$mainwindow_8cpp.html" title="/home/parikshit/Projects\l/wavr/src/mainwindow.cpp" alt="" coords="379,102,555,149"/>
+<area shape="rect" id="node5" href="$core_8cpp.html" title="/home/parikshit/Projects\l/wavr/src/core.cpp" alt="" coords="5,198,168,245"/>
 </map>

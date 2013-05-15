@@ -8,6 +8,8 @@ var searchData=
   ['ida_5fversion',['IDA_VERSION',['../definitions_8h.html#aa26206e3f9651cbf44c592a4d71845bc',1,'definitions.h']]],
   ['ids_5fbroadcast',['IDS_BROADCAST',['../settings_8h.html#a466369dd9ef0bd3d14bcc1ca76628fed',1,'settings.h']]],
   ['ids_5fbroadcasthdr',['IDS_BROADCASTHDR',['../settings_8h.html#a266ff6954f150155072a3dedf5c38b4b',1,'settings.h']]],
+  ['ids_5fconnection',['IDS_CONNECTION',['../settings_8h.html#ab13df0d4de204084782426ac6f1b0e2f',1,'settings.h']]],
+  ['ids_5fconnection_5fval',['IDS_CONNECTION_VAL',['../settings_8h.html#a15c678a571a54459242985bdaba9b83d',1,'settings.h']]],
   ['ids_5fmulticast',['IDS_MULTICAST',['../settings_8h.html#a000c254613d81a1f53961ec4a054f62b',1,'settings.h']]],
   ['ids_5fmulticast_5fval',['IDS_MULTICAST_VAL',['../settings_8h.html#a9536e14ce5d32c6b6901ae912b5113f0',1,'settings.h']]],
   ['ids_5ftcpport',['IDS_TCPPORT',['../settings_8h.html#a9b7bbc5508c4ebdcec8ca5cb7ac0c27e',1,'settings.h']]],
