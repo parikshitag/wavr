@@ -4,13 +4,13 @@
 #include <QDomDocument>
 #include    "definitions.h"
 
-#define XN_ROOT				APP_MARKER
-#define XN_HEAD				"head"
-#define XN_BODY				"body"
-#define XN_FROM				"from"
-#define XN_TO				"to"
+#define XML_ROOT				APP_MARKER
+#define XML_HEAD				"head"
+#define XML_BODY				"body"
+#define XML_FROM				"from"
+#define XML_TO                  "to"
 
-#define XN_PORT             "port"
+#define XML_PORT                "port"
 
 class wavrXmlMessage : public QDomDocument
 {

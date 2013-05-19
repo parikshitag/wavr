@@ -1,8 +1,8 @@
 #ifndef CHANNELMESSAGING_H
 #define CHANNELMESSAGING_H
 
-#include <QTcpSocket>
-#include <QTcpServer>
+#include <QtNetwork/QTcpSocket>
+#include <QtNetwork/QTcpServer>
 
 
 /****************************************************************************

@@ -71,7 +71,7 @@ void wavrMessaging::start(void) {
     wavrTrace::write("Messaging started");
     pNetwork->start();
 
-    sendBroadcast(MT_Depart, NULL);
+   // sendBroadcast(MT_Depart, NULL); Make sure you are not already listed, hence send depart message
     sendBroadcast(MT_Announce, NULL);
 }
 

@@ -22,7 +22,7 @@ public:
     void setLocalId(QString* lpszLocalId);
     void sendBroadcast(QString* lpszLocalId);
     void addConnection(QString* lpszUserId, QString* lpszAddress);
-    void sendMessage(QSTring* lpszReceiverId, QString* lpszAddress, QString* lpszData);
+    void sendMessage(QString* lpszReceiverId, QString* lpszAddress, QString* lpszData);
     void settingsChanged(void);
 
     QString ipAddress;

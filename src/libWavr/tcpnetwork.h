@@ -2,8 +2,8 @@
 #define TCPNETWORK_H
 
 #include <QObject>
-#include <QTcpSocket>
-#include <QTcpServer>
+#include <QtNetwork/QTcpSocket>
+#include <QtNetwork/QTcpServer>
 #include "shared.h"
 #include "datagram.h"
 #include "settings.h"
@@ -20,8 +20,8 @@ public:
     void start(void);
     void stop(void);
     void setLocalId(QString* lpszLocalId);
-    void addConnection(QString* lpszUserId, QSTring* lpszAddress);
-    void sendMessage(QString* lpszReceiverId, QSTring* lpszData);
+    void addConnection(QString* lpszUserId, QString* lpszAddress);
+    void sendMessage(QString* lpszReceiverId, QString* lpszData);
     void settingsChanged(void) {}
     void setIPAddress(const QString& szAddress);
 

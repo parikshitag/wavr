@@ -10,13 +10,13 @@
 #include "libWavr/settings.h"
 #include "libWavr/xmlmessage.h"
 
-class ChatWindow : public QWidget
+class wavrChatWindow : public QWidget
 {
     Q_OBJECT
     
 public:
-    explicit ChatWindow(QWidget *parent = 0, Qt::WindowFlags flags = 0);
-    ~ChatWindow();
+    explicit wavrChatWindow(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    ~wavrChatWindow();
     
     void init(User* pLocalUser, User* pRemoteUser, bool connected);
     void stop(void);

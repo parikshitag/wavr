@@ -9,6 +9,20 @@
 #define IDS_VERSION             "Application/Version"
 #define IDS_VERSION_VAL         "0.1.0"
 
+#define IDS_AUTOSTART           "AutoStart"
+#define IDS_AUTOSTART_VAL       true
+
+#define IDS_LANGUAGE            "Locale/Language"
+#define IDS_LANGUAGE_VAL        "en_US"
+
+#define IDS_REFRESHTIME         "RefreshInterval"
+#define IDS_REFRESHTIME_VAL     300
+
+#define IDS_MESSAGEPOP         "Messages/MessagePop"        // set incoming messages foreground or minimize to taskbar
+#define IDS_MESSAGEPOP_VAL      false
+#define IDS_PUBMESSAGEPOP       "Messages/PubMessagePop"    // set above to public messages or not
+#define IDS_PUBMESSAGEPOP_VAL   false
+
 #define IDS_CONNECTION          "Connection/Connection"
 #define IDS_CONNECTION_VAL      "Auto"
 

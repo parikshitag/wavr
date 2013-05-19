@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QTimer>
 #include "shared.h"
-#include "message.h"
+//#include "message.h"
 #include "network.h"
 #include "settings.h"
 #include "xmlmessage.h"
@@ -15,11 +15,11 @@ struct PendingMsg {
     QDateTime timeStamp;
     MessageType type;
     QString userId;
-    XmlMessage xmlMessage;
+    wavrXmlMessage xmlMessage;
     int retry;
 
     PendingMsg(void) {}
-    PendingMsg(qint64 nMsgId, bool bActive, QDateTime timeStamp, MessageType mtType, QString szUserId, XmlMessage xmlMessage, int nRetry) {
+    PendingMsg(qint64 nMsgId, bool bActive, QDateTime timeStamp, MessageType mtType, QString szUserId, wavrXmlMessage xmlMessage, int nRetry) {
         this->msgId = nMsgId;
         this->active = bActive;
         this->timeStamp = timeStamp;

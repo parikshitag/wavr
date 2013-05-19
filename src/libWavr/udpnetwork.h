@@ -2,8 +2,8 @@
 #define UDPNETWORK_H
 
 #include <QObject>
-#include <QUdpSocket>
-#include <QHostAddress>
+#include <QtNetwork/QUdpSocket>
+#include <QtNetwork/QHostAddress>
 #include <QList>
 #include "shared.h"
 #include "settings.h"
@@ -35,7 +35,7 @@ private slots:
     void processPendingDatagrams(void);
 
 private:
-    void sendDatagram(QhostAddress remoteAddress, QByteArray& baDatagram);
+    void sendDatagram(QHostAddress remoteAddress, QByteArray& baDatagram);
     bool startReceiving(void);
     void parseDatagram(QString* lpszAddress, QByteArray& baDatagram); ///process incoming broadcasting message
     void setDefaultBroadcast(void);

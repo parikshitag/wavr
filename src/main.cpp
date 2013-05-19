@@ -17,16 +17,18 @@
  */
 
 #include <QApplication>
-
-#include "mainwindow.h"
+#include "core.h"
 
 #include <QtCore/QSettings>
 #include <QtNetwork/QNetworkConfigurationManager>
 #include <QtNetwork/QNetworkSession>
 
+//  Define a unique application id. This is a combination of two GUIDs
+const QString appId = "887df9b7-8131-4836-9004-1b1e458c9d9c-6d5a04e0-bab9-414a-8d72-2a8a80eaca47";
+
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
 
     QNetworkConfigurationManager manager;
     if (manager.capabilities() & QNetworkConfigurationManager::NetworkRequired){
@@ -65,8 +67,9 @@ int main(int argc, char *argv[])
 	    }
     }
 
-    MainWindow w;
-    w.show();
+    wavrCore core;
     
-    return a.exec();
+    core.init();
+
+    return app.exec();
 }

@@ -121,17 +121,25 @@ void wavrMessaging::connectionLost(QString* lpszUserId) {
     removeUser(*lpszUserId);
 }
 
+/**
+ * @brief Sends User Data to peer.
+ * @param type Message Type see @link MessageType
+ * @param op
+ * @param lpszUserId    User Id of the peer to which data is to be sent
+ * @param lpszAddress   Address of peer
+ *
+ */
 void wavrMessaging::sendUserData(MessageType type, QueryOp op, QString* lpszUserId, QString* lpszAddress) {
-    wavrTrace::write("Sending local user details to user " + *lpszUserId + " at " + *lpszAddress);
-    XmlMessage xmlMessage;
-    xmlMessage.addData(XN_USERID, localUser->id);
-    xmlMessage.addData(XN_NAME, localUser->name);
-    xmlMessage.addData(XN_ADDRESS, localUser->address);
-    xmlMessage.addData(XN_VERSION, localUser->version);
-    xmlMessage.addData(XN_STATUS, localUser->status);
-    xmlMessage.addData(XN_NOTE, localUser->note);
-    xmlMessage.addData(XN_USERCAPS, QString::number(localUser->caps));
-    xmlMessage.addData(XN_QUERYOP, QueryOpNames[op]);
+   // wavrTrace::write("Sending local user details to user " + *lpszUserId + " at " + *lpszAddress);
+    wavrXmlMessage xmlMessage;
+    wavrXmlMessage.addData(XN_USERID, localUser->id);
+    wavrXmlMessage.addData(XN_NAME, localUser->name);
+    wavrXmlMessage.addData(XN_ADDRESS, localUser->address);
+    wavrXmlMessage.addData(XN_VERSION, localUser->version);
+    wavrXmlMessage.addData(XN_STATUS, localUser->status);
+    wavrXmlMessage.addData(XN_NOTE, localUser->note);
+    wavrXmlMessage.addData(XN_USERCAPS, QString::number(localUser->caps));
+    wavrXmlMessage.addData(XN_QUERYOP, QueryOpNames[op]);
     QString szMessage = Message::addHeader(type, msgId, &localUser->id, lpszUserId, &xmlMessage);
     pNetwork->sendMessage(lpszUserId, lpszAddress, &szMessage);
 }

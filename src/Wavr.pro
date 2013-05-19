@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     messagingproc.cpp \
     libWavr/messagingproc.cpp \
     core.cpp \
-    chatwindow.cpp
+    chatwindow.cpp \
+    messagelog.cpp
 
 HEADERS  += mainwindow.h \
     QProgressIndicator.h \
@@ -56,7 +57,9 @@ HEADERS  += mainwindow.h \
     libWavr/xmlmessage.h \
     libWavr/messaging.h \
     core.h \
-    chatwindow.h
+    chatwindow.h \
+    messagelog.h \
+    uidefinitions.h
 
 FORMS    += \
     mainwindow.ui \
