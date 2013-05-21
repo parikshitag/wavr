@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node5" href="$udpnetwork_8h.html" title="udpnetwork.h" alt="" coords="572,83,671,112"/>
-<area shape="rect" id="node21" href="$settings_8h.html" title="settings.h" alt="" coords="583,160,660,189"/>
-<area shape="rect" id="node29" href="$tcpnetwork_8h.html" title="tcpnetwork.h" alt="" coords="353,83,449,112"/>
-<area shape="rect" id="node15" href="$shared_8h.html" title="shared.h" alt="" coords="365,237,437,267"/>
-<area shape="rect" id="node19" href="$definitions_8h.html" title="definitions.h" alt="" coords="407,315,497,344"/>
-<area shape="rect" id="node37" href="$datagram_8h.html" title="datagram.h" alt="" coords="279,160,364,189"/>
-<area shape="rect" id="node41" href="$channel_messaging_8h.html" title="channelMessaging.h" alt="" coords="63,160,204,189"/>
-</map>

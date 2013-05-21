@@ -1,4 +1,0 @@
-<map id="Ui::Form" name="Ui::Form">
-<area shape="rect" id="node2" href="$class_ui___form.html" title="{Ui_Form\n|+ widget\l+ verticalLayout\l+ frame\l+ widget1\l+ horizontalLayout\l+ cmbStatus\l+ frame_2\l+ widget2\l+ horizontalLayout_2\l+ searchEdit\l+ searchClose\l+ userList\l|+ setupUi()\l+ retranslateUi()\l}" alt="" coords="35,555,176,848"/>
-<area shape="rect" id="node4" href="$class_q_progress_indicator.html" title="The QProgressIndicator class lets an application display a progress indicator to show that a lengthy ..." alt="" coords="5,142,205,487"/>
-</map>

@@ -9,6 +9,15 @@
 #define XML_BODY				"body"
 #define XML_FROM				"from"
 #define XML_TO                  "to"
+#define XML_TIME                "time"
+
+#define XML_MESSAGE             "message"
+#define XML_BROADCAST           "broadcast"
+
+#define XML_CHATSTATE           "chatstate"
+
+#define XML_FONT                "font"
+#define XML_COLOR               "color"
 
 #define XML_PORT                "port"
 

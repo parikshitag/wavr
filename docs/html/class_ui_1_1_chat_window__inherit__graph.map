@@ -1,3 +1,0 @@
-<map id="Ui::ChatWindow" name="Ui::ChatWindow">
-<area shape="rect" id="node2" href="$class_ui___chat_window.html" title="{Ui_ChatWindow\n|+ verticalLayout_3\l+ splitter\l+ widget\l+ verticalLayout\l+ wgtLog\l+ horizontalLayout\l+ logLayout\l+ lblInfo\l+ widget1\l+ verticalLayout_2\l+ wgtToolBar\l+ verticalLayout_4\l+ toolBarLayout\l+ txtMessage\l|+ setupUi()\l+ retranslateUi()\l}" alt="" coords="5,5,133,333"/>
-</map>

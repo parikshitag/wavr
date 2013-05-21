@@ -10,7 +10,7 @@
  *  Message log stores the message, broadcast, file and links log in the window that happened so far.
  *  Messages and broadcast are logged with different font styles, links store the url of the link and are triggerable.
  */
-class wavrMessageLog
+class wavrMessageLog : public QWebView
 {
     Q_OBJECT
 public:
@@ -64,7 +64,7 @@ private:
     void appendMessage(QString* lpszUserId, QString* lpszUserName, QString* lpszMessage, QDateTime* pTime,
                        QFont* pFont, QColor* pColor);
     QString getFontStyle(QFont* pFont, QColor* pColor, bool size = false);
-    QString getChatStatusMessage(ChatState chatState);
+    QString getChatStateMessage(ChatState chatState);
     void decodeMessage(QString* lpszMessage, bool useDefaults = false);
     void processMessageText(QString* lpszMessageText, bool useDefaults);
     QString getTimeString(QDateTime* pTime);
