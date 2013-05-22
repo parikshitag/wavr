@@ -35,7 +35,8 @@ SOURCES += main.cpp\
     core.cpp \
     chatwindow.cpp \
     messagelog.cpp \
-    chathelper.cpp
+    chathelper.cpp \
+    usertreewidget.cpp
 
 HEADERS  += mainwindow.h \
     QProgressIndicator.h \
@@ -62,7 +63,8 @@ HEADERS  += mainwindow.h \
     messagelog.h \
     uidefinitions.h \
     chathelper.h \
-    chatdefinitions.h
+    chatdefinitions.h \
+    usertreewidget.h
 
 FORMS    += \
     mainwindow.ui \

@@ -46,6 +46,17 @@
 #define IDR_HOTKEYSET           ":/settings/hotkeysettings"
 #define IDR_PLAY                ":/settings/play"
 
+//	item data role definitions
+enum ItemDataRole {
+    IdRole = Qt::UserRole + 1,	// Unique Id of the item
+    TypeRole,	//	Whether item represents a Group or a User
+    DataRole,	//	Custom data associated with the item
+    StatusRole,	//	Status of the User
+    AvatarRole,	//	Avatar image of the User
+    SubtextRole,//	Subtext to be displayed on the item
+    CapsRole    //  The capabilities of the user
+};
+
 //  status image definitions
 #define IDR_AVAILABLE           ":/status/available"
 #define IDR_AWAY                ":/status/away"

@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -31,7 +31,7 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>50</x>
@@ -91,7 +91,7 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>31</x>
@@ -116,7 +116,13 @@
      </widget>
     </item>
     <item>
-     <widget class="QTreeWidget" name="userList"/>
+     <widget class="wavrUserTreeWidget" name="tvUserList">
+      <column>
+       <property name="text">
+        <string notr="true">1</string>
+       </property>
+      </column>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -127,6 +133,11 @@
    <extends>QWidget</extends>
    <header>QProgressIndicator.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>wavrUserTreeWidget</class>
+   <extends>QTreeWidget</extends>
+   <header>usertreewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
