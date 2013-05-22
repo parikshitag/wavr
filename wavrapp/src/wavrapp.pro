@@ -4,10 +4,12 @@ SOURCES += \
     qtlockedfile_win.cpp \
     qtlockedfile_unix.cpp \
     qtlockedfile.cpp \
-    qtlocalpeer.cpp
+    qtlocalpeer.cpp \
+    application.cpp
 
 HEADERS += \
     qtsinglecoreapplication.h \
     qtsingleapplication.h \
     qtlockedfile.h \
-    qtlocalpeer.h
+    qtlocalpeer.h \
+    application.h
