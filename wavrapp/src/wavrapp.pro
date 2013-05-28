@@ -1,3 +1,10 @@
+QT       += network
+
+TARGET = wavrapp
+TEMPLATE = lib
+
+DEFINES += WAVRAPP_LIBRARY
+
 SOURCES += \
     qtsinglecoreapplication.cpp \
     qtsingleapplication.cpp \
@@ -13,3 +20,11 @@ HEADERS += \
     qtlockedfile.h \
     qtlocalpeer.h \
     application.h
+
+CONFIG(debug, debug|release) {
+        DESTDIR = ../lib
+        win32: TARGET = $$join(TARGET,,,d)
+        mac: TARGET = $$join(TARGET,,,_debug)
+} else {
+        DESTDIR = ../lib
+}
