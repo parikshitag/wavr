@@ -1,21 +1,21 @@
-#include "trace.h"
+//#include "trace.h"
 #include "messaging.h"
 
 //	A broadcast is to be sent
-void wavrMessaging::sendBroadcast(MessageType type, XmlMessage* pMessage) {
+void wavrMessaging::sendBroadcast(MessageType type, wavrXmlMessage* pMessage) {
     prepareBroadcast(type, pMessage);
 }
 
 //	A message is to be sent
-void wavrMessaging::sendMessage(MessageType type, QString* lpszUserId, XmlMessage* pMessage) {
+void wavrMessaging::sendMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage) {
     QString data = QString::null;
-    XmlMessage message;
+    wavrXmlMessage message;
 
     switch(type) {
-    case MT_Group:
-        data = pMessage->data(XN_GROUP);
-        updateUser(type, *lpszUserId, data);
-        break;
+//    case MT_Group:
+//        data = pMessage->data(XML_GROUP);
+//        updateUser(type, *lpszUserId, data);
+//        break;
     case MT_Status:
     case MT_UserName:
     case MT_Note:
@@ -48,7 +48,7 @@ void wavrMessaging::sendMessage(MessageType type, QString* lpszUserId, XmlMessag
         msgId++;
         break;
     case MT_Version:
-        sendWebMessage(type, pMessage);
+        //sendWebMessage(type, pMessage);
         break;
     default:
         prepareMessage(type, msgId, false, lpszUserId, pMessage);
@@ -57,7 +57,7 @@ void wavrMessaging::sendMessage(MessageType type, QString* lpszUserId, XmlMessag
     }
 }
 
-//void wavrMessaging::sendWebMessage(MessageType type, XmlMessage *pMessage) {
+//void wavrMessaging::sendWebMessage(MessageType type, wavrXmlMessage *pMessage) {
 //    Q_UNUSED(pMessage);
 
 //    QString szUrl;
@@ -72,14 +72,14 @@ void wavrMessaging::sendMessage(MessageType type, QString* lpszUserId, XmlMessag
 //    default:
 //        break;
 //    }
-}
+//}
 
 //	A broadcast has been received
 void wavrMessaging::receiveBroadcast(DatagramHeader* pHeader, QString* lpszData) {
     MessageHeader* pMsgHeader = NULL;
-    XmlMessage* pMessage = NULL;
+    wavrXmlMessage* pMessage = NULL;
     if(!Message::getHeader(lpszData, &pMsgHeader, &pMessage)) {
-        wavrTrace::write("Warning: Broadcast header parse failed");
+        //wavrTrace::write("Warning: Broadcast header parse failed");
         return;
     }
     pMsgHeader->address = pHeader->address;
@@ -89,9 +89,9 @@ void wavrMessaging::receiveBroadcast(DatagramHeader* pHeader, QString* lpszData)
 //	A message has been received
 void wavrMessaging::receiveMessage(DatagramHeader* pHeader, QString* lpszData) {
     MessageHeader* pMsgHeader = NULL;
-    XmlMessage* pMessage = NULL;
-    if(!Message::getHeader(lpszData, &pMsgHeader, &pMessage)) {
-        wavrTrace::write("Warning: Message header parse failed");
+    wavrXmlMessage* pMessage = NULL;
+    if(!pMessage::getHeader(lpszData, &pMsgHeader, &pMessage)) {
+        //wavrTrace::write("Warning: Message header parse failed");
         return;
     }
     pMsgHeader->address = pHeader->address;
@@ -101,7 +101,7 @@ void wavrMessaging::receiveMessage(DatagramHeader* pHeader, QString* lpszData) {
 //	A web message has been received
 //void wavrMessaging::receiveWebMessage(QString *lpszData) {
 //    MessageHeader* pMsgHeader = NULL;
-//    XmlMessage* pMessage = NULL;
+//    wavrXmlMessage* pMessage = NULL;
 //    if(!Message::getHeader(lpszData, &pMsgHeader, &pMessage)) {
 //        wavrTrace::write("Warning: Web message header parse failed");
 //        return;
@@ -112,12 +112,12 @@ void wavrMessaging::receiveMessage(DatagramHeader* pHeader, QString* lpszData) {
 
 //	Handshake procedure has been completed
 void wavrMessaging::newConnection(QString* lpszUserId, QString* lpszAddress) {
-    wavrTrace::write("Connection completed with user " + *lpszUserId + " at " + *lpszAddress);
+    //wavrTrace::write("Connection completed with user " + *lpszUserId + " at " + *lpszAddress);
     sendUserData(MT_UserData, QO_Get, lpszUserId, lpszAddress);
 }
 
 void wavrMessaging::connectionLost(QString* lpszUserId) {
-    wavrTrace::write("Connection to user " + *lpszUserId + " lost");
+    //wavrTrace::write("Connection to user " + *lpszUserId + " lost");
     removeUser(*lpszUserId);
 }
 
@@ -144,7 +144,7 @@ void wavrMessaging::sendUserData(MessageType type, QueryOp op, QString* lpszUser
     pNetwork->sendMessage(lpszUserId, lpszAddress, &szMessage);
 }
 
-void wavrMessaging::prepareBroadcast(MessageType type, XmlMessage* pMessage) {
+void wavrMessaging::prepareBroadcast(MessageType type, wavrXmlMessage* pMessage) {
     if(!isConnected()) {
         wavrTrace::write("Warning: Not connected. Broadcast not sent");
         return;
@@ -161,7 +161,7 @@ void wavrMessaging::prepareBroadcast(MessageType type, XmlMessage* pMessage) {
 }
 
 //	This method converts a Message from ui layer to a Datagram that can be passed to network layer
-void wavrMessaging::prepareMessage(MessageType type, qint64 msgId, bool retry, QString* lpszUserId, XmlMessage* pMessage) {
+void wavrMessaging::prepareMessage(MessageType type, qint64 msgId, bool retry, QString* lpszUserId, wavrXmlMessage* pMessage) {
     if(!isConnected()) {
         wavrTrace::write("Warning: Not connected. Message not sent");
         return;
@@ -238,7 +238,7 @@ void wavrMessaging::prepareMessage(MessageType type, qint64 msgId, bool retry, Q
 }
 
 //	This method converts a Datagram from network layer to a Message that can be passed to ui layer
-void wavrMessaging::processBroadcast(MessageHeader* pHeader, XmlMessage* pMessage) {
+void wavrMessaging::processBroadcast(MessageHeader* pHeader, wavrXmlMessage* pMessage) {
     Q_UNUSED(pMessage);
 
     //	do not process broadcasts from local user unless loopback is specified in command line
@@ -263,10 +263,10 @@ void wavrMessaging::processBroadcast(MessageHeader* pHeader, XmlMessage* pMessag
     wavrTrace::write("Broadcast processing done");
 }
 
-void wavrMessaging::processMessage(MessageHeader* pHeader, XmlMessage* pMessage) {
+void wavrMessaging::processMessage(MessageHeader* pHeader, wavrXmlMessage* pMessage) {
     QString msgId;
     QString data = QString::null;
-    XmlMessage reply;
+    wavrXmlMessage reply;
 
     wavrTrace::write("Processing message type " + QString::number(pHeader->type) + " from user " +
         pHeader->userId);
@@ -356,7 +356,7 @@ void wavrMessaging::processMessage(MessageHeader* pHeader, XmlMessage* pMessage)
     wavrTrace::write("Message processing done");
 }
 
-//void wavrMessaging::processWebMessage(MessageHeader* pHeader, XmlMessage *pMessage) {
+//void wavrMessaging::processWebMessage(MessageHeader* pHeader, wavrXmlMessage *pMessage) {
 //    wavrTrace::write("Processing web message type " + QString::number(pHeader->type));
 
 //    switch(pHeader->type) {

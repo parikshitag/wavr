@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QDateTime>
 #include "shared.h"
 //#include "message.h"
 #include "network.h"
@@ -24,7 +25,8 @@ struct PendingMsg {
         this->active = bActive;
         this->timeStamp = timeStamp;
         this->type = mtType;
-        this->xmlMessage = XmlMessage;
+        this->userId = szUserId;
+        this->xmlMessage = xmlMessage;
         this->retry = nRetry;
     }
 };
@@ -60,14 +62,14 @@ public:
     void sendBroadcast(MessageType type, wavrXmlMessage* pMessage);
     void sendMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
     void settingsChanged(void);
-    void updateGroup(GroupOp op, QVariant value1, QVariant value2);
-    void updateGroupMap(QString oldGroup, QString newGroup);
+    //void updateGroup(GroupOp op, QVariant value1, QVariant value2);
+    //void updateGroupMap(QString oldGroup, QString newGroup);
     void saveGroups(void);
     int userCount(void);
 
     User* localUser;
     QList<User> userList;
-    QList<Group> groupList;
+    //QList<Group> groupList;
 
 signals:
     void messageReceived(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
@@ -87,31 +89,31 @@ private:
     QString createUserId(QString* lpszAddress, QString* lpszUserName);
     QString getUserName(void);
     void loadGroups(void);
-    void getUserInfo(XmlMessage* pMessage);
+    void getUserInfo(wavrXmlMessage* pMessage);
     void sendUserData(MessageType type, QueryOp op, QString* lpszUserId, QString* lpszAddress);
-    void prepareBroadcast(MessageType type, XmlMessage* pMessage);
-    void prepareMessage(MessageType type, qint64 msgId, bool retry, QString* lpszUserId, XmlMessage* pMessage);
-   // void prepareFile(MessageType type, qint64 msgId, bool retry, QString* lpszUserId, XmlMessage* pMessage);
-    //void prepareFolder(MessageType type, qint64 msgId, bool retry, QString* lpszUserId, XmlMessage* pMessage);
-    void processBroadcast(MessageHeader* pHeader, XmlMessage* pMessage);
-    void processMessage(MessageHeader* pHeader, XmlMessage* pMessage);
-   // void processFile(MessageHeader* pHeader, XmlMessage* pMessage);
-   // void processFolder(MessageHeader* pHeader, XmlMessage* pMessage);
-  //  void processWebMessage(MessageHeader* pHeader, XmlMessage* pMessage);
+    void prepareBroadcast(MessageType type, wavrXmlMessage* pMessage);
+    void prepareMessage(MessageType type, qint64 msgId, bool retry, QString* lpszUserId, wavrXmlMessage* pMessage);
+   // void prepareFile(MessageType type, qint64 msgId, bool retry, QString* lpszUserId, wavrXmlMessage* pMessage);
+    //void prepareFolder(MessageType type, qint64 msgId, bool retry, QString* lpszUserId, wavrXmlMessage* pMessage);
+    void processBroadcast(MessageHeader* pHeader, wavrXmlMessage* pMessage);
+    void processMessage(MessageHeader* pHeader, wavrXmlMessage* pMessage);
+   // void processFile(MessageHeader* pHeader, wavrXmlMessage* pMessage);
+   // void processFolder(MessageHeader* pHeader, wavrXmlMessage* pMessage);
+  //  void processWebMessage(MessageHeader* pHeader, wavrXmlMessage* pMessage);
     bool addUser(QString szUserId, QString szVersion, QString szAddress, QString szName, QString szStatus, QString szAvatar, QString szNote, QString szCaps);
     void updateUser(MessageType type, QString szUserId, QString szUserData);
     void removeUser(QString szUserId);
     bool addReceivedMsg(qint64 msgId, QString userId);
-    void addPendingMsg(qint64 msgId, MessageType type, QString* lpszUserId, XmlMessage* pMessage);
+    void addPendingMsg(qint64 msgId, MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
     void removePendingMsg(qint64);
     void removeAllPendingMsg(QString* lpszUserId);
     void checkPendingMsg(void);
-    void resendMessage(MessageType type, qint64 msgId, QString* lpszUserId, XmlMessage* pMessage);
-   // bool addFileTransfer(FileMode fileMode, QString *lpszUserId, XmlMessage *pMessage);
-  //  bool updateFileTransfer(FileMode fileMode, FileOp fileOp, QString *lpszUserId, XmlMessage *pMessage);
+    void resendMessage(MessageType type, qint64 msgId, QString* lpszUserId, wavrXmlMessage* pMessage);
+   // bool addFileTransfer(FileMode fileMode, QString *lpszUserId, wavrXmlMessage *pMessage);
+  //  bool updateFileTransfer(FileMode fileMode, FileOp fileOp, QString *lpszUserId, wavrXmlMessage *pMessage);
   //  QString getFreeFileName(QString fileName);
-   // bool addFolderTransfer(FileMode folderMode, QString* lpszUserId, XmlMessage* pMessage);
-   // bool updateFolderTransfer(FileMode folderMode, FileOp folderOp, QString* lpszUserId, XmlMessage* pMessage);
+   // bool addFolderTransfer(FileMode folderMode, QString* lpszUserId, wavrXmlMessage* pMessage);
+   // bool updateFolderTransfer(FileMode folderMode, FileOp folderOp, QString* lpszUserId, wavrXmlMessage* pMessage);
   //  QString getFreeFolderName(QString folderName);
   //  QString getFolderPath(QString folderId, QString userId, FileMode mode);
 

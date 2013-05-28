@@ -64,14 +64,14 @@ private:
     void appendMessage(QString* lpszUserId, QString* lpszUserName, QString* lpszMessage, QDateTime* pTime,
                        QFont* pFont, QColor* pColor);
     QString getFontStyle(QFont* pFont, QColor* pColor, bool size = false);
-    QString getChatStateMessage(ChatState chatState);
+    //QString getChatStateMessage(ChatState chatState);
     void decodeMessage(QString* lpszMessage, bool useDefaults = false);
     void processMessageText(QString* lpszMessageText, bool useDefaults);
     QString getTimeString(QDateTime* pTime);
     void setUIText(void);
 
-    QList<SingleMessage> messageLog;
-    ThemeData themeData;
+    //QList<SingleMessage> messageLog;
+    //ThemeData themeData;
     QMenu* contextMenu;
     QAction* copyAction;
     QAction* copyLinkAction;

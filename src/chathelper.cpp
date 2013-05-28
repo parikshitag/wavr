@@ -13,7 +13,7 @@ QDataStream &operator >> (QDataStream &in, SingleMessage &message) {
     QString xmlMessage;
     QString id;
     in >> type >> userId >> userName >> xmlMessage >> id;
-    message = SingleMessage((MessageType)type, userId, userName, XmlMessage(xmlMessage), id);
+    message = SingleMessage((MessageType)type, userId, userName, wavrXmlMessage(xmlMessage), id);
     return in;
 }
 

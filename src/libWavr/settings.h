@@ -25,6 +25,10 @@
 
 #define IDS_CONNECTION          "Connection/Connection"
 #define IDS_CONNECTION_VAL      "Auto"
+#define IDS_TIMEOUT             "Connection/Timeout"
+#define IDS_TIMEOUT_VAL         10
+#define IDS_MAXRETRIES			"Connection/MaxRetries"
+#define IDS_MAXRETRIES_VAL		1
 
 #define IDS_MULTICAST           "Connection/Multicast"
 #define IDS_MULTICAST_VAL       "239.255.100.100"
@@ -36,6 +40,21 @@
 #define IDS_BROADCASTHDR        "BroadcastHdr"
 #define IDS_BROADCAST           "Broadcast"
 
+#define IDS_STATUS              "User/Status"
+#define IDS_STATUS_VAL          statusCode[0]
+#define IDS_AVATAR              "User/Avatar"
+#define IDS_AVATAR_VAL			65535	//	this should be a number bigger than AVT_COUNT, 65535 set arbitrarily
+
+#define IDS_USERNAME            "User/Avatar"
+#define IDS_USERNAME_VAL        ""
+#define IDS_USERFIRSTNAME		"User/FirstName"
+#define IDS_USERFIRSTNAME_VAL	""
+#define IDS_USERLASTNAME		"User/LastName"
+#define IDS_USERLASTNAME_VAL	""
+#define IDS_USERABOUT			"User/About"
+#define IDS_USERABOUT_VAL		""
+#define IDS_NOTE                "User/Note"
+#define IDS_NOTE_VAL            ""
 class wavrSettingsBase : public QSettings {
 public:
     wavrSettingsBase(void);

@@ -3,15 +3,15 @@
 
 wavrCore::wavrCore(void) {
     pMessaging = new wavrMessaging();
-    connect(pMessaging, SIGNAL(messageReceived(MessageType,QString*,wavrXmlMessage*)),
-            this, SLOT(receiveMessage(MessageType,QString*,wavrXmlMessage*)));
+    connect(pMessaging, SIGNAL(messageReceived(MessageType,QString*,wavrwavrXmlMessage*)),
+            this, SLOT(receiveMessage(MessageType,QString*,wavrwavrXmlMessage*)));
     connect(pMessaging, SIGNAL(connectionStateChanged()), this, SLOT(connectionStateChanged()));
     pMainWindow = new wavrMainWindow();
     connect(pMainWindow, SIGNAL(appExiting()), this, SLOT(exitApp()));
     connect(pMainWindow, SIGNAL(chatStarting(QString*)), this, SLOT(startChat(QString*)));
 
-    connect(pMainWindow, SIGNAL(messageSent(MessageType, QString*, wavrXmlMessage*)),
-            this, SLOT(sendMessage(MessageType,QString*,wavrXmlMessage*)));
+    connect(pMainWindow, SIGNAL(messageSent(MessageType, QString*, wavrwavrXmlMessage*)),
+            this, SLOT(sendMessage(MessageType,QString*,wavrwavrXmlMessage*)));
 
     pTabWidget = new QTabWidget;
 
@@ -154,7 +154,7 @@ void wavrCore::startChat(QString* lpszUserId) {
 }
 
 
-void wavrCore::sendMessage(MessageType type, QString *lpszUserId, wavrXmlMessage *pMessage) {
+void wavrCore::sendMessage(MessageType type, QString *lpszUserId, wavrwavrXmlMessage *pMessage) {
     QString data;
 
     switch(type) {
@@ -178,7 +178,7 @@ void wavrCore::sendMessage(MessageType type, QString *lpszUserId, wavrXmlMessage
     }
 }
 
-void wavrCore::receiveMessage(MessageType type, QString *lpszUserId, wavrXmlMessage *pMessage) {
+void wavrCore::receiveMessage(MessageType type, QString *lpszUserId, wavrwavrXmlMessage *pMessage) {
     processMessage(type, lpszUserId, pMessage);
 }
 
@@ -223,7 +223,7 @@ void wavrCore::chatWindow_closed(QString *lpszUserId) {
  *  MT_Depart: remove user from the list of contacts in main window and notify departure to that windows (chat and group)
  *  For all message types: notifies the corresponding message to all or specific active windows.
  */
-void wavrCore::processMessage(MessageType type, QString *lpszUserId, wavrXmlMessage *pMessage) {
+void wavrCore::processMessage(MessageType type, QString *lpszUserId, wavrwavrXmlMessage *pMessage) {
     switch(type) {
     case MT_Announce:
         pMainWindow->addUser(pMessaging->getUser(lpszUserId));
@@ -258,7 +258,7 @@ void wavrCore::processMessage(MessageType type, QString *lpszUserId, wavrXmlMess
     }
 }
 
-void wavrCore::routeMessage(MessageType type, QString *lpszUserId, wavrXmlMessage *pMessage) {
+void wavrCore::routeMessage(MessageType type, QString *lpszUserId, wavrwavrXmlMessage *pMessage) {
     bool windowExists = false;
     bool needsNotice = (type == MT_Message || type == MT_Broadcast || type == MT_Failed);
 
@@ -309,8 +309,8 @@ void wavrCore::createChatWindow(QString* lpszUserId) {
 
     User* pLocalUser = pMessaging->localUser;
     User* pRemoteUser = pMessaging->getUser(lpszUserId);
-    connect(pChatWindow, SIGNAL(messageSent(MessageType,QString*,wavrXmlMessage*)),
-            this, SLOT(sendMessage(MessageType,QString*,wavrXmlMessage*)));
+    connect(pChatWindow, SIGNAL(messageSent(MessageType,QString*,wavrwavrXmlMessage*)),
+            this, SLOT(sendMessage(MessageType,QString*,wavrwavrXmlMessage*)));
 
     connect(pChatWindow, SIGNAL(closed(QString*)), this, SLOT(chatWindow_closed(QString*)));
     pChatWindow->init(pLocalUser, pRemoteUser, pMessaging->isConnected());

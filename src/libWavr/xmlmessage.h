@@ -11,6 +11,20 @@
 #define XML_TO                  "to"
 #define XML_TIME                "time"
 
+#define XML_ADDRESS              "address"
+#define XML_USERID               "userid"
+#define XML_NAME                "name"
+#define XML_VERSION              "version"
+
+#define XML_STATUS               "status"
+
+#define XML_LOGON                "logon"
+#define XML_HOST                 "host"
+#define XML_OS                   "os"
+#define XML_FIRSTNAME            "firstname"
+#define XML_LASTNAME             "lastname"
+#define XML_ABOUT                "about"
+
 #define XML_MESSAGE             "message"
 #define XML_BROADCAST           "broadcast"
 
@@ -19,6 +33,7 @@
 #define XML_FONT                "font"
 #define XML_COLOR               "color"
 
+#define XML_NOTE                "note"
 #define XML_PORT                "port"
 
 class wavrXmlMessage : public QDomDocument
@@ -33,6 +48,7 @@ public:
     QString header(const QString& nodeName);
     QString data(const QString& nodeName);
     bool removeHeader(const QString& nodeName);
+    bool removeData(const QString& nodeName);
     bool headerExists(const QString& nodeName);
     bool dataExists(const QString& nodeName);
     wavrXmlMessage clone(void);

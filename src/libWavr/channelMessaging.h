@@ -3,7 +3,7 @@
 
 #include <QtNetwork/QTcpSocket>
 #include <QtNetwork/QTcpServer>
-
+#include <QDataStream>
 
 /****************************************************************************
 **Description: Handles transmission and reception of TCP streaming messages.

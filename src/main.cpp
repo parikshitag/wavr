@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     QNetworkConfigurationManager manager;
-    if (manager.capabilities() & QNetworkConfigurationManager::NetworkRequired){
+    if (manager.capabilities() & QNetworkConfigurationManager::NetworkSessionRequired){
 	    // Get saved network configuration
 	    QSettings settings (QSettings::UserScope, QLatin1String("Wavr"));
 	    settings.beginGroup(QLatin1String("WavrSettings"));

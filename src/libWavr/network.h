@@ -2,6 +2,7 @@
 #define NETWORK_H
 
 #include <QtNetwork/QNetworkInterface>
+#include <QTimer>
 #include "udpnetwork.h"
 #include "tcpnetwork.h"
 #include "settings.h"
@@ -47,11 +48,12 @@ private slots:
 private:
     bool getIPAddress(bool verbose = true);
     bool getIPAddress(QNetworkInterface* pNetworkInterface, QNetworkAddressEntry* pAddressEntry);
-    bool getNetworkIqtznterface(QNetworkInterface* pNetworkInterface);
+    bool getNetworkInterface(QNetworkInterface* pNetworkInterface);
     bool getNetworkInterface(QNetworkInterface* pNetworkInterface, QString* lpszPreferred);
     bool isInterfaceUp(QNetworkInterface* pNetworkInterface);
     bool getNetworkAddressEntry(QNetworkAddressEntry* pAddressEntry);
 
+    wavrSettings*       pSettings;
     wavrUdpNetwork*     pUdpNetwork;
     wavrTcpNetwork*     pTcpNetwork;
     QTimer*             pTimer;

@@ -8,11 +8,11 @@ struct SingleMessage {
     MessageType type;
     QString userId;
     QString userName;
-    wavrXmlMessage message;
+    wavrwavrXmlMessage message;
     QString id; //secondary id for more efficient traversal
 
     SingleMessage() {}
-    SingleMessage(MessageType mType, QString szUserId, QString szUserName, XmlMessage xmlMessage, QString szId = QString()) {
+    SingleMessage(MessageType mType, QString szUserId, QString szUserName, wavrXmlMessage xmlMessage, QString szId = QString()) {
         type = mType;
         userId = szUserId;
         userName = szUserName;

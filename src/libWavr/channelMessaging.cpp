@@ -44,7 +44,7 @@ void MsgStream::stop(void) {
         socket->close();
 }
 
-void MsgStream::sendMessage(QByteArray &data) {
+void MsgStream::sendMessage(QByteArray& data) {
     qint32 dataLen = sizeof(quint32) + data.length();
     outDataLen += dataLen;
     outData.resize(dataLen);

@@ -6,13 +6,13 @@ void wavrDatagram::addHeader(DatagramType type, QByteArray &baData) {
 }
 
 bool wavrDatagram::getHeader(QByteArray &baDatagram, DatagramHeader **ppHeader) {
-    QString DatagramType(baDatagram.mid(0, 6)); // first 6 bytes represent datagram type
-    int type = Helper::indexOf(DatagramTypeNames, DT_Max, DatagramType);
+    QString datagramType(baDatagram.mid(0, 6)); // first 6 bytes represent datagram type
+    int type = wavrHelper::indexOf(DatagramTypeNames, DT_Max, datagramType);
     if (type < 0)
         return false;
 
     *ppHeader = new DatagramHeader(
-                (DatagramType) type,
+                (DatagramType)type,
                 QString(),
                 QString());
     return true;

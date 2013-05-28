@@ -165,7 +165,7 @@ void wavrUdpNetwork::processPendingDatagrams(void) {
  * @param remoteAddress Address of the destinee.
  * @param datagram  Data to be sent.
  */
-void wavrUdpNetwork::sendDatagram(QhostAddress remoteAddress, QByteArray& datagram) {
+void wavrUdpNetwork::sendDatagram(QHostAddress remoteAddress, QByteArray& datagram) {
   if(!isRunning)
       return;
 
@@ -175,7 +175,7 @@ void wavrUdpNetwork::sendDatagram(QhostAddress remoteAddress, QByteArray& datagr
 /**
  *  Joins the multicast group and listens for incoming packets.
  */
-void wavrUdpNetwork::startReceiving(void) {
+bool wavrUdpNetwork::startReceiving(void) {
     //Binding UDP listerner to port
 
     if(pUdpReceiver->bind(nUdpPort)) {
@@ -189,7 +189,7 @@ void wavrUdpNetwork::startReceiving(void) {
 }
 
 void wavrUdpNetwork::parseDatagram(QString* lpszAddress, QByteArray& datagram) {
-    DatagramHeader* pHeader = new DatagramHeader(DT_Broadcast, *lpszAddress);
+    DatagramHeader* pHeader = new DatagramHeader(DT_Broadcast, QString(), *lpszAddress);
     QString szData = QString::fromUtf8(datagram.data(), datagram.length());
     emit broadcastReceived(pHeader, &szData);
 }

@@ -34,7 +34,7 @@ wavrNetwork::~wavrNetwork(void) {
 
 /**
  * @brief Initializes TcpNetwork and UdpNetwork class with port specified in XN_PORT.
- * @param pInitParams   XmlMessage class.
+ * @param pInitParams   wavrXmlMessage class.
  */
 void wavrNetwork::init(wavrXmlMessage *pInitParams) {
     //Network Initialized.
@@ -42,7 +42,7 @@ void wavrNetwork::init(wavrXmlMessage *pInitParams) {
     pSettings = new wavrSettings();
     isConnected = getIPAddress();
 
-    int port = pInitParams->data(XN_PORT).toInt();
+    int port = pInitParams->data(XML_PORT).toInt();
     pUdpNetwork->init(port);
     pTcpNetwork->init(port);
 }
@@ -85,7 +85,7 @@ void wavrNetwork::stop(void) {
  * @return
  */
 QString wavrNetwork::physicalAddress(void){
-    if(networkInterface.isValued())
+    if(networkInterface.isValid())
            return networkInterface.hardwareAddress();
 
     return QString::null;
@@ -113,7 +113,7 @@ void wavrNetwork::sendBroadcast(QString* lpszData) {
  * @param lpszUserId    User Id of the peer to whom connection is to be made.
  * @param lpszAddress   Address of the peer to whom connection is to be made.
  */
-void lmcNetwork::addConnection(QString* lpszUserId, QString* lpszAddress) {
+void wavrNetwork::addConnection(QString* lpszUserId, QString* lpszAddress) {
     pTcpNetwork->addConnection(lpszUserId, lpszAddress);
 }
 
@@ -123,7 +123,7 @@ void lmcNetwork::addConnection(QString* lpszUserId, QString* lpszAddress) {
  * @param lpszAddress       Address of the peer to whom message is to be sent.
  * @param lpszData          The actual message to be sent.
  */
-void lmcNetwork::sendMessage(QString* lpszReceiverId, QString* lpszAddress, QString* lpszData) {
+void wavrNetwork::sendMessage(QString* lpszReceiverId, QString* lpszAddress, QString* lpszData) {
     Q_UNUSED(lpszAddress);
     pTcpNetwork->sendMessage(lpszReceiverId, lpszData);
 }
@@ -230,7 +230,7 @@ bool wavrNetwork::getIPAddress(bool verbose) {
     //bool usePreferred = (szInterfaceName.compare(IDS_CONNECTION_VAL, Qt::CaseInsensitive) != 0);
     bool usePreferred = false;
 
-    lmcTrace::write("Checking for active network interface...", verbose);
+    //wavrTrace::write("Checking for active network interface...", verbose);
 
     //	get a list of all network interfaces available in the system
     QList<QNetworkInterface> allInterfaces = QNetworkInterface::allInterfaces();
@@ -246,8 +246,8 @@ bool wavrNetwork::getIPAddress(bool verbose) {
 
         if(isInterfaceUp(&allInterfaces[index])) {
             activeFound = true;
-            lmcTrace::write("Active network interface found: " + allInterfaces[index].humanReadableName(),
-                verbose);
+            // wavrTrace::write("Active network interface found: " + allInterfaces[index].humanReadableName(),
+              //  verbose);
             QNetworkAddressEntry addressEntry;
             if(getIPAddress(&allInterfaces[index], &addressEntry)) {
                 ipAddress = addressEntry.ip().toString();
@@ -343,7 +343,7 @@ bool wavrNetwork::getNetworkInterface(QNetworkInterface* pNetworkInterface) {
  *  @sa wavrNetwork::getNetworkInterface(QNetworkInterface* pNetworkInterface)
  */
 bool wavrNetwork::getNetworkInterface(QNetworkInterface* pNetworkInterface, QString* lpszPreferred) {
-    lmcTrace::write("Checking for active network interface...");
+    // wavrTrace::write("Checking for active network interface...");
 
     //	get a list of all network interfaces available in the system
     QList<QNetworkInterface> allInterfaces = QNetworkInterface::allInterfaces();
@@ -357,12 +357,12 @@ bool wavrNetwork::getNetworkInterface(QNetworkInterface* pNetworkInterface, QStr
 
         if(isInterfaceUp(&allInterfaces[index])) {
             *pNetworkInterface = allInterfaces[index];
-            lmcTrace::write("Active network interface found: " + pNetworkInterface->humanReadableName());
+            // wavrTrace::write("Active network interface found: " + pNetworkInterface->humanReadableName());
             return true;
         }
     }
 
-    lmcTrace::write("Warning: No active network interface found");
+    // wavrTrace::write("Warning: No active network interface found");
     return false;
 }
 

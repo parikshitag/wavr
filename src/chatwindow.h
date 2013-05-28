@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QToolBar>
-#include <QToolButton>
+#include <QtWidgets/QToolButton>
 #include <QMenu>
 #include "ui_chatwindow.h"
 #include "libWavr/shared.h"
@@ -48,7 +48,7 @@ private:
     void showStatus(int flag, bool add);
     QString getWindowTitle(void);
     void setMessageFont(QFont& font);
-    void setChatState(ChatState newChatState);
+    //void setChatState(ChatState newChatState);
 
     QString peerId;
     QString localName;

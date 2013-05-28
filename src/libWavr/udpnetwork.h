@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QtNetwork/QUdpSocket>
+#include <QtNetwork/QNetworkAddressEntry>
 #include <QtNetwork/QHostAddress>
 #include <QList>
 #include "shared.h"

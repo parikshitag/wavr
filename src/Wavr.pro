@@ -16,12 +16,6 @@ QT += xml
 SOURCES += main.cpp\
         mainwindow.cpp \
     QProgressIndicator.cpp \
-    tcpnetwork.cpp \
-    network.cpp \
-    udpnetwork.cpp \
-    channelMessaging.cpp \
-    datagram.cpp \
-    shared.cpp \
     libWavr/network.cpp \
     libWavr/udpnetwork.cpp \
     libWavr/tcpnetwork.cpp \
@@ -30,7 +24,6 @@ SOURCES += main.cpp\
     libWavr/datagram.cpp \
     libWavr/xmlmessage.cpp \
     libWavr/messaging.cpp \
-    messagingproc.cpp \
     libWavr/messagingproc.cpp \
     core.cpp \
     chatwindow.cpp \
@@ -40,14 +33,7 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     QProgressIndicator.h \
-    tcpnetwork.h \
-    shared.h \
     definitions.h \
-    network.h \
-    udpnetwork.h \
-    settings.h \
-    channelMessaging.h \
-    datagram.h \
     libWavr/network.h \
     libWavr/udpnetwork.h \
     libWavr/tcpnetwork.h \
@@ -64,7 +50,8 @@ HEADERS  += mainwindow.h \
     uidefinitions.h \
     chathelper.h \
     chatdefinitions.h \
-    usertreewidget.h
+    usertreewidget.h \
+    libWavr/stdlocation.h
 
 FORMS    += \
     mainwindow.ui \

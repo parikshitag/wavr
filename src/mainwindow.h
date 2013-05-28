@@ -6,13 +6,14 @@
 #include <QMenuBar>
 #include <QMenu>
 #include <QToolBar>
+#include <QToolButton>
 #include <QAction>
 #include <QActionGroup>
 #include <QIcon>
 #include <qevent.h>
 #include <QTreeWidget>
 #include <QWidgetAction>
-#include "ui_mainwidow.h"
+#include "ui_mainwindow.h"
 #include "libWavr/shared.h"
 #include "libWavr/settings.h"
 #include "libWavr/xmlmessage.h"
@@ -26,7 +27,7 @@ class wavrMainWindow : public QWidget
     Q_OBJECT
     
 public:
-    explicit wavrMainWindow(QWidget *parent = 0);
+    explicit wavrMainWindow(QWidget *parent = 0, Qt::WindowFlags flags = 0);
     ~wavrMainWindow();
     
     void init(User* pLocalUser, QList<Group>* pGroupList, bool connected);
@@ -41,7 +42,7 @@ public:
     void receiveMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
     void connectionStateChanged(bool connected);
     void settingsChanged(bool init = false);
-    void showTrayMessage(TrayMessageType type, QString szMessage, QString szTitle = QString::null, TrayMessageIcon icon = TMI_info);
+    //void showTrayMessage(TrayMessageType type, QString szMessage, QString szTitle = QString::null, TrayMessageIcon icon = TMI_info);
     QList<QTreeWidgetItem*> getContactsList(void);
 
 signals:
@@ -89,7 +90,7 @@ private:
     void processTrayIconTrigger(void);
     void setTrayTooltip(void);
 
-    Ui::wavrMainWindow ui;
+    Ui::MainWindow ui;
     wavrSettings* pSettings;
     QMenuBar* pMainMenu;
     QSystemTrayIcon* pTrayIcon;
@@ -115,7 +116,7 @@ private:
     QAction* exitAction;
     QAction* settingsAction;
 
-    QAction* userChatAction'
+    QAction* userChatAction;
     QAction* avatarBrowseAction;
     bool windowLoaded;
 };

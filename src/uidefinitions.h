@@ -66,7 +66,7 @@ enum ItemDataRole {
 #define IDR_OFFLINE             ":/status/offline"
 #endif // UIDEFINITIONS_H
 
-const QString statusPic[] = {IDR_AVAILABLE, IDR_AWAY, IDR_EXTAWAY, IDR_BUSY, IDR_NODISTURB, IDR_OFFLINE};
+//const QString statusPic[] = {IDR_AVAILABLE, IDR_AWAY, IDR_EXTAWAY, IDR_BUSY, IDR_NODISTURB, IDR_OFFLINE};
 
 //	Smiley definitions
 #define SMI_01			":/smileys/01"

@@ -60,7 +60,7 @@ void wavrMessageLog::createContextMenu(void) {
     setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
-void wavrMessageLog::appendMessageLog(MessageType type, QString *lpszUserId, QString *lpszUserName, wavrXmlMessage *pMessage,
+void wavrMessageLog::appendMessageLog(MessageType type, QString *lpszUserId, QString *lpszUserName, wavrwavrXmlMessage *pMessage,
                                       bool bReload) {
     if(!pMessage && type != MT_ERROR)
         return;
@@ -133,7 +133,7 @@ void wavrMessageLog::appendMessageLog(MessageType type, QString *lpszUserId, QSt
     }
 
     if(!bReload && addToLog && pMessage) {
-        XmlMessage xmlMessage = pMessage->clone();
+        wavrXmlMessage xmlMessage = pMessage->clone();
         QString userId = lpszUserId ? *lpszUserId : QString::null;
         QString userName = lpszUserName ? *lpszUserName : QString::null;
         messageLog.append(SingleMessage(type, userId, userName, xmlMessage, id));

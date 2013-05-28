@@ -11,13 +11,13 @@
  *  Creates root, head and body element of XML DOM.
  */
 wavrXmlMessage::wavrXmlMessage(){
-    QDomElement root = createElement(XN_ROOT);
+    QDomElement root = createElement(XML_ROOT);
     appendChild(root);
 
-    QDomElement head = createElement(XN_HEAD);
+    QDomElement head = createElement(XML_HEAD);
     root.appendChild(head);
 
-    QDomElement body = createElement(XN_BODY);
+    QDomElement body = createElement(XML_BODY);
     root.appendChild(body);
 }
 
@@ -39,7 +39,7 @@ wavrXmlMessage::~wavrXmlMessage(void){
  *  Add node name and value to HEAD as parent node.
  */
 bool wavrXmlMessage::addHeader(const QString &nodeName, const QString &nodeValue){
-    return addXmlNode(XN_HEAD, nodeName, nodeValue);
+    return addXmlNode(XML_HEAD, nodeName, nodeValue);
 }
 
 /**
@@ -49,7 +49,7 @@ bool wavrXmlMessage::addHeader(const QString &nodeName, const QString &nodeValue
  * Add node name and value to BODY as parent node.
  */
 bool wavrXmlMessage::addData(const QString& nodeName, const QString& nodeValue) {
-    return addXmlNode(XN_BODY, nodeName, nodeValue);
+    return addXmlNode(XML_BODY, nodeName, nodeValue);
 }
 
 /**
@@ -58,7 +58,7 @@ bool wavrXmlMessage::addData(const QString& nodeName, const QString& nodeValue) 
  *  Get header node.
  */
 QString wavrXmlMessage::header(const QString& nodeName) {
-    return getXmlNode(XN_HEAD, nodeName);
+    return getXmlNode(XML_HEAD, nodeName);
 }
 
 /**
@@ -67,7 +67,7 @@ QString wavrXmlMessage::header(const QString& nodeName) {
  *  Get Body node.
  */
 QString wavrXmlMessage::data(const QString& nodeName) {
-    return getXmlNode(XN_BODY, nodeName);
+    return getXmlNode(XML_BODY, nodeName);
 }
 
 /**
@@ -76,7 +76,7 @@ QString wavrXmlMessage::data(const QString& nodeName) {
  *  Removes the given Header node.
  */
 bool wavrXmlMessage::removeHeader(const QString& nodeName) {
-    return removeXmlNode(XN_HEAD, nodeName);
+    return removeXmlNode(XML_HEAD, nodeName);
 }
 
 /**
@@ -85,7 +85,7 @@ bool wavrXmlMessage::removeHeader(const QString& nodeName) {
  *  Removes the given Body node.
  */
 bool wavrXmlMessage::removeData(const QString& nodeName) {
-    return removeXmlNode(XN_BODY, nodeName);
+    return removeXmlNode(XML_BODY, nodeName);
 }
 
 /**
@@ -94,7 +94,7 @@ bool wavrXmlMessage::removeData(const QString& nodeName) {
  *  Searches for the given node in Head element.
  */
 bool wavrXmlMessage::headerExists(const QString& nodeName) {
-    return xmlNodeExists(XN_HEAD, nodeName);
+    return xmlNodeExists(XML_HEAD, nodeName);
 }
 
 /**
@@ -103,15 +103,15 @@ bool wavrXmlMessage::headerExists(const QString& nodeName) {
  *  Searches for the given node in Body element.
  */
 bool wavrXmlMessage::dataExists(const QString& nodeName) {
-    return xmlNodeExists(XN_BODY, nodeName);
+    return xmlNodeExists(XML_BODY, nodeName);
 }
 
 /**
  * @return Returns the Cloned XML message class.
  *  Clones the XML Message.
  */
-wavrXmlMessage XmlMessage::clone(void) {
-    XmlMessage newMsg;
+wavrXmlMessage wavrXmlMessage::clone(void) {
+    wavrXmlMessage newMsg;
     newMsg.setContent(toString());
     return newMsg;
 }

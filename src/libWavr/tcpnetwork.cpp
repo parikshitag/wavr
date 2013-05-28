@@ -4,7 +4,7 @@
 /**
  *  Creates object of QTcpServer.
  */
-wavrTcpNetwork::wavrTcpNetowork(void){
+wavrTcpNetwork::wavrTcpNetwork(void){
     ipAddress = QHostAddress::Null;
     server = new QTcpServer(this);
     connect(server, SIGNAL(newConnection()), this, SLOT(server_newConnection()));
@@ -33,7 +33,7 @@ void wavrTcpNetwork::stop(void) {
     // Close all open sockets
     if (locMsgStream)
         locMsgStream->stop();
-    QMap<QString, MsgStream*>::const_iterator index = messagMap.constBegin();
+    QMap<QString, MsgStream*>::const_iterator index = messageMap.constBegin();
     while(index != messageMap.constEnd()) {
         MsgStream* pMsgStream = index.value();
         if (pMsgStream)
@@ -71,9 +71,9 @@ void wavrTcpNetwork::addConnection(QString* lpszUserId, QString* lpszAddress) {
 
     // if connecting to own machine, this stream will be stored in local message stream, else in list
     if (lpszUserId->compare(localId) == 0)
-        locMsgStream = MsgStream;
+        locMsgStream = msgStream;
     else
-        messageMap.insert(*lpszUserId, MsgStream);
+        messageMap.insert(*lpszUserId, msgStream);
     msgStream->init();
 }
 
@@ -133,7 +133,7 @@ void wavrTcpNetwork::socket_readyRead(void) {
     QTcpSocket* socket = (QTcpSocket*) sender();
     disconnect(socket, SIGNAL(readyRead()), this, SLOT(socket_readyRead()));
 
-    QByteArray buffer = socket->ready(64);
+    QByteArray buffer = socket->read(64);
     if (buffer.startsWith(ST_MESSAGE)) {
         // read user id from socket and assign socket to correct message stream
         QString userId(buffer.mid(3));  // 3 is length of "MSG"
@@ -164,7 +164,7 @@ void wavrTcpNetwork::receiveMessage(QString* lpszUserId, QString* lpszAddress, Q
 
     pHeader->userId = *lpszUserId;
     pHeader->address = *lpszAddress;
-    QByteArray clearData = Datagram::getData(datagram);
+    QByteArray clearData;
     QString szMessage;
 
     //TCP stream type pHeader->type received from user userId at address

@@ -5,7 +5,7 @@
 #include "messagelog.h"
 
 wavrMainWindow::wavrMainWindow(QWidget *parent, Qt::WindowFlags flags) : QWidget(parent, flags) {
-    ui->setupUi(this);
+    ui.setupUi(this);
 
     connect(ui.tvUserList, SIGNAL(itemActivated(QTreeWidgetItem*, int)),
             this, SLOT(tvUserList_itemActivated(QTreeWidgetItem*, int)));
@@ -22,7 +22,6 @@ wavrMainWindow::wavrMainWindow(QWidget *parent, Qt::WindowFlags flags) : QWidget
 }
 
 wavrMainWindow::~wavrMainWindow() {
-    delete ui;
 }
 
 void wavrMainWindow::init(User *pLocalUser, QList<Group> *pGroupList, bool connected) {

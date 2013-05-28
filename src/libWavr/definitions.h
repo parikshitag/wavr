@@ -18,6 +18,8 @@
 #define IDA_PLATFORM    "Linux"
 #endif
 
+#define APP_MARKER      "wavrmessage"
+
 /****************************************************************************
 **	Socket type definitions
 **	The enum and the string array should always be synced
@@ -110,6 +112,57 @@ const QString MessageTypeNames[] = {
     "refresh",
     "join",
     "leave"
+};
+
+/****************************************************************************
+**	Query operation definitions
+**	The enum and the string array should always be synced
+****************************************************************************/
+enum QueryOp {
+    QO_None = 0,
+    QO_Get,
+    QO_Result,
+    QO_Max
+};
+
+const QString QueryOpNames[] = {
+    "",
+    "get",
+    "result"
+};
+
+//	User status definitions
+enum StatusType {
+    StatusTypeOnline = 0,
+    StatusTypeBusy,
+    StatusTypeOffline,
+    StatusTypeAway,
+    StatusTypeMax
+};
+#define ST_COUNT	6
+const QString statusCode[] = {
+    "chat",
+    "busy",
+    "dnd",
+    "brb",
+    "away",
+    "gone"
+};
+const int statusType[] = {
+    StatusTypeOnline,
+    StatusTypeBusy,
+    StatusTypeBusy,
+    StatusTypeAway,
+    StatusTypeAway,
+    StatusTypeOffline
+};
+
+enum UserCap {
+    UC_None = 0x00000000,
+    UC_File = 0x00000001,
+    UC_GroupMessage = 0x00000002,
+    UC_Folder = 0x00000004,
+    UC_Max = 0xFFFFFFFF
 };
 
 #endif // DEFINITIONS_H
