@@ -5,7 +5,7 @@
 #include <QTimer>
 #include <QDateTime>
 #include "shared.h"
-//#include "message.h"
+#include "message.h"
 #include "network.h"
 #include "settings.h"
 #include "xmlmessage.h"

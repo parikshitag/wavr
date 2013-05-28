@@ -1,5 +1,6 @@
 //#include "trace.h"
 #include "messaging.h"
+#include "stdlocation.h"
 
 //	A broadcast is to be sent
 void wavrMessaging::sendBroadcast(MessageType type, wavrXmlMessage* pMessage) {
@@ -90,7 +91,7 @@ void wavrMessaging::receiveBroadcast(DatagramHeader* pHeader, QString* lpszData)
 void wavrMessaging::receiveMessage(DatagramHeader* pHeader, QString* lpszData) {
     MessageHeader* pMsgHeader = NULL;
     wavrXmlMessage* pMessage = NULL;
-    if(!pMessage::getHeader(lpszData, &pMsgHeader, &pMessage)) {
+    if(!Message::getHeader(lpszData, &pMsgHeader, &pMessage)) {
         //wavrTrace::write("Warning: Message header parse failed");
         return;
     }
@@ -132,42 +133,42 @@ void wavrMessaging::connectionLost(QString* lpszUserId) {
 void wavrMessaging::sendUserData(MessageType type, QueryOp op, QString* lpszUserId, QString* lpszAddress) {
    // wavrTrace::write("Sending local user details to user " + *lpszUserId + " at " + *lpszAddress);
     wavrXmlMessage xmlMessage;
-    wavrXmlMessage.addData(XN_USERID, localUser->id);
-    wavrXmlMessage.addData(XN_NAME, localUser->name);
-    wavrXmlMessage.addData(XN_ADDRESS, localUser->address);
-    wavrXmlMessage.addData(XN_VERSION, localUser->version);
-    wavrXmlMessage.addData(XN_STATUS, localUser->status);
-    wavrXmlMessage.addData(XN_NOTE, localUser->note);
-    wavrXmlMessage.addData(XN_USERCAPS, QString::number(localUser->caps));
-    wavrXmlMessage.addData(XN_QUERYOP, QueryOpNames[op]);
+    xmlMessage.addData(XML_USERID, localUser->id);
+    xmlMessage.addData(XML_NAME, localUser->name);
+    xmlMessage.addData(XML_ADDRESS, localUser->address);
+    xmlMessage.addData(XML_VERSION, localUser->version);
+    xmlMessage.addData(XML_STATUS, localUser->status);
+    xmlMessage.addData(XML_NOTE, localUser->note);
+    xmlMessage.addData(XML_USERCAPS, QString::number(localUser->caps));
+    xmlMessage.addData(XML_QUERYOP, QueryOpNames[op]);
     QString szMessage = Message::addHeader(type, msgId, &localUser->id, lpszUserId, &xmlMessage);
     pNetwork->sendMessage(lpszUserId, lpszAddress, &szMessage);
 }
 
 void wavrMessaging::prepareBroadcast(MessageType type, wavrXmlMessage* pMessage) {
     if(!isConnected()) {
-        wavrTrace::write("Warning: Not connected. Broadcast not sent");
+        //wavrTrace::write("Warning: Not connected. Broadcast not sent");
         return;
     }
     if(localUser->id.isNull()) {
-        wavrTrace::write("Warning: Local user not initialized. Broadcast not sent");
+        //wavrTrace::write("Warning: Local user not initialized. Broadcast not sent");
         return;
     }
 
-    wavrTrace::write("Sending broadcast type " + QString::number(type));
+    //wavrTrace::write("Sending broadcast type " + QString::number(type));
     QString szMessage = Message::addHeader(type, msgId, &localUser->id, NULL, pMessage);
     pNetwork->sendBroadcast(&szMessage);
-    wavrTrace::write("Broadcast sending done");
+    //wavrTrace::write("Broadcast sending done");
 }
 
 //	This method converts a Message from ui layer to a Datagram that can be passed to network layer
 void wavrMessaging::prepareMessage(MessageType type, qint64 msgId, bool retry, QString* lpszUserId, wavrXmlMessage* pMessage) {
     if(!isConnected()) {
-        wavrTrace::write("Warning: Not connected. Message not sent");
+        // wavrTrace::write("Warning: Not connected. Message not sent");
         return;
     }
     if(localUser->id.isNull()) {
-        wavrTrace::write("Warning: Local user not initialized. Message not sent");
+        // wavrTrace::write("Warning: Local user not initialized. Message not sent");
         return;
     }
 
@@ -175,13 +176,13 @@ void wavrMessaging::prepareMessage(MessageType type, qint64 msgId, bool retry, Q
 
     switch(type) {
     case MT_Status:
-        pMessage->addData(XN_STATUS, localUser->status);
+        pMessage->addData(XML_STATUS, localUser->status);
         break;
     case MT_UserName:
-        pMessage->addData(XN_NAME, localUser->name);
+        pMessage->addData(XML_NAME, localUser->name);
         break;
     case MT_Note:
-        pMessage->addData(XN_NOTE, localUser->note);
+        pMessage->addData(XML_NOTE, localUser->note);
         break;
     case MT_Ping:
         //	add message to pending list
@@ -207,34 +208,34 @@ void wavrMessaging::prepareMessage(MessageType type, qint64 msgId, bool retry, Q
         break;
     case MT_Query:
         //	if its a 'get' query add message to pending list
-        if(pMessage->data(XN_QUERYOP) == QueryOpNames[QO_Get] && !retry)
+        if(pMessage->data(XML_QUERYOP) == QueryOpNames[QO_Get] && !retry)
             addPendingMsg(msgId, MT_Query, lpszUserId, pMessage);
-        else if(pMessage->data(XN_QUERYOP) == QueryOpNames[QO_Result])
+        else if(pMessage->data(XML_QUERYOP) == QueryOpNames[QO_Result])
             getUserInfo(pMessage);
         break;
     case MT_ChatState:
         break;
     case MT_File:
     case MT_Avatar:
-        prepareFile(type, msgId, retry, lpszUserId, pMessage);
+        //prepareFile(type, msgId, retry, lpszUserId, pMessage);
         break;
     case MT_Folder:
-        prepareFolder(type, msgId, retry, lpszUserId, pMessage);
+       // prepareFolder(type, msgId, retry, lpszUserId, pMessage);
         break;
     default:
         break;
     }
 
     if(!receiver) {
-        wavrTrace::write("Warning: Recipient " + *lpszUserId + " not found. Message not sent");
+        // wavrTrace::write("Warning: Recipient " + *lpszUserId + " not found. Message not sent");
         return;
     }
 
-    wavrTrace::write("Sending message type " + QString::number(type) + " to user " + receiver->id
-        + " at " + receiver->address);
+    // wavrTrace::write("Sending message type " + QString::number(type) + " to user " + receiver->id
+      //  + " at " + receiver->address);
     QString szMessage = Message::addHeader(type, msgId, &localUser->id, lpszUserId, pMessage);
     pNetwork->sendMessage(&receiver->id, &receiver->address, &szMessage);
-    wavrTrace::write("Message sending done");
+    // wavrTrace::write("Message sending done");
 }
 
 //	This method converts a Datagram from network layer to a Message that can be passed to ui layer
@@ -245,8 +246,8 @@ void wavrMessaging::processBroadcast(MessageHeader* pHeader, wavrXmlMessage* pMe
     if(!loopback && pHeader->userId.compare(localUser->id) == 0)
         return;
 
-    wavrTrace::write("Processing broadcast type " + QString::number(pHeader->type) + " from user " +
-        pHeader->userId);
+    // wavrTrace::write("Processing broadcast type " + QString::number(pHeader->type) + " from user " +
+        //pHeader->userId);
 
     switch(pHeader->type) {
     case MT_Announce:
@@ -260,7 +261,7 @@ void wavrMessaging::processBroadcast(MessageHeader* pHeader, wavrXmlMessage* pMe
         break;
     }
 
-    wavrTrace::write("Broadcast processing done");
+    // wavrTrace::write("Broadcast processing done");
 }
 
 void wavrMessaging::processMessage(MessageHeader* pHeader, wavrXmlMessage* pMessage) {
@@ -268,31 +269,31 @@ void wavrMessaging::processMessage(MessageHeader* pHeader, wavrXmlMessage* pMess
     QString data = QString::null;
     wavrXmlMessage reply;
 
-    wavrTrace::write("Processing message type " + QString::number(pHeader->type) + " from user " +
-        pHeader->userId);
+    // wavrTrace::write("Processing message type " + QString::number(pHeader->type) + " from user " +
+        //pHeader->userId);
 
     switch(pHeader->type) {
     case MT_UserData:
-        if(pMessage->data(XN_QUERYOP) == QueryOpNames[QO_Get])
+        if(pMessage->data(XML_QUERYOP) == QueryOpNames[QO_Get])
             sendUserData(pHeader->type, QO_Result, &pHeader->userId, &pHeader->address);
         //	add the user only after sending back user data, this way both parties will have added each other
-        addUser(pMessage->data(XN_USERID), pMessage->data(XN_VERSION), pMessage->data(XN_ADDRESS),
-            pMessage->data(XN_NAME), pMessage->data(XN_STATUS), QString::null, pMessage->data(XN_NOTE),
-            pMessage->data(XN_USERCAPS));
+        addUser(pMessage->data(XML_USERID), pMessage->data(XML_VERSION), pMessage->data(XML_ADDRESS),
+            pMessage->data(XML_NAME), pMessage->data(XML_STATUS), QString::null, pMessage->data(XML_NOTE),
+            pMessage->data(XML_USERCAPS));
         break;
     case MT_Broadcast:
         emit messageReceived(pHeader->type, &pHeader->userId, pMessage);
         break;
     case MT_Status:
-        data = pMessage->data(XN_STATUS);
+        data = pMessage->data(XML_STATUS);
         updateUser(pHeader->type, pHeader->userId, data);
         break;
     case MT_UserName:
-        data = pMessage->data(XN_NAME);
+        data = pMessage->data(XML_NAME);
         updateUser(pHeader->type, pHeader->userId, data);
         break;
     case MT_Note:
-        data = pMessage->data(XN_NOTE);
+        data = pMessage->data(XML_NOTE);
         updateUser(pHeader->type, pHeader->userId, data);
         break;
     case MT_Message:
@@ -302,7 +303,7 @@ void wavrMessaging::processMessage(MessageHeader* pHeader, wavrXmlMessage* pMess
         }
         //	send an acknowledgement
         msgId = QString::number(pHeader->id);
-        reply.addData(XN_MESSAGEID, msgId);
+        reply.addData(XML_MESSAGEID, msgId);
         sendMessage(MT_Acknowledge, &pHeader->userId, &reply);
         break;
     case MT_GroupMessage:
@@ -314,23 +315,23 @@ void wavrMessaging::processMessage(MessageHeader* pHeader, wavrXmlMessage* pMess
     case MT_Ping:
         //	send an acknowledgement
         msgId = QString::number(pHeader->id);
-        reply.addData(XN_MESSAGEID, msgId);
+        reply.addData(XML_MESSAGEID, msgId);
         sendMessage(MT_Acknowledge, &pHeader->userId, &reply);
         break;
     case MT_Query:
         //	send a reply cum acknowledgement if its a 'get' query
-        if(pMessage->data(XN_QUERYOP) == QueryOpNames[QO_Get]) {
+        if(pMessage->data(XML_QUERYOP) == QueryOpNames[QO_Get]) {
             msgId = QString::number(pHeader->id);
-            reply.addData(XN_MESSAGEID, msgId);
-            reply.addData(XN_QUERYOP, QueryOpNames[QO_Result]);
+            reply.addData(XML_MESSAGEID, msgId);
+            reply.addData(XML_QUERYOP, QueryOpNames[QO_Result]);
             sendMessage(pHeader->type, &pHeader->userId, &reply);
-        } else if(pMessage->data(XN_QUERYOP) == QueryOpNames[QO_Result]) {
-            msgId = pMessage->data(XN_MESSAGEID);
+        } else if(pMessage->data(XML_QUERYOP) == QueryOpNames[QO_Result]) {
+            msgId = pMessage->data(XML_MESSAGEID);
             removePendingMsg(msgId.toLongLong());
             //  Add the path to the user's avatar image stored locally
             data = "avt_" + pHeader->userId + ".png";
             data = QDir(StdLocation::cacheDir()).absoluteFilePath(data);
-            pMessage->addData(XN_AVATAR, data);
+            pMessage->addData(XML_AVATAR, data);
             emit messageReceived(pHeader->type, &pHeader->userId, pMessage);
         }
         break;
@@ -339,21 +340,21 @@ void wavrMessaging::processMessage(MessageHeader* pHeader, wavrXmlMessage* pMess
         break;
     case MT_Acknowledge:
         //	remove message from pending list
-        msgId = pMessage->data(XN_MESSAGEID);
+        msgId = pMessage->data(XML_MESSAGEID);
         removePendingMsg(msgId.toLongLong());
         break;
     case MT_File:
     case MT_Avatar:
-        processFile(pHeader, pMessage);
+        //processFile(pHeader, pMessage);
         break;
     case MT_Folder:
-        processFolder(pHeader, pMessage);
+        //processFolder(pHeader, pMessage);
         break;
     default:
         break;
     }
 
-    wavrTrace::write("Message processing done");
+    // wavrTrace::write("Message processing done");
 }
 
 //void wavrMessaging::processWebMessage(MessageHeader* pHeader, wavrXmlMessage *pMessage) {

@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     chatwindow.cpp \
     messagelog.cpp \
     chathelper.cpp \
-    usertreewidget.cpp
+    usertreewidget.cpp \
+    libWavr/message.cpp
 
 HEADERS  += mainwindow.h \
     QProgressIndicator.h \
@@ -51,7 +52,8 @@ HEADERS  += mainwindow.h \
     chathelper.h \
     chatdefinitions.h \
     usertreewidget.h \
-    libWavr/stdlocation.h
+    libWavr/stdlocation.h \
+    libWavr/message.h
 
 FORMS    += \
     mainwindow.ui \

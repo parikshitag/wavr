@@ -24,7 +24,7 @@ wavrMainWindow::wavrMainWindow(QWidget *parent, Qt::WindowFlags flags) : QWidget
 wavrMainWindow::~wavrMainWindow() {
 }
 
-void wavrMainWindow::init(User *pLocalUser, QList<Group> *pGroupList, bool connected) {
+void wavrMainWindow::init(User *pLocalUser, bool connected) {
     setWindowIcon(QIcon(IDR_APPICON));
 
     this->pLocalUser = pLocalUser;

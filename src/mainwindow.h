@@ -30,7 +30,7 @@ public:
     explicit wavrMainWindow(QWidget *parent = 0, Qt::WindowFlags flags = 0);
     ~wavrMainWindow();
     
-    void init(User* pLocalUser, QList<Group>* pGroupList, bool connected);
+    void init(User* pLocalUser,  bool connected);
     void start(void);
     void show(void);
     void restore(void);

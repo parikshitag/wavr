@@ -9,6 +9,7 @@
 #define XML_BODY				"body"
 #define XML_FROM				"from"
 #define XML_TO                  "to"
+#define XML_MESSAGEID            "messageid"
 #define XML_TIME                "time"
 
 #define XML_ADDRESS              "address"
@@ -17,7 +18,7 @@
 #define XML_VERSION              "version"
 
 #define XML_STATUS               "status"
-
+#define XML_AVATAR               "avatar"
 #define XML_LOGON                "logon"
 #define XML_HOST                 "host"
 #define XML_OS                   "os"
@@ -30,11 +31,15 @@
 
 #define XML_CHATSTATE           "chatstate"
 
+#define XML_QUERYOP			"queryop"
+
 #define XML_FONT                "font"
 #define XML_COLOR               "color"
 
 #define XML_NOTE                "note"
 #define XML_PORT                "port"
+
+#define XML_USERCAPS         "usercaps"
 
 class wavrXmlMessage : public QDomDocument
 {

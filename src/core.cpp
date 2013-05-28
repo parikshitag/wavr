@@ -24,8 +24,8 @@ void wavrCore::init(){
     // prevent auto app exit when last visible window is closed
     qApp->setQuitOnLastWindowClosed(false);
 
-    pMessaging->init(null);
-    pMainWindow->init(pMessaging->localUser, &pMessaging->groupList, pMessaging->isConnected());
+    pMessaging->init(NULL);
+    pMainWindow->init(pMessaging->localUser, pMessaging->isConnected());
 
 }
 
