@@ -69,6 +69,7 @@ public:
     wavrSettings(void) : wavrSettingsBase(QSettings::IniFormat, QSettings::UserScope, IDA_COMPANY, IDA_PRODUCT) {}
     ~wavrSettings(void) {}
 
+    static void setAutoStart(bool on);
 };
 
 #endif // SETTINGS_H

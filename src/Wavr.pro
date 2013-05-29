@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     messagelog.cpp \
     chathelper.cpp \
     usertreewidget.cpp \
-    libWavr/message.cpp
+    libWavr/message.cpp \
+    libWavr/settings.cpp
 
 HEADERS  += mainwindow.h \
     QProgressIndicator.h \
@@ -64,3 +65,10 @@ RESOURCES += \
     wavrSounds.qrc
 
 OTHER_FILES +=
+
+win32: CONFIG(release, debug|release): LIBS += -L$$PWD/../wavrapp/lib/ -lwavrapp2
+else:win32: CONFIG(debug, debug|release): LIBS += -L$$PWD/../wavrapp/lib/ -lwavrappd2
+unix:!symbian: LIBS += -L$$PWD/../wavrapp/lib/ -lwavrapp
+
+INCLUDEPATH += $$PWD/../wavrapp/include
+DEPENDPATH += $$PWD/../wavrapp/include

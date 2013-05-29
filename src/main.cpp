@@ -16,7 +16,7 @@
  * =====================================================================================
  */
 
-#include <QApplication>
+#include "application.h"
 #include "core.h"
 
 #include <QtCore/QSettings>
@@ -28,7 +28,8 @@ const QString appId = "887df9b7-8131-4836-9004-1b1e458c9d9c-6d5a04e0-bab9-414a-8
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+    Application application(appId, argc, argv);
+    QDir::setCurrent(QApplication::applicationDirPath());
 
     QNetworkConfigurationManager manager;
     if (manager.capabilities() & QNetworkConfigurationManager::NetworkSessionRequired){
@@ -45,7 +46,7 @@ int main(int argc, char *argv[])
 		    config = manager.defaultConfiguration();
             }
 
-	    QNetworkSession *networkSession = new QNetworkSession(config, &app);
+        QNetworkSession *networkSession = new QNetworkSession(config, &application);
 	    networkSession->open();
 	    networkSession->waitForOpened();
 
@@ -71,5 +72,5 @@ int main(int argc, char *argv[])
     
     core.init();
 
-    return app.exec();
+    return application.exec();
 }

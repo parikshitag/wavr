@@ -3,15 +3,15 @@
 
 wavrCore::wavrCore(void) {
     pMessaging = new wavrMessaging();
-    connect(pMessaging, SIGNAL(messageReceived(MessageType,QString*,wavrwavrXmlMessage*)),
-            this, SLOT(receiveMessage(MessageType,QString*,wavrwavrXmlMessage*)));
+    connect(pMessaging, SIGNAL(messageReceived(MessageType,QString*,wavrXmlMessage*)),
+            this, SLOT(receiveMessage(MessageType,QString*,wavrXmlMessage*)));
     connect(pMessaging, SIGNAL(connectionStateChanged()), this, SLOT(connectionStateChanged()));
     pMainWindow = new wavrMainWindow();
     connect(pMainWindow, SIGNAL(appExiting()), this, SLOT(exitApp()));
     connect(pMainWindow, SIGNAL(chatStarting(QString*)), this, SLOT(startChat(QString*)));
 
-    connect(pMainWindow, SIGNAL(messageSent(MessageType, QString*, wavrwavrXmlMessage*)),
-            this, SLOT(sendMessage(MessageType,QString*,wavrwavrXmlMessage*)));
+    connect(pMainWindow, SIGNAL(messageSent(MessageType, QString*, wavrXmlMessage*)),
+            this, SLOT(sendMessage(MessageType,QString*,wavrXmlMessage*)));
 
     pTabWidget = new QTabWidget;
 
@@ -59,8 +59,8 @@ void wavrCore::loadSettings(void) {
     pSettings = new wavrSettings();
 
     lang = pSettings->value(IDS_LANGUAGE, IDS_LANGUAGE_VAL).toString();
-    Application::setLanguage(lang);
-    Application::setLayoutDirection(tr("LAYOUT_DIRECTION") == RTL_LAYOUT ? Qt::RightToLeft : Qt::LeftToRight);
+    //Application::setLanguage(lang);
+   // Application::setLayoutDirection(tr("LAYOUT_DIRECTION") == RTL_LAYOUT ? Qt::RightToLeft : Qt::LeftToRight);
     messagePop = pSettings->value(IDS_MESSAGEPOP, IDS_MESSAGEPOP_VAL).toBool();
     pubMessagePop = pSettings->value(IDS_PUBMESSAGEPOP, IDS_PUBMESSAGEPOP_VAL).toBool();
     refreshTime = pSettings->value(IDS_REFRESHTIME, IDS_REFRESHTIME_VAL).toInt() * 1000;
@@ -78,9 +78,9 @@ void wavrCore::settingsChanged(void) {
     QString appLang = pSettings->value(IDS_LANGUAGE, IDS_LANGUAGE_VAL).toString();
     if(appLang.compare(lang) != 0) {
         lang = appLang;
-        Application::setLanguage(lang);
-        Application::setLayoutDirection(tr("LAYOUT_DIRECTION") == RTL_LAYOUT ? Qt::RightToLeft : Qt::LeftToRight);
-        wavrStrings::retranslate();
+        //Application::setLanguage(lang);
+        //Application::setLayoutDirection(tr("LAYOUT_DIRECTION") == RTL_LAYOUT ? Qt::RightToLeft : Qt::LeftToRight);
+        //wavrStrings::retranslate();
     }
 }
 
@@ -91,10 +91,10 @@ void wavrCore::stop(void) {
         chatWindows[index]->deleteLater();
     }
 
-    for(int index = 0; index < chatRoomWindows.count(); index++) {
-        chatRoomWindows[index]->stop();
-        chatRoomWindows[index]->deleteLater();
-    }
+//    for(int index = 0; index < chatRoomWindows.count(); index++) {
+//        chatRoomWindows[index]->stop();
+//        chatRoomWindows[index]->deleteLater();
+//    }
     if(pTimer)
         pTimer->stop();
 
@@ -154,7 +154,7 @@ void wavrCore::startChat(QString* lpszUserId) {
 }
 
 
-void wavrCore::sendMessage(MessageType type, QString *lpszUserId, wavrwavrXmlMessage *pMessage) {
+void wavrCore::sendMessage(MessageType type, QString *lpszUserId, wavrXmlMessage *pMessage) {
     QString data;
 
     switch(type) {
@@ -178,11 +178,11 @@ void wavrCore::sendMessage(MessageType type, QString *lpszUserId, wavrwavrXmlMes
     }
 }
 
-void wavrCore::receiveMessage(MessageType type, QString *lpszUserId, wavrwavrXmlMessage *pMessage) {
+void wavrCore::receiveMessage(MessageType type, QString *lpszUserId, wavrXmlMessage *pMessage) {
     processMessage(type, lpszUserId, pMessage);
 }
 
-void wavrCore::receiveAppMessage(const QString &szMessage) {
+bool wavrCore::receiveAppMessage(const QString &szMessage) {
     bool doNotExit = true;
 
     if(szMessage.isEmpty()) {
@@ -223,7 +223,7 @@ void wavrCore::chatWindow_closed(QString *lpszUserId) {
  *  MT_Depart: remove user from the list of contacts in main window and notify departure to that windows (chat and group)
  *  For all message types: notifies the corresponding message to all or specific active windows.
  */
-void wavrCore::processMessage(MessageType type, QString *lpszUserId, wavrwavrXmlMessage *pMessage) {
+void wavrCore::processMessage(MessageType type, QString *lpszUserId, wavrXmlMessage *pMessage) {
     switch(type) {
     case MT_Announce:
         pMainWindow->addUser(pMessaging->getUser(lpszUserId));
@@ -258,7 +258,7 @@ void wavrCore::processMessage(MessageType type, QString *lpszUserId, wavrwavrXml
     }
 }
 
-void wavrCore::routeMessage(MessageType type, QString *lpszUserId, wavrwavrXmlMessage *pMessage) {
+void wavrCore::routeMessage(MessageType type, QString *lpszUserId, wavrXmlMessage *pMessage) {
     bool windowExists = false;
     bool needsNotice = (type == MT_Message || type == MT_Broadcast || type == MT_Failed);
 
@@ -305,12 +305,12 @@ void wavrCore::createChatWindow(QString* lpszUserId) {
     // create new chat window for this user
     wavrChatWindow* pChatWindow = new wavrChatWindow();
     chatWindows.append(pChatWindow);
-    pTabWidget->addTab(pChatWindow, lpszUserId);
+    pTabWidget->addTab(pChatWindow, *lpszUserId);
 
     User* pLocalUser = pMessaging->localUser;
     User* pRemoteUser = pMessaging->getUser(lpszUserId);
-    connect(pChatWindow, SIGNAL(messageSent(MessageType,QString*,wavrwavrXmlMessage*)),
-            this, SLOT(sendMessage(MessageType,QString*,wavrwavrXmlMessage*)));
+    connect(pChatWindow, SIGNAL(messageSent(MessageType,QString*,wavrXmlMessage*)),
+            this, SLOT(sendMessage(MessageType,QString*,wavrXmlMessage*)));
 
     connect(pChatWindow, SIGNAL(closed(QString*)), this, SLOT(chatWindow_closed(QString*)));
     pChatWindow->init(pLocalUser, pRemoteUser, pMessaging->isConnected());
