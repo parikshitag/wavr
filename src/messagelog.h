@@ -2,7 +2,11 @@
 #define MESSAGELOG_H
 
 #include <QtWebKitWidgets/QWebView>
-#include <QtWebKitWidgets/QWebView>
+#include <QtWebKitWidgets/QWebFrame>
+#include <QtWebKit/QWebElement>
+#include "libWavr/shared.h"
+#include "chatdefinitions.h"
+#include "chathelper.h"
 #include "libWavr/xmlmessage.h"
 
 /**
@@ -64,13 +68,13 @@ private:
     void appendMessage(QString* lpszUserId, QString* lpszUserName, QString* lpszMessage, QDateTime* pTime,
                        QFont* pFont, QColor* pColor);
     QString getFontStyle(QFont* pFont, QColor* pColor, bool size = false);
-    //QString getChatStateMessage(ChatState chatState);
+    QString getChatStateMessage(ChatState chatState);
     void decodeMessage(QString* lpszMessage, bool useDefaults = false);
     void processMessageText(QString* lpszMessageText, bool useDefaults);
     QString getTimeString(QDateTime* pTime);
     void setUIText(void);
 
-    //QList<SingleMessage> messageLog;
+    QList<SingleMessage> messageLog;
     //ThemeData themeData;
     QMenu* contextMenu;
     QAction* copyAction;

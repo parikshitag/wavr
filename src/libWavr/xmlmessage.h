@@ -9,13 +9,14 @@
 #define XML_BODY				"body"
 #define XML_FROM				"from"
 #define XML_TO                  "to"
-#define XML_MESSAGEID            "messageid"
+#define XML_MESSAGEID           "messageid"
+#define XML_TYPE                "type"
 #define XML_TIME                "time"
 
-#define XML_ADDRESS              "address"
-#define XML_USERID               "userid"
+#define XML_ADDRESS             "address"
+#define XML_USERID              "userid"
 #define XML_NAME                "name"
-#define XML_VERSION              "version"
+#define XML_VERSION             "version"
 
 #define XML_STATUS               "status"
 #define XML_AVATAR               "avatar"

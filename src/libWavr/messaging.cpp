@@ -54,7 +54,7 @@ void wavrMessaging::init(wavrXmlMessage *pInitParams) {
                          nAvatar, userNote, StdLocation::avatarFile(),
                          QString::number(userCaps));
 
-    loadGroups();
+    //loadGroups();
 
     nTimeout = pSettings->value(IDS_TIMEOUT, IDS_TIMEOUT_VAL).toInt() * 1000;
     nMaxRetry = pSettings->value(IDS_MAXRETRIES, IDS_MAXRETRIES_VAL).toInt();
@@ -89,7 +89,7 @@ void wavrMessaging::stop(void) {
     pSettings->setValue(IDS_STATUS, localUser->status);
     pSettings->setValue(IDS_AVATAR, localUser->avatar);
 
-    saveGroups();
+    //saveGroups();
 
     //wavrTrace::write("Messaging stopped");
 }

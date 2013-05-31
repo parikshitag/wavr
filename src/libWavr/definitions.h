@@ -1,6 +1,8 @@
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
 
+#include <QString>
+
 //  Information about the application
 #define IDA_TITLE       "Wavr"
 #define IDA_PRODUCT     "Wavr"

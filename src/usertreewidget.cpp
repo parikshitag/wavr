@@ -138,6 +138,14 @@ void wavrUserTreeWidgetDelegate::paint(QPainter* painter, const QStyleOptionView
         statusRect.setSize(statusImage.size());
         painter->drawPixmap(statusRect, statusImage);
 
+        //	Draw the text
+        painter->setPen(QPen(palette.color(QPalette::WindowText)));
+        int textFlags = Qt::AlignLeft;
+        textFlags |= (pTreeWidget->view() == (ULV_Detailed)? Qt::AlignTop : Qt::AlignVCenter);
+        //	Leave a padding of 5px on left and right
+        QRect textRect = itemRect.adjusted(avatarRect.right() + 5, padding, -(5 + statusRect.width() + padding), -padding);
+        QString text = elidedText(painter->fontMetrics(), textRect.width(), Qt::ElideRight, name);
+        painter->drawText(textRect, textFlags, text);
 
         //	Draw sub text
         if(pTreeWidget->view() == ULV_Detailed) {
@@ -151,14 +159,7 @@ void wavrUserTreeWidgetDelegate::paint(QPainter* painter, const QStyleOptionView
             }
         }
 
-        //	Draw the text
-        painter->setPen(QPen(palette.color(QPalette::WindowText)));
-        int textFlags = Qt::AlignLeft;
-        textFlags |= (pTreeWidget->view() == (ULV_Detailed && !note.isNull())? Qt::AlignTop : Qt::AlignVCenter);
-        //	Leave a padding of 5px on left and right
-        QRect textRect = itemRect.adjusted(avatarRect.right() + 5, padding, -(5 + statusRect.width() + padding), -padding);
-        QString text = elidedText(painter->fontMetrics(), textRect.width(), Qt::ElideRight, name);
-        painter->drawText(textRect, textFlags, text);
+
     }
 
     painter->restore();

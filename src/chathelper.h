@@ -2,13 +2,14 @@
 #define CHATHELPER_H
 
 #include "uidefinitions.h"
+#include "chatdefinitions.h"
 #include "libWavr/xmlmessage.h"
 
 struct SingleMessage {
     MessageType type;
     QString userId;
     QString userName;
-    wavrwavrXmlMessage message;
+    wavrXmlMessage message;
     QString id; //secondary id for more efficient traversal
 
     SingleMessage() {}

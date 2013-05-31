@@ -1,6 +1,7 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
+#include "shared.h"
 #include "xmlmessage.h"
 
 class Message {

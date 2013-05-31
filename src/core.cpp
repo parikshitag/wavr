@@ -39,7 +39,7 @@ bool wavrCore::start(void) {
         return false;
     }
 
-    pMainWindow->start();
+    //pMainWindow->start();
 
     pTimer = new QTimer(this);
     connect(pTimer, SIGNAL(timeout(void)), this, SLOT(timer_timeout()));
@@ -281,7 +281,7 @@ void wavrCore::routeMessage(MessageType type, QString *lpszUserId, wavrXmlMessag
             for(int index = 0; index < chatWindows.count(); index++) {
                 if(chatWindows[index]->peerIds.contains(*lpszUserId)) {
                     chatWindows[index]->receiveMessage(type, lpszUserId, pMessage);
-                    if(needsnotice)
+                    if(needsNotice)
                         showChatWindow(chatWindows[index], messagePop, needsNotice);
                     windowExists = true;
                     break;

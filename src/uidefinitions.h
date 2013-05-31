@@ -64,7 +64,7 @@ enum ItemDataRole {
 #define IDR_BUSY                ":/status/busy"
 #define IDR_NODISTURB           ':/status/invisible'
 #define IDR_OFFLINE             ":/status/offline"
-#endif // UIDEFINITIONS_H
+
 
 //const QString statusPic[] = {IDR_AVAILABLE, IDR_AWAY, IDR_EXTAWAY, IDR_BUSY, IDR_NODISTURB, IDR_OFFLINE};
 
@@ -224,3 +224,11 @@ enum UserListView {
 const int itemViewHeight[] = {36, 20};
 
 #define RTL_LAYOUT			"RTL"
+
+#ifdef Q_WS_MAC
+#define GRAY_TEXT_COLOR     QApplication::palette().color(QPalette::Shadow).darker(175)
+#else
+#define GRAY_TEXT_COLOR     QApplication::palette().color(QPalette::Shadow)
+#endif
+
+#endif // UIDEFINITIONS_H

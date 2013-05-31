@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     chathelper.cpp \
     usertreewidget.cpp \
     libWavr/message.cpp \
-    libWavr/settings.cpp
+    libWavr/settings.cpp \
+    strings.cpp
 
 HEADERS  += mainwindow.h \
     QProgressIndicator.h \
@@ -54,7 +55,8 @@ HEADERS  += mainwindow.h \
     chatdefinitions.h \
     usertreewidget.h \
     libWavr/stdlocation.h \
-    libWavr/message.h
+    libWavr/message.h \
+    strings.h
 
 FORMS    += \
     mainwindow.ui \

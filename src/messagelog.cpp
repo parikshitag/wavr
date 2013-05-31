@@ -1,3 +1,8 @@
+#include <QMenu>
+#include <QAction>
+#include <QDesktopServices>
+#include <QDateTime>
+#include <QDir>
 #include "messagelog.h"
 
 wavrMessageLog::wavrMessageLog(QWidget *parent) : QWebView(parent) {
@@ -36,8 +41,8 @@ void wavrMessageLog::initMessageLog(QString themePath, bool clearLog) {
         messageLog.clear();
     lastId = QString::null;
     this->themePath = themePath;
-    themeData = wavrTheme::localTheme(themePath);
-    setHtml(themeData.document);
+    //themeData = wavrTheme::localTheme(themePath);
+    //setHtml(themeData.document);
 }
 
 void wavrMessageLog::createContextMenu(void) {
@@ -60,9 +65,9 @@ void wavrMessageLog::createContextMenu(void) {
     setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
-void wavrMessageLog::appendMessageLog(MessageType type, QString *lpszUserId, QString *lpszUserName, wavrwavrXmlMessage *pMessage,
+void wavrMessageLog::appendMessageLog(MessageType type, QString *lpszUserId, QString *lpszUserName, wavrXmlMessage *pMessage,
                                       bool bReload) {
-    if(!pMessage && type != MT_ERROR)
+    if(!pMessage && type != MT_Error)
         return;
 
     QString message;
@@ -94,9 +99,9 @@ void wavrMessageLog::appendMessageLog(MessageType type, QString *lpszUserId, QSt
         break;
     case MT_ChatState:
         message = pMessage->data(XML_CHATSTATE);
-        caption = getChatStateMessage((ChatState)Helper::indexOf(ChatStateNames, CS_Max, message));
+        caption = getChatStateMessage((ChatState)wavrHelper::indexOf(ChatStateNames, CS_Max, message));
         if(!caption.isNull()) {
-            html = themeData.stateMsg;
+            //html = themeData.stateMsg;
             html.replace("%iconpath%", "qrc"IDR_BLANK);
             html.replace("%sender%", caption.arg(*lpszUserName));
             html.replace("%message%", "");
@@ -108,7 +113,7 @@ void wavrMessageLog::appendMessageLog(MessageType type, QString *lpszUserId, QSt
         message = pMessage->data(XML_MESSAGE);
         font.fromString(pMessage->data(XML_FONT));
         color.setNamedColor(pMessage->data(XML_COLOR));
-        html = themeData.sysMsg;
+        //html = themeData.sysMsg;
         caption = tr("Message not delivered to %1:");
         fontStyle = getFontStyle(&font, &color, true);
         decodeMessage(&message);
@@ -120,7 +125,7 @@ void wavrMessageLog::appendMessageLog(MessageType type, QString *lpszUserId, QSt
         lastId  = QString::null;
         break;
     case MT_Error:
-        html = themeData.sysMsg;
+        //html = themeData.sysMsg;
         html.replace("%iconpath%", "qrc"IDR_CRITICALMSG);
         html.replace("%sender%", tr("Your message was not sent."));
         html.replace("%message%", "");
@@ -245,7 +250,7 @@ void wavrMessageLog::appendBroadcast(QString* lpszUserId, QString* lpszUserName,
 
     decodeMessage(lpszMessage);
 
-    QString html = themeData.pubMsg;
+    QString html;// = themeData.pubMsg;
     QString caption = tr("Broadcast message from %1:");
     html.replace("%iconpath%", "qrc"IDR_BROADCASTMSG);
     html.replace("%sender%", caption.arg(*lpszUserName));
@@ -266,7 +271,7 @@ void wavrMessageLog::appendMessage(QString* lpszUserId, QString* lpszUserName, Q
     QString fontStyle = getFontStyle(pFont, pColor, localUser);
 
     if(lpszUserId->compare(lastId) != 0) {
-        html = localUser ? themeData.outMsg : themeData.inMsg;
+        //html = localUser ? themeData.outMsg : themeData.inMsg;
 
         //	get the avatar image for this user from the cache folder
         QString filePath = participantAvatars.value(*lpszUserId);
@@ -284,7 +289,7 @@ void wavrMessageLog::appendMessage(QString* lpszUserId, QString* lpszUserName, Q
         QWebElement body = document.findFirst("body");
         body.appendInside(html);
     } else {
-        html = localUser ? themeData.outNextMsg : themeData.inNextMsg;
+        //html = localUser ? themeData.outNextMsg : themeData.inNextMsg;
         html.replace("%time%", getTimeString(pTime));
         html.replace("%style%", fontStyle);
         html.replace("%message%", *lpszMessage);
@@ -311,7 +316,7 @@ QString wavrMessageLog::getFontStyle(QFont* pFont, QColor* pColor, bool size) {
         style.append("color:" + pColor->name() + "; ");
     }
     else
-        style.append(fontStyle[fontSizeVal] + " ");
+        //style.append(fontStyle[fontSizeVal] + " ");
 
     if(pFont->strikeOut())
         style.append("text-decoration:line-through; ");

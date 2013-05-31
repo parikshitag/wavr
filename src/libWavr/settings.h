@@ -4,6 +4,7 @@
 #include <QSettings>
 #include <QApplication>
 #include <QDir>
+#include "shared.h"
 
 //  Application settings definitions and default values
 #define IDS_VERSION             "Application/Version"
@@ -61,6 +62,9 @@ public:
     wavrSettingsBase(const QString& fileName, Format format);
     wavrSettingsBase(Format format, Scope scope, const QString& organization, const QString& application);
     ~wavrSettingsBase(void);
+
+    using QSettings::setValue;
+    void setValue(const QString& key, const QVariant& value, const QVariant& defaultValue);
 
 };
 
