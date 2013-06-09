@@ -102,10 +102,10 @@ signals:
 private slots:
     void receiveBroadcast(DatagramHeader* pHeader, QString* lpszData);
     void receiveMessage(DatagramHeader* pHeader, QString* lpszData);
-    void receiveWebMessage(QString* lpszData);
+    //void receiveWebMessage(QString* lpszData);
     void newConnection(QString* lpszUserId, QString* lpszAddress);
     void connectionLost(QString* lpszUserId);
-    void receiveProgress(QString* lpszUserId, QString* lpszData);
+    //void receiveProgress(QString* lpszUserId, QString* lpszData);
     void network_connectionStateChanged(void);
     void timer_timeout(void);
 

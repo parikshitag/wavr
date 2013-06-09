@@ -31,18 +31,18 @@
 wavrMainWindow::wavrMainWindow(QWidget *parent, Qt::WindowFlags flags) : QWidget(parent, flags) {
     ui.setupUi(this);
 
-    connect(ui.tvUserList, SIGNAL(itemActivated(QTreeWidgetItem*, int)),
-            this, SLOT(tvUserList_itemActivated(QTreeWidgetItem*, int)));
-    connect(ui.tvUserList, SIGNAL(itemContextMenu(QTreeWidgetItem*, QPoint&)),
-        this, SLOT(tvUserList_itemContextMenu(QTreeWidgetItem*, QPoint&)));
-    connect(ui.tvUserList, SIGNAL(itemDragDropped(QTreeWidgetItem*)),
-        this, SLOT(tvUserList_itemDragDropped(QTreeWidgetItem*)));
-    connect(ui.tvUserList, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)),
-        this, SLOT(tvUserList_currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)));
+//    connect(ui.tvUserList, SIGNAL(itemActivated(QTreeWidgetItem*, int)),
+//            this, SLOT(tvUserList_itemActivated(QTreeWidgetItem*, int)));
+//    connect(ui.tvUserList, SIGNAL(itemContextMenu(QTreeWidgetItem*, QPoint&)),
+//        this, SLOT(tvUserList_itemContextMenu(QTreeWidgetItem*, QPoint&)));
+//    connect(ui.tvUserList, SIGNAL(itemDragDropped(QTreeWidgetItem*)),
+//        this, SLOT(tvUserList_itemDragDropped(QTreeWidgetItem*)));
+//    connect(ui.tvUserList, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)),
+//        this, SLOT(tvUserList_currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)));
 
     ui.tvUserList->installEventFilter(this);
 
-    windowLoaded = false;
+    windowLoaded = true;
 }
 
 wavrMainWindow::~wavrMainWindow() {
@@ -50,7 +50,9 @@ wavrMainWindow::~wavrMainWindow() {
 
 void wavrMainWindow::init(User *pLocalUser, bool connected) {
     setWindowIcon(QIcon(IDR_APPICON));
-
+    qDebug("main window");
     this->pLocalUser = pLocalUser;
+
+
 
 }

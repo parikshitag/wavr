@@ -26,6 +26,7 @@
 #include "core.h"
 
 wavrCore::wavrCore(void) {
+    printf("hello this is parikshit");
     pMessaging = new wavrMessaging();
     connect(pMessaging, SIGNAL(messageReceived(MessageType,QString*,wavrXmlMessage*)),
             this, SLOT(receiveMessage(MessageType,QString*,wavrXmlMessage*)));
@@ -47,8 +48,8 @@ wavrCore::~wavrCore(void){
 void wavrCore::init(){
     // prevent auto app exit when last visible window is closed
     qApp->setQuitOnLastWindowClosed(false);
-
-    pMessaging->init(NULL);
+    pInitParams = new wavrXmlMessage();
+    pMessaging->init(pInitParams);
     pMainWindow->init(pMessaging->localUser, pMessaging->isConnected());
 
 }
@@ -92,7 +93,7 @@ void wavrCore::loadSettings(void) {
 
 void wavrCore::settingsChanged(void) {
     pMessaging->settingsChanged();
-    pMainWindow->settingsChanged();
+    //pMainWindow->settingsChanged();
 
     messagePop = pSettings->value(IDS_MESSAGEPOP, IDS_MESSAGEPOP_VAL).toBool();
     pubMessagePop = pSettings->value(IDS_PUBMESSAGEPOP, IDS_PUBMESSAGEPOP_VAL).toInt() * 1000;
@@ -111,7 +112,7 @@ void wavrCore::settingsChanged(void) {
 void wavrCore::stop(void) {
     pTabWidget->clear();
     for(int index = 0; index < chatWindows.count(); index++) {
-        chatWindows[index]->stop();
+        //chatWindows[index]->stop();
         chatWindows[index]->deleteLater();
     }
 
@@ -123,7 +124,7 @@ void wavrCore::stop(void) {
         pTimer->stop();
 
     pMessaging->stop();
-    pMainWindow->stop();
+    //pMainWindow->stop();
 
 }
 
@@ -210,7 +211,7 @@ bool wavrCore::receiveAppMessage(const QString &szMessage) {
     bool doNotExit = true;
 
     if(szMessage.isEmpty()) {
-        pMainWindow->restore();
+        //pMainWindow->restore();
         return doNotExit;
     }
 }
@@ -218,9 +219,9 @@ bool wavrCore::receiveAppMessage(const QString &szMessage) {
 void wavrCore::connectionStateChanged(void) {
     bool connected = pMessaging->isConnected();
 
-    pMainWindow->connectionStateChanged(connected);
+    //pMainWindow->connectionStateChanged(connected);
     for(int index = 0; index < chatWindows.count(); index++)
-        chatWindows[index]->connectionStateChanged(connected);
+        //chatWindows[index]->connectionStateChanged(connected);
 
     if (pMessaging->isConnected() && !pMessaging->canReceive()) {
         showPortConflictMessage();
@@ -250,20 +251,20 @@ void wavrCore::chatWindow_closed(QString *lpszUserId) {
 void wavrCore::processMessage(MessageType type, QString *lpszUserId, wavrXmlMessage *pMessage) {
     switch(type) {
     case MT_Announce:
-        pMainWindow->addUser(pMessaging->getUser(lpszUserId));
+        //pMainWindow->addUser(pMessaging->getUser(lpszUserId));
         break;
     case MT_Depart:
-        pMainWindow->removeUser(lpszUserId);
+        //pMainWindow->removeUser(lpszUserId);
         routeMessage(type, lpszUserId, pMessage);
         break;
     case MT_Status:
     case MT_UserName:
     case MT_Note:
-        pMainWindow->updateUser(pMessaging->getUser(lpszUserId));
+        //pMainWindow->updateUser(pMessaging->getUser(lpszUserId));
         routeMessage(type, lpszUserId, pMessage);
         break;
     case MT_Avatar:
-        pMainWindow->receiveMessage(type, lpszUserId, pMessage);
+        //pMainWindow->receiveMessage(type, lpszUserId, pMessage);
         routeMessage(type, lpszUserId, pMessage);
         break;
     case MT_Message:
@@ -289,7 +290,7 @@ void wavrCore::routeMessage(MessageType type, QString *lpszUserId, wavrXmlMessag
     // if no specific user is specified, send this message to all windows
     if(!lpszUserId) {
         for (int index = 0; index < chatWindows.count(); index++) {
-            chatWindows[index]->receiveMessage(type, lpszUserId, pMessage);
+            //chatWindows[index]->receiveMessage(type, lpszUserId, pMessage);
         }
     } else {
         switch(type) {
@@ -299,12 +300,12 @@ void wavrCore::routeMessage(MessageType type, QString *lpszUserId, wavrXmlMessag
             for (int index = 0; index < chatWindows.count(); index++)
                 if(chatWindows[index]->peerIds.contains(*lpszUserId)
                         || chatWindows[index]->localId.compare(*lpszUserId) == 0)
-                    chatWindows[index]->receiveMessage(type, lpszUserId, pMessage);
+                    //chatWindows[index]->receiveMessage(type, lpszUserId, pMessage);
             break;
         default:
             for(int index = 0; index < chatWindows.count(); index++) {
                 if(chatWindows[index]->peerIds.contains(*lpszUserId)) {
-                    chatWindows[index]->receiveMessage(type, lpszUserId, pMessage);
+                    //chatWindows[index]->receiveMessage(type, lpszUserId, pMessage);
                     if(needsNotice)
                         showChatWindow(chatWindows[index], messagePop, needsNotice);
                     windowExists = true;
@@ -319,7 +320,7 @@ void wavrCore::routeMessage(MessageType type, QString *lpszUserId, wavrXmlMessag
     // incoming message is of type that needs notice
     if(!windowExists && needsNotice) {
         createChatWindow(lpszUserId);
-        chatWindows.last()->receiveMessage(type, lpszUserId, pMessage);
+        //chatWindows.last()->receiveMessage(type, lpszUserId, pMessage);
         if(needsNotice)
             showChatWindow(chatWindows.last(), messagePop, needsNotice);
     }
@@ -337,7 +338,7 @@ void wavrCore::createChatWindow(QString* lpszUserId) {
             this, SLOT(sendMessage(MessageType,QString*,wavrXmlMessage*)));
 
     connect(pChatWindow, SIGNAL(closed(QString*)), this, SLOT(chatWindow_closed(QString*)));
-    pChatWindow->init(pLocalUser, pRemoteUser, pMessaging->isConnected());
+    //pChatWindow->init(pLocalUser, pRemoteUser, pMessaging->isConnected());
 }
 
 void wavrCore::showChatWindow(wavrChatWindow* chatWindow, bool show, bool alert){

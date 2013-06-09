@@ -51,7 +51,7 @@ private slots:
     void aboutToExit(void);
     void timer_timeout(void);
     void startChat(QString* lpszUserId);
-    void startChatRoom(QString* lpszThreadId);
+    //void startChatRoom(QString* lpszThreadId);
     void sendMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
     void receiveMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
     void connectionStateChanged(void);
@@ -80,6 +80,7 @@ private:
     QString                 lang;
     bool                    adaptiveRefresh;
     int                     refreshTime;
+    wavrXmlMessage*         pInitParams;
 };
 
 #endif // CORE_H

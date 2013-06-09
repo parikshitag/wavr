@@ -58,10 +58,10 @@ signals:
     void closed(QString* lpszUserId);
 
 private slots:
-    void btnFont_clicked(void);
-    void btnFontColor_clicked(void);
-    void smileyAction_triggered(void);
-    void checkChatState(void);
+//    void btnFont_clicked(void);
+//    void btnFontColor_clicked(void);
+//    void smileyAction_triggered(void);
+//    void checkChatState(void);
 
 private:
     void createSmileyMenu(void);

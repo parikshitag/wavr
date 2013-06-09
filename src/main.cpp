@@ -43,6 +43,7 @@
 #include "application.h"
 #include "core.h"
 
+#include <QDebug>
 #include <QtCore/QSettings>
 #include <QtNetwork/QNetworkConfigurationManager>
 #include <QtNetwork/QNetworkSession>
@@ -52,7 +53,9 @@ const QString appId = "887df9b7-8131-4836-9004-1b1e458c9d9c-6d5a04e0-bab9-414a-8
 
 int main(int argc, char *argv[])
 {
-    Application application(appId, argc, argv);
+
+    //Application application(appId, argc, argv);
+    QApplication application(argc, argv);
     QDir::setCurrent(QApplication::applicationDirPath());
 
     QNetworkConfigurationManager manager;

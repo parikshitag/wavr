@@ -4,14 +4,13 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT += core gui network webkitwidgets xml
 
+OUTPUT += console
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Wavr
 TEMPLATE = app
-
-QT += xml
 
 SOURCES += main.cpp\
         mainwindow.cpp \

@@ -41,6 +41,7 @@
 class wavrMessageLog : public QWebView
 {
     Q_OBJECT
+
 public:
     wavrMessageLog(QWidget *parent = 0);
     ~wavrMessageLog(void);
@@ -73,7 +74,7 @@ signals:
     void messageSent(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
 
 protected:
-    void changeEvent(QEvent* event);
+    //void changeEvent(QEvent* event);
 
 private slots:
     void log_LinkClicked(QUrl url);

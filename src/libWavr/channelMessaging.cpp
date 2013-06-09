@@ -86,3 +86,53 @@ void MsgStream::connected(void) {
     outData = localId.toLocal8Bit();
     outData.insert(0, "MSG");
 }
+
+void MsgStream::disconnected(void) {
+    emit connectionLost(&peerId);
+}
+
+void MsgStream::readyRead(void) {
+    qint64 available = socket->bytesAvailable();
+    while(available > 0) {
+        if(!reading) {
+            reading = true;
+            QByteArray len = socket->read(4);
+            QDataStream stream(len);
+            stream >> inDataLen;
+            inData.clear();
+            QByteArray data = socket->read(inDataLen);
+            inData.append(data);
+            inDataLen -= data.length();
+            available -= (sizeof(quint32) +  data.length());
+            if(inDataLen == 0) {
+                reading = false;
+                emit messageReceived(&peerId, &peerAddress, inData);
+            }
+        } else {
+            QByteArray data = socket->read(inDataLen);
+            inData.append(data);
+            inDataLen -= data.length();
+            available -= data.length();
+            if(inDataLen == 0) {
+                reading = false;
+                emit messageReceived(&peerId, &peerAddress, inData);
+            }
+        }
+    }
+}
+
+void MsgStream::bytesWritten(qint64 bytes) {
+    outDataLen -= bytes;
+    if(outDataLen == 0)
+        return;
+
+//    if(outDataLen > 0)
+//        lmcTrace::write("Warning: Socket write operation not completed");
+//    if(outDataLen < 0)
+//        lmcTrace::write("Warning: Socket write overrun");
+
+    //	TODO: handle situation when entire message is not written to stream in one write operation
+    //	The following code is not functional currently, hence commented out.
+    /*outData = outData.mid(outDataLen);
+    socket->write(outData);*/
+}

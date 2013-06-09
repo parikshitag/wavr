@@ -35,8 +35,8 @@ wavrMessaging::wavrMessaging(void) {
         this, SLOT(newConnection(QString*, QString*)));
     connect(pNetwork, SIGNAL(connectionLost(QString*)),
         this, SLOT(connectionLost(QString*)));
-    connect(pNetwork, SIGNAL(progressReceived(QString*, QString*)),
-        this, SLOT(receiveProgress(QString*, QString*)));
+    //connect(pNetwork, SIGNAL(progressReceived(QString*, QString*)),
+    //    this, SLOT(receiveProgress(QString*, QString*)));
     connect(pNetwork, SIGNAL(connectionStateChanged()), this, SLOT(network_connectionStateChanged()));
     localUser = NULL;
     userList.clear();

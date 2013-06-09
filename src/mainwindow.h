@@ -42,10 +42,6 @@
 #include "libWavr/settings.h"
 #include "libWavr/xmlmessage.h"
 
-namespace Ui {
-class wavrMainWindow;
-}
-
 class wavrMainWindow : public QWidget
 {
     Q_OBJECT
@@ -76,23 +72,23 @@ signals:
     void showSettings(void);
 
 protected:
-    bool eventFilter(QObject *pObject, QEvent *pEvent);
-    void closeEvent(QCloseEvent* pEvent);
-    void changeEvent(QEvent *pEvent);
+//    bool eventFilter(QObject *pObject, QEvent *pEvent);
+//    void closeEvent(QCloseEvent* pEvent);
+//    void changeEvent(QEvent *pEvent);
 
 private slots:
-    void sendMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
-    void trayShowAction_triggered(void);
-    void traySettingsAction_triggered(void);
-    void trayExistAction_triggered(void);
-    void statusAction_triggered(QAction* action);
-    void avatarAction_triggered(void);
-    void avatarBrowseAction_triggered(void);
-    void refreshAction_triggered(void);
-    void trayIcon_activated(QSystemTrayIcon::ActivationReason reason);
-    void trayMessage_clicked(void);
-    void tvUserList_itemActivated(QTreeWidgetItem* pItem, int column);
-    void tvUserList_itemContextMenu(QTreeWidgetItem* pItem, QPoint& pos);
+//    void sendMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
+//    void trayShowAction_triggered(void);
+//    void traySettingsAction_triggered(void);
+//    void trayExistAction_triggered(void);
+//    void statusAction_triggered(QAction* action);
+//    void avatarAction_triggered(void);
+//    void avatarBrowseAction_triggered(void);
+//    void refreshAction_triggered(void);
+//    void trayIcon_activated(QSystemTrayIcon::ActivationReason reason);
+//    void trayMessage_clicked(void);
+//    void tvUserList_itemActivated(QTreeWidgetItem* pItem, int column);
+//    void tvUserList_itemContextMenu(QTreeWidgetItem* pItem, QPoint& pos);
 
 
 private:

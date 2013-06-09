@@ -24,6 +24,8 @@
 
 #include "strings.h"
 
+QString wavrStrings::m_appName;
+
 wavrStrings::wavrStrings(void) {
 }
 
