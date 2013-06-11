@@ -21,8 +21,9 @@
 **
 ****************************************************************************/
 
-
+#include "trace.h"
 #include "udpnetwork.h"
+
 /**
  *  \class wavrUdpNetwork
  *  \ingroup    libWavr
@@ -84,10 +85,11 @@ void wavrUdpNetwork::start(void) {
 void wavrUdpNetwork::stop(void) {
     disconnect(pUdpReceiver, SIGNAL(readyRead()), this, SLOT(processPendingDatagrams()));
     if(pUdpReceiver->state() == QAbstractSocket::BoundState) {
-        // Leaving multicast group
+        wavrTrace::write("Leaving multicast group " + multicastAddress.toString() + " on interface " +
+                         multicastInterface.humanReadableName());
         bool left = pUdpReceiver->leaveMulticastGroup(multicastAddress, multicastInterface);
         pUdpReceiver->close();
-        //check for left
+        wavrTrace::write(left ? "Success" : "Failed");
     }
     isRunning = false;
 }
@@ -105,7 +107,7 @@ void wavrUdpNetwork::setLocalId(QString* lpszLocalId) {
  */
 void wavrUdpNetwork::sendBroadcast(QString* lpszData) {
     if(!isRunning) {
-        //wavrTrace::write("Warning: UDP server not running. Broadcast not sent");
+        wavrTrace::write("Warning: UDP server not running. Broadcast not sent");
         return;
     }
 
@@ -126,14 +128,16 @@ void wavrUdpNetwork::settingsChanged(void) {
     QHostAddress address = QHostAddress(pSettings->value(IDS_MULTICAST, IDS_MULTICAST_VAL).toString());
     if (multicastAddress != address) {
         if(pUdpReceiver->state() == QAbstractSocket::BoundState) {
-            // Leaving multicast group
+            wavrTrace::write("Leaving mulitcast group " + multicastAddress.toString() + " on interface " +
+                             multicastInterface.humanReadableName());
             bool left = pUdpReceiver->leaveMulticastGroup(multicastAddress, multicastInterface);
-            //check for left
+            wavrTrace::write((left ? "Success" : "Failed"));
         }
         multicastAddress = address;
-        // join new multicast group defined
+        wavrTrace::write("Joining multicast group " + multicastAddress.toString() + " on interface " +
+                         multicastInterface.humanReadableName());
         bool joined = pUdpReceiver->joinMulticastGroup(multicastAddress, multicastInterface);
-
+        wavrTrace::write((joined ? "Success" : "Failed"));
     }
     broadcastList.clear();
     // append defbroadcast address in list
@@ -193,6 +197,7 @@ void wavrUdpNetwork::sendDatagram(QHostAddress remoteAddress, QByteArray& datagr
   if(!isRunning)
       return;
 
+  wavrTrace::write("Sending UDP datagram to " + remoteAddress.toString() + ":" + QString::number(nUdpPort));
   pUdpSender->writeDatagram(datagram.data(),datagram.size(), remoteAddress, nUdpPort);
 }
 
@@ -200,19 +205,24 @@ void wavrUdpNetwork::sendDatagram(QHostAddress remoteAddress, QByteArray& datagr
  *  Joins the multicast group and listens for incoming packets.
  */
 bool wavrUdpNetwork::startReceiving(void) {
-    //Binding UDP listerner to port
+    wavrTrace::write("Binding UDP listener to port " + QString::number(nUdpPort));
 
     if(pUdpReceiver->bind(nUdpPort)) {
+        wavrTrace::write("Success");
+        wavrTrace::write("Joining multicast group " + multicastAddress.toString() +
+            " on interface " + multicastInterface.humanReadableName());
         bool joined = pUdpReceiver->joinMulticastGroup(multicastAddress, multicastInterface);
-        //check for joined
+        wavrTrace::write((joined ? "Success" : "Failed"));
         connect(pUdpReceiver, SIGNAL(readyRead()), this, SLOT(processPendingDatagrams()));
         return true;
     }
 
+    wavrTrace::write("Failed");
     return false;
 }
 
 void wavrUdpNetwork::parseDatagram(QString* lpszAddress, QByteArray& datagram) {
+    wavrTrace::write("UDP datagram received from " + *lpszAddress);
     DatagramHeader* pHeader = new DatagramHeader(DT_Broadcast, QString(), *lpszAddress);
     QString szData = QString::fromUtf8(datagram.data(), datagram.length());
     emit broadcastReceived(pHeader, &szData);

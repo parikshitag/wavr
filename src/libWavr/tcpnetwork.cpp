@@ -22,7 +22,7 @@
 ****************************************************************************/
 
 
-
+#include "trace.h"
 #include "tcpnetwork.h"
 
 /**
@@ -45,8 +45,10 @@ void wavrTcpNetwork::init(int nPort){
 /**
  * TcpServer listens for incoming connections over QHostAddress::Any and tcpPort specified.
  */
-void wavrTcpNetwork::start(void){
+void wavrTcpNetwork::start(void) {
+    wavrTrace::write("Starting TCP server");
     isRunning = server->listen(QHostAddress::Any, tcpPort);
+    wavrTrace::write(isRunning ? "Success" : "Failed");
 }
 
 /**
@@ -82,11 +84,12 @@ void wavrTcpNetwork::setLocalId(QString *lpszLocalId) {
  */
 void wavrTcpNetwork::addConnection(QString* lpszUserId, QString* lpszAddress) {
     if(!isRunning) {
-        //error TCP server not running. Unable to connect.
+        wavrTrace::write("Warning: TCP server not running. Unable to connect.");
         return;
     }
 
-    // Connecting to the user
+    wavrTrace::write("Connecting to user " + *lpszUserId + " at " + *lpszAddress);
+
     MsgStream* msgStream = new MsgStream(localId, *lpszUserId, *lpszAddress, tcpPort);
     connect(msgStream, SIGNAL(connectionLost(QString*)),
             this, SLOT(mszStream_connectionLost(QString*)));
@@ -108,7 +111,7 @@ void wavrTcpNetwork::addConnection(QString* lpszUserId, QString* lpszAddress) {
  */
 void wavrTcpNetwork::sendMessage(QString *lpszReceiverId, QString *lpszData) {
     if(!isRunning) {
-        //Warning: TCP server not running. Message not sent
+        wavrTrace::write("Warning: TCP server not running. Message not sent");
         return;
     }
 
@@ -120,17 +123,17 @@ void wavrTcpNetwork::sendMessage(QString *lpszReceiverId, QString *lpszData) {
         msgStream = messageMap.value(*lpszReceiverId);
 
     if(msgStream) {
-        // Sending TCP data stream to user
+        wavrTrace::write("Sending TCP data stream to user " + *lpszReceiverId);
         QByteArray clearData = lpszData->toUtf8();
         if (clearData.isEmpty()) {
-            // Warning: Message could not be sent
+            wavrTrace::write("Warning: Message could not be sent");
             return;
         }
         msgStream->sendMessage(clearData);
         return;
     }
 
-    // Warning: Socket not found. Message sending failed
+    wavrTrace::write("Warning: Socket not found. Message sending failed");
 }
 
 /**
@@ -145,7 +148,7 @@ void wavrTcpNetwork::setIPAddress(const QString &szAddress) {
  * creates a socket against the incoming request.
  */
 void wavrTcpNetwork::server_newConnection(void) {
-    // New connection received
+    wavrTrace::write("New connection received");
     QTcpSocket* socket = server->nextPendingConnection();
     connect(socket, SIGNAL(readyRead()), this, SLOT(socket_readyRead()));
 }
@@ -191,12 +194,13 @@ void wavrTcpNetwork::receiveMessage(QString* lpszUserId, QString* lpszAddress, Q
     QByteArray clearData;
     QString szMessage;
 
-    //TCP stream type pHeader->type received from user userId at address
+    wavrTrace::write("TCP stream type " + QString::number(pHeader->type) +
+                     " received from user " + *lpszUserId + " at " + *lpszAddress);
 
     switch(pHeader->type) {
     case DT_Message:
         if(clearData.isEmpty()) {
-            // Warning: message could not be retrieved
+            wavrTrace::write("Warning: message could not be retrieved");
             break;
         }
         szMessage = QString::fromUtf8(clearData.data(), clearData.length());
@@ -213,6 +217,8 @@ void wavrTcpNetwork::receiveMessage(QString* lpszUserId, QString* lpszAddress, Q
  * @param pSocket       Socket of the peer that sent the request.
  */
 void wavrTcpNetwork::addMsgSocket(QString *lpszUserId, QTcpSocket *pSocket) {
+    wavrTrace::write("Accepted connection from user " + *lpszUserId);
+
     QString address = pSocket->peerAddress().toString();
     MsgStream* msgStream = new MsgStream(localId, *lpszUserId, address, tcpPort);
     connect(msgStream, SIGNAL(connectionLost(QString*)),

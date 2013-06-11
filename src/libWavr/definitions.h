@@ -30,7 +30,7 @@
 //  Information about the application
 #define IDA_TITLE       "Wavr"
 #define IDA_PRODUCT     "Wavr"
-#define IDA_COMPANY     "Wavr"
+#define IDA_COMPANY     "Parikshit"
 #define IDA_VERSION     "0.1.0"
 #define IDA_DESCRIPTION "Wavr is a free peer-to-peer instant messaging application for local-network commumication"\
                         "It works on essentially every popular desktop platform."
@@ -190,6 +190,8 @@ enum UserCap {
     UC_Folder = 0x00000004,
     UC_Max = 0xFFFFFFFF
 };
+
+#define WAVR_TRUE       "true"
 
 #endif // DEFINITIONS_H
 

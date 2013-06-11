@@ -25,6 +25,7 @@
 #include "strings.h"
 
 QString wavrStrings::m_appName;
+QStringList wavrStrings::m_statusDesc;
 
 wavrStrings::wavrStrings(void) {
 }
@@ -36,4 +37,16 @@ const QString wavrStrings::appName(void) {
     if(m_appName.isEmpty())
         m_appName = tr("Wavr");
     return m_appName;
+}
+
+const QStringList wavrStrings::statusDesc(void) {
+    if(m_statusDesc.isEmpty()) {
+        m_statusDesc.append(tr("Available"));
+        m_statusDesc.append(tr("Away"));
+        m_statusDesc.append(tr("Extended Away"));
+        m_statusDesc.append(tr("Busy"));
+        m_statusDesc.append(tr("Invisible"));
+        m_statusDesc.append(tr("Offline"));
+    }
+    return m_statusDesc;
 }

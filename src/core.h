@@ -33,6 +33,8 @@
 #include "libWavr/messaging.h"
 #include "mainwindow.h"
 #include "chatwindow.h"
+#include "strings.h"
+#include "uidefinitions.h"
 
 class wavrCore : public QObject {
     Q_OBJECT

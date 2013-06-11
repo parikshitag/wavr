@@ -56,12 +56,16 @@
 
 #define XML_CHATSTATE           "chatstate"
 
-#define XML_QUERYOP			"queryop"
+#define XML_QUERYOP             "queryop"
 
 #define XML_FONT                "font"
 #define XML_COLOR               "color"
 
 #define XML_NOTE                "note"
+
+#define XML_TRACEMODE           "tracemode"
+#define XML_LOGFILE             "logfile"
+
 #define XML_PORT                "port"
 
 #define XML_USERCAPS         "usercaps"

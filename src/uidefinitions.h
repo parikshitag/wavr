@@ -25,6 +25,7 @@
 #ifndef UIDEFINITIONS_H
 #define UIDEFINITIONS_H
 
+#include <QString>
 #include "libWavr/definitions.h"
 #include "strings.h"
 
@@ -86,11 +87,11 @@ enum ItemDataRole {
 #define IDR_AWAY                ":/status/away"
 #define IDR_EXTAWAY             ":/status/extended-away"
 #define IDR_BUSY                ":/status/busy"
-#define IDR_NODISTURB           ':/status/invisible'
+#define IDR_NODISTURB           ":/status/invisible"
 #define IDR_OFFLINE             ":/status/offline"
 
-
-//const QString statusPic[] = {IDR_AVAILABLE, IDR_AWAY, IDR_EXTAWAY, IDR_BUSY, IDR_NODISTURB, IDR_OFFLINE};
+//const QString statusDesc[] = {"Available", "Away", "Extended Away", "Busy", "Invisible", "Offline"};
+const QString StatusPic[] = {IDR_AVAILABLE, IDR_AWAY, IDR_EXTAWAY, IDR_BUSY, IDR_NODISTURB, IDR_OFFLINE};
 
 //	Smiley definitions
 #define SMI_01			":/smileys/01"

@@ -1,23 +1,23 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
-** This file is part of Wavr IM Application.
+** This file is part of LAN Messenger.
 ** 
-** Copyright (c) 2013 Parikshit Agarwal.
+** Copyright (c) 2010 - 2012 Qualia Digital Solutions.
 ** 
-** Contact:  parikshit.ag@gmail.com
+** Contact:  qualiatech@gmail.com
 ** 
-** Wavr is free software: you can redistribute it and/or modify
+** LAN Messenger is free software: you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation, either version 3 of the License, or
 ** (at your option) any later version.
 **
-** Wavr is distributed in the hope that it will be useful,
+** LAN Messenger is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
 **
 ** You should have received a copy of the GNU General Public License
-** along with Wavr.  If not, see <http://www.gnu.org/licenses/>.
+** along with LAN Messenger.  If not, see <http://www.gnu.org/licenses/>.
 **
 ****************************************************************************/
 
@@ -25,21 +25,39 @@
 #ifndef STDLOCATION_H
 #define STDLOCATION_H
 
-#include <QStandardPaths>
+#include <QDir>
+#include <QFileInfo>
+#include <QDesktopServices>
+#include <QDateTime>
+#include "libWavr/settings.h"
 
 #define SL_CACHEDIR				"cache"
 #define SL_AVATARFILE			"avt_local.png"
+#define SL_LOGDIR				"logs"
 
 class StdLocation {
 public:
-    static QString cacheDir(void) {
+
+	static QString cacheDir(void) {
         return QDir::toNativeSeparators(QStandardPaths::writableLocation(
             QStandardPaths::DataLocation) + "/"SL_CACHEDIR);
     }
 
-    static QString avatarFile(void) {
+
+	static QString avatarFile(void) {
         return QDir::toNativeSeparators(QStandardPaths::writableLocation(
             QStandardPaths::DataLocation) + "/"SL_AVATARFILE);
+	}
+
+    static QString logDir(void) {
+        return QDir::toNativeSeparators(QStandardPaths::writableLocation(
+            QStandardPaths::DataLocation) + "/"SL_LOGDIR);
+    }
+
+    static QString freeLogFile(void) {
+        QString fileName = "wavr_" +
+            QString::number(QDateTime::currentDateTimeUtc().toMSecsSinceEpoch()) + ".log";
+        return QDir::toNativeSeparators(logDir() + "/" + fileName);
     }
 };
 

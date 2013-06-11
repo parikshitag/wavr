@@ -37,9 +37,11 @@ public:
     ~wavrStrings(void);
 
     static const QString appName(void);
+    static const QStringList statusDesc(void);
 
 private:
     static QString m_appName;
+    static QStringList m_statusDesc;
 };
 
 #endif // STRINGS_H

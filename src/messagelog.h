@@ -33,6 +33,8 @@
 #include "chathelper.h"
 #include "libWavr/xmlmessage.h"
 
+enum OutputFormat{ HtmlFormat, TextFormat };
+
 /**
  * @brief Shows the chat log ie chat happened so far in GUI windows.
  *  Message log stores the message, broadcast, file and links log in the window that happened so far.
@@ -51,6 +53,7 @@ public:
     void updateUserName(QString* lpszUserId, QString* lpszUserName);
     void updateAvatar(QString* lpszUserId, QString* lpszFilePath);
     void reloadMessageLog(void);
+    QString prepareMessageLogForSave(OutputFormat format = HtmlFormat);
     void setAutoScroll(bool enable);
     void saveMessageLog(QString filePath);
     void restoreMessageLog(QString filePath, bool reload = true);

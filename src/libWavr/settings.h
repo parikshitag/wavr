@@ -34,11 +34,17 @@
 #define IDS_VERSION             "Application/Version"
 #define IDS_VERSION_VAL         "0.1.0"
 
+#define IDS_WINDOWMAIN          "Window/Main"
+
 #define IDS_AUTOSTART           "AutoStart"
 #define IDS_AUTOSTART_VAL       true
-
+#define IDS_AUTOSHOW            "AutoShow"
+#define IDS_AUTOSHOW_VAL        false
 #define IDS_LANGUAGE            "Locale/Language"
 #define IDS_LANGUAGE_VAL        "en_US"
+
+#define IDS_MINIMIZEMSG         "SystemTray/MinimizeMsg"
+#define IDS_MINIMIZEMSG_VAL     true
 
 #define IDS_REFRESHTIME         "RefreshInterval"
 #define IDS_REFRESHTIME_VAL     300
@@ -80,6 +86,10 @@
 #define IDS_USERABOUT_VAL		""
 #define IDS_NOTE                "User/Note"
 #define IDS_NOTE_VAL            ""
+
+#define IDS_GROUP               "Group"
+#define IDS_GROUPEXPHDR         "GroupExp"
+
 class wavrSettingsBase : public QSettings {
 public:
     wavrSettingsBase(void);

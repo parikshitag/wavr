@@ -23,10 +23,11 @@
 
 
 #include <QMessageBox>
+#include "libWavr/trace.h"
 #include "core.h"
 
 wavrCore::wavrCore(void) {
-    printf("hello this is parikshit");
+    qDebug("hello this is parikshit");
     pMessaging = new wavrMessaging();
     connect(pMessaging, SIGNAL(messageReceived(MessageType,QString*,wavrXmlMessage*)),
             this, SLOT(receiveMessage(MessageType,QString*,wavrXmlMessage*)));
@@ -48,13 +49,24 @@ wavrCore::~wavrCore(void){
 void wavrCore::init(){
     // prevent auto app exit when last visible window is closed
     qApp->setQuitOnLastWindowClosed(false);
+
     pInitParams = new wavrXmlMessage();
+
+    pInitParams->addData(XML_TRACEMODE, WAVR_TRUE);
+    pInitParams->addData(XML_LOGFILE, StdLocation::freeLogFile());
+
+    wavrTrace::init(pInitParams);
+    wavrTrace::write("Application initialized");
+
+    loadSettings();
+    wavrTrace::write("Settings loaded");
+
     pMessaging->init(pInitParams);
     pMainWindow->init(pMessaging->localUser, pMessaging->isConnected());
-
 }
 
 bool wavrCore::start(void) {
+    wavrTrace::write("Application started");
     pMessaging->start();
 
     if(pMessaging->isConnected() && !pMessaging->canReceive()) {
@@ -64,7 +76,7 @@ bool wavrCore::start(void) {
         return false;
     }
 
-    //pMainWindow->start();
+    pMainWindow->start();
 
     pTimer = new QTimer(this);
     connect(pTimer, SIGNAL(timeout(void)), this, SLOT(timer_timeout()));
@@ -126,6 +138,7 @@ void wavrCore::stop(void) {
     pMessaging->stop();
     //pMainWindow->stop();
 
+    wavrTrace::write("Application stopped");
 }
 
 /**
@@ -251,7 +264,7 @@ void wavrCore::chatWindow_closed(QString *lpszUserId) {
 void wavrCore::processMessage(MessageType type, QString *lpszUserId, wavrXmlMessage *pMessage) {
     switch(type) {
     case MT_Announce:
-        //pMainWindow->addUser(pMessaging->getUser(lpszUserId));
+        pMainWindow->addUser(pMessaging->getUser(lpszUserId));
         break;
     case MT_Depart:
         //pMainWindow->removeUser(lpszUserId);

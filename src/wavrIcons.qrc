@@ -142,11 +142,11 @@
         <file>resources/settings/play.png</file>
     </qresource>
     <qresource prefix="/status">
-        <file>resources/status/available.png</file>
-        <file>resources/status/away.png</file>
-        <file>resources/status/busy.png</file>
-        <file>resources/status/extended-away.png</file>
-        <file>resources/status/invisible.png</file>
-        <file>resources/status/offline.png</file>
+        <file alias="available">resources/status/available.png</file>
+        <file alias="away">resources/status/away.png</file>
+        <file alias="busy">resources/status/busy.png</file>
+        <file alias="extended-away">resources/status/extended-away.png</file>
+        <file alias="invisible">resources/status/invisible.png</file>
+        <file alias="offline">resources/status/offline.png</file>
     </qresource>
 </RCC>

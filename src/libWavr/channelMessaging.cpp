@@ -27,6 +27,7 @@
 ** Description: Handles transmission and reception of TCP streaming messages.
 ****************************************************************************/
 
+#include "trace.h"
 #include "channelMessaging.h"
 
 MsgStream::MsgStream(void) {
@@ -79,12 +80,19 @@ void MsgStream::sendMessage(QByteArray& data) {
 
     qint64 numBytesWritten = socket->write(outData);
     if (numBytesWritten < 0);
-        //error socket write failed
+        wavrTrace::write("Error: Socket write failed");
 }
 
 void MsgStream::connected(void) {
     outData = localId.toLocal8Bit();
-    outData.insert(0, "MSG");
+    outData.insert(0, "MSG");   // insert indicator that this socket handles messages
+    outDataLen = outData.length();
+
+    //  send an id message and then wait for public key message
+    //  from receiver, which will trigger readyRead signal
+    qint64 numBytesWritten = socket->write(outData);
+    if (numBytesWritten < 0)
+        wavrTrace::write("Error: Socket write failed");
 }
 
 void MsgStream::disconnected(void) {
@@ -126,10 +134,10 @@ void MsgStream::bytesWritten(qint64 bytes) {
     if(outDataLen == 0)
         return;
 
-//    if(outDataLen > 0)
-//        lmcTrace::write("Warning: Socket write operation not completed");
-//    if(outDataLen < 0)
-//        lmcTrace::write("Warning: Socket write overrun");
+    if(outDataLen > 0)
+        wavrTrace::write("Warning: Socket write operation not completed");
+    if(outDataLen < 0)
+        wavrTrace::write("Warning: Socket write overrun");
 
     //	TODO: handle situation when entire message is not written to stream in one write operation
     //	The following code is not functional currently, hence commented out.

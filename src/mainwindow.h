@@ -29,6 +29,7 @@
 #include <QSystemTrayIcon>
 #include <QMenuBar>
 #include <QMenu>
+#include <QComboBox>
 #include <QToolBar>
 #include <QToolButton>
 #include <QAction>
@@ -41,13 +42,15 @@
 #include "libWavr/shared.h"
 #include "libWavr/settings.h"
 #include "libWavr/xmlmessage.h"
+#include "libWavr/stdlocation.h"
+#include "QProgressIndicator.h"
 
 class wavrMainWindow : public QWidget
 {
     Q_OBJECT
     
 public:
-    explicit wavrMainWindow(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    wavrMainWindow(QWidget *parent = 0, Qt::WindowFlags flags = 0);
     ~wavrMainWindow();
     
     void init(User* pLocalUser,  bool connected);
@@ -95,8 +98,8 @@ private:
     void createMainMenu(void);
     void createTrayMenu(void);
     void createTrayIcon(void);
-    void createStatusMenu(void);
-    void createAvatarMenu(void);
+    void createPresenceToolbar(void);
+    void createSearchToolbar(void);
     void createUserMenu(void);
     void createToolBar(void);
     void setUIText(void);
@@ -116,13 +119,15 @@ private:
     QSystemTrayIcon* pTrayIcon;
     QMenu* pToolsMenu;
     QMenu* pTrayMenu;
-    QMenu* pStatusMenu;
-    QMenu* pAvatarMenu;
+    QComboBox* pCmbPresence;
+    QLineEdit* pEditSrch;
+
     QMenu* pUserMenu;
     QToolButton* btnStatus;
     QAction* toolChatAction;
     User* pLocalUser;
     bool bConnected;
+    int nAvatar;
     bool showSysTray;
     bool showSysTrayMsg;
     bool showMinimizeMsg;
@@ -140,5 +145,4 @@ private:
     QAction* avatarBrowseAction;
     bool windowLoaded;
 };
-
 #endif // MAINWINDOW_H

@@ -24,6 +24,7 @@
 
 #include "messaging.h"
 #include "stdlocation.h"
+#include "trace.h"
 
 wavrMessaging::wavrMessaging(void) {
     pNetwork = new wavrNetwork();
@@ -53,7 +54,7 @@ wavrMessaging::~wavrMessaging(void) {
 }
 
 void wavrMessaging::init(wavrXmlMessage *pInitParams) {
-    //wavrTrace::write("Messaging initialized");
+    wavrTrace::write("Messaging initialized");
 
     pNetwork->init(pInitParams);
 
@@ -91,7 +92,7 @@ void wavrMessaging::init(wavrXmlMessage *pInitParams) {
 }
 
 void wavrMessaging::start(void) {
-    //wavrTrace::write("Messaging started");
+    wavrTrace::write("Messaging started");
     pNetwork->start();
 
    // sendBroadcast(MT_Depart, NULL); Make sure you are not already listed, hence send depart message
@@ -99,7 +100,7 @@ void wavrMessaging::start(void) {
 }
 
 void wavrMessaging::update(void) {
-    //wavrTrace::write("Refreshing contacts list...");
+    wavrTrace::write("Refreshing contacts list...");
     sendBroadcast(MT_Announce, NULL);
 
     for(int index = 0; index < userList.count(); index++)
@@ -115,7 +116,7 @@ void wavrMessaging::stop(void) {
 
     //saveGroups();
 
-    //wavrTrace::write("Messaging stopped");
+    wavrTrace::write("Messaging stopped");
 }
 
 bool wavrMessaging::isConnected(void) {
@@ -325,7 +326,7 @@ bool wavrMessaging::addUser(QString szUserId, QString szVersion, QString szAddre
         if(userList[index].id.compare(szUserId) == 0)
             return false;
 
-    //wavrTrace::write("Adding new user: " + szUserId + ", " + szVersion + ", " + szAddress);
+    wavrTrace::write("Adding new user: " + szUserId + ", " + szVersion + ", " + szAddress);
 
    // if(!userGroupMap.contains(szUserId) || !groupList.contains(Group(userGroupMap.value(szUserId))))
      //   userGroupMap.insert(szUserId, GRP_DEFAULT_ID);

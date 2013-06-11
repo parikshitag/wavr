@@ -45,6 +45,7 @@
 
 #include <QDebug>
 #include <QtCore/QSettings>
+#include <QResource>
 #include <QtNetwork/QNetworkConfigurationManager>
 #include <QtNetwork/QNetworkSession>
 
@@ -56,7 +57,6 @@ int main(int argc, char *argv[])
 
     //Application application(appId, argc, argv);
     QApplication application(argc, argv);
-    QDir::setCurrent(QApplication::applicationDirPath());
 
     QNetworkConfigurationManager manager;
     if (manager.capabilities() & QNetworkConfigurationManager::NetworkSessionRequired){
@@ -95,9 +95,15 @@ int main(int argc, char *argv[])
 	    }
     }
 
+    QApplication::setApplicationName(IDA_PRODUCT);
+
     wavrCore core;
     
     core.init();
+
+    QObject::connect(&application, SIGNAL(messageReceived(const QString&)),
+        &core, SLOT(receiveAppMessage(const QString&)));
+    QObject::connect(&application, SIGNAL(aboutToQuit()), &core, SLOT(aboutToExit()));
 
     return application.exec();
 }

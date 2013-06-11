@@ -128,3 +128,7 @@ QString wavrHelper::getOSName(void) {
 
     return osName;
 }
+
+bool wavrHelper::stringToBool(const QString& value) {
+    return value.compare(WAVR_TRUE) == 0 ? true : false;
+}

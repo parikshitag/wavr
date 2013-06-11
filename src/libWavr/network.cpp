@@ -21,7 +21,7 @@
 **
 ****************************************************************************/
 
-
+#include "trace.h"
 #include "network.h"
 
 /**
@@ -61,10 +61,15 @@ wavrNetwork::~wavrNetwork(void) {
  * @param pInitParams   wavrXmlMessage class.
  */
 void wavrNetwork::init(wavrXmlMessage *pInitParams) {
-    //Network Initialized.
+    wavrTrace::write("Network Initialized");
 
     pSettings = new wavrSettings();
     isConnected = getIPAddress();
+
+    wavrTrace::write("Network interface selected: " + (networkInterface.isValid() ? networkInterface.humanReadableName() : "None") +
+                        "\nIP address obtained: " + (ipAddress.isEmpty() ? "NULL" : ipAddress) +
+                        "\nSubnet mask obtained: " + (subnetMask.isEmpty() ? "NULL" : subnetMask) +
+                        "\nConnection status: " + (isConnected ? "OK" : "Fail"));
 
     int port = pInitParams->data(XML_PORT).toInt();
     pUdpNetwork->init(port);
@@ -76,7 +81,8 @@ void wavrNetwork::init(wavrXmlMessage *pInitParams) {
  *  if isConnected then sets the multicastInterface  UdpNetwork class and
  */
 void wavrNetwork::start(void){
-    //Network Started
+    wavrTrace::write("Network started");
+
     pTimer = new QTimer(this);
     connect(pTimer, SIGNAL(timeout()), this, SLOT(timer_timeout()));
     pTimer->start(2000);
@@ -101,7 +107,7 @@ void wavrNetwork::stop(void) {
     pUdpNetwork->stop();
     pTcpNetwork->stop();
 
-    //"Network stopped"
+    wavrTrace::write("Network stopped");
 }
 
 /**
@@ -171,6 +177,10 @@ void wavrNetwork::timer_timeout(void) {
     isConnected = getIPAddress(false);
 
     if(prev != isConnected) {
+        wavrTrace::write("Network interface selected: " + (networkInterface.isValid() ? networkInterface.humanReadableName() : "None") +
+                    "\nIP address obtained: " + (ipAddress.isEmpty() ? "NULL" : ipAddress) +
+                    "\nSubnet mask obtained: " + (subnetMask.isEmpty() ? "NULL" : subnetMask) +
+                    "\nConnection status: " + (isConnected ? "OK" : "Fail"));
 
         if(isConnected) {
             pUdpNetwork->setMulticastInterface(networkInterface);
@@ -254,7 +264,7 @@ bool wavrNetwork::getIPAddress(bool verbose) {
     //bool usePreferred = (szInterfaceName.compare(IDS_CONNECTION_VAL, Qt::CaseInsensitive) != 0);
     bool usePreferred = false;
 
-    //wavrTrace::write("Checking for active network interface...", verbose);
+    wavrTrace::write("Checking for active network interface...", verbose);
 
     //	get a list of all network interfaces available in the system
     QList<QNetworkInterface> allInterfaces = QNetworkInterface::allInterfaces();
@@ -270,8 +280,8 @@ bool wavrNetwork::getIPAddress(bool verbose) {
 
         if(isInterfaceUp(&allInterfaces[index])) {
             activeFound = true;
-            // wavrTrace::write("Active network interface found: " + allInterfaces[index].humanReadableName(),
-              //  verbose);
+             wavrTrace::write("Active network interface found: " + allInterfaces[index].humanReadableName(),
+                verbose);
             QNetworkAddressEntry addressEntry;
             if(getIPAddress(&allInterfaces[index], &addressEntry)) {
                 ipAddress = addressEntry.ip().toString();
@@ -282,8 +292,9 @@ bool wavrNetwork::getIPAddress(bool verbose) {
             }
         }
     }
-    //lmcTrace::write(QString("Warning: ") + (activeFound ? "No IP address found" : "No active network interface found"),
-     //   verbose);
+
+    wavrTrace::write(QString("Warning: ") + (activeFound ? "No IP address found" : "No active network interface found"),
+        verbose);
     ipAddress = QString::null;
     subnetMask = QString::null;
     return false;
@@ -297,7 +308,7 @@ bool wavrNetwork::getIPAddress(bool verbose) {
  *  Gets the IpAddress from the given list of IPAddresses containing associated IPV4 (and IPV6 if it support) addresses of the specified interface.
  */
 bool wavrNetwork::getIPAddress(QNetworkInterface* pNetworkInterface, QNetworkAddressEntry *pAddressEntry) {
-    //lmcTrace::write("Querying IP address from network interface...");
+    wavrTrace::write("Querying IP address from network interface...");
 
     //	get a list of all associated ip addresses of the interface
     QList<QNetworkAddressEntry> addressEntries = pNetworkInterface->addressEntries();
@@ -305,7 +316,7 @@ bool wavrNetwork::getIPAddress(QNetworkInterface* pNetworkInterface, QNetworkAdd
     for(int index = 0; index < addressEntries.count(); index++) {
         if(addressEntries[index].ip().protocol() == QAbstractSocket::IPv4Protocol) {
             *pAddressEntry = addressEntries[index];
-            //lmcTrace::write("IPv4 address found for network interface.");
+            wavrTrace::write("IPv4 address found for network interface.");
             return true;
         }
     }
@@ -313,12 +324,12 @@ bool wavrNetwork::getIPAddress(QNetworkInterface* pNetworkInterface, QNetworkAdd
     for(int index = 0; index < addressEntries.count(); index++) {
         if(addressEntries[index].ip().protocol() == QAbstractSocket::IPv6Protocol) {
             *pAddressEntry = addressEntries[index];
-            //lmcTrace::write("IPv6 address found for network interface.");
+            wavrTrace::write("IPv6 address found for network interface.");
             return true;
         }
     }
 
-    //lmcTrace::write("Warning: No IP address found for network interface.");
+    wavrTrace::write("Warning: No IP address found for network interface.");
     return false;
 }
 
@@ -367,7 +378,7 @@ bool wavrNetwork::getNetworkInterface(QNetworkInterface* pNetworkInterface) {
  *  @sa wavrNetwork::getNetworkInterface(QNetworkInterface* pNetworkInterface)
  */
 bool wavrNetwork::getNetworkInterface(QNetworkInterface* pNetworkInterface, QString* lpszPreferred) {
-    // wavrTrace::write("Checking for active network interface...");
+     wavrTrace::write("Checking for active network interface...");
 
     //	get a list of all network interfaces available in the system
     QList<QNetworkInterface> allInterfaces = QNetworkInterface::allInterfaces();
@@ -381,12 +392,12 @@ bool wavrNetwork::getNetworkInterface(QNetworkInterface* pNetworkInterface, QStr
 
         if(isInterfaceUp(&allInterfaces[index])) {
             *pNetworkInterface = allInterfaces[index];
-            // wavrTrace::write("Active network interface found: " + pNetworkInterface->humanReadableName());
+             wavrTrace::write("Active network interface found: " + pNetworkInterface->humanReadableName());
             return true;
         }
     }
 
-    // wavrTrace::write("Warning: No active network interface found");
+     wavrTrace::write("Warning: No active network interface found");
     return false;
 }
 
@@ -417,7 +428,7 @@ bool wavrNetwork::getNetworkAddressEntry(QNetworkAddressEntry* pAddressEntry) {
     QNetworkInterface networkInterface;
 
     if(getNetworkInterface(&networkInterface)) {
-        //lmcTrace::write("Querying IP address from network interface...");
+        wavrTrace::write("Querying IP address from network interface...");
 
         //	get a list of all associated ip addresses of the interface
         QList<QNetworkAddressEntry> addressEntries = networkInterface.addressEntries();
@@ -427,7 +438,7 @@ bool wavrNetwork::getNetworkAddressEntry(QNetworkAddressEntry* pAddressEntry) {
                 *pAddressEntry = addressEntries[index];
                 this->networkInterface = networkInterface;
                 this->interfaceName = networkInterface.name();
-                //lmcTrace::write("IPv4 address found for network interface.");
+                wavrTrace::write("IPv4 address found for network interface.");
                 return true;
             }
         }
@@ -437,12 +448,12 @@ bool wavrNetwork::getNetworkAddressEntry(QNetworkAddressEntry* pAddressEntry) {
                 *pAddressEntry = addressEntries[index];
                 this->networkInterface = networkInterface;
                 this->interfaceName = networkInterface.name();
-                //lmcTrace::write("IPv6 address found for network interface.");
+                wavrTrace::write("IPv6 address found for network interface.");
                 return true;
             }
         }
 
-        //lmcTrace::write("Warning: No IP address found for network interface.");
+        wavrTrace::write("Warning: No IP address found for network interface.");
     }
 
     return false;

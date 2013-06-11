@@ -108,6 +108,7 @@ public:
     static QString getLogonName(void);
     static QString getHostName(void);
     static QString getOSName(void);
+    static bool stringToBool(const QString& value);
 };
 
 #endif // SHARED_H

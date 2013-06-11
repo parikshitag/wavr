@@ -6,134 +6,39 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>276</width>
-    <height>265</height>
+    <width>233</width>
+    <height>299</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>258</width>
-     <height>226</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QFrame" name="head">
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="presence_toolbar"/>
+   </item>
+   <item>
+    <widget class="QFrame" name="search_toolbar">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="wavrUserTreeWidget" name="tvUserList">
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QWidget" name="layoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>50</x>
-         <y>10</y>
-         <width>103</width>
-         <height>29</height>
-        </rect>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QComboBox" name="cmbStatus">
-          <property name="minimumSize">
-           <size>
-            <width>85</width>
-            <height>0</height>
-           </size>
-          </property>
-          <item>
-           <property name="text">
-            <string>Available</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Busy</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Away</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Invisible</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Offline</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item>
-         <widget class="QProgressIndicator" name="qProgressSpinner" native="true"/>
-        </item>
-       </layout>
-      </widget>
-     </widget>
-    </item>
-    <item>
-     <widget class="QFrame" name="txtEnter">
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QWidget" name="layoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>31</x>
-         <y>20</y>
-         <width>239</width>
-         <height>29</height>
-        </rect>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLineEdit" name="searchEdit"/>
-        </item>
-        <item>
-         <widget class="QPushButton" name="searchClose">
-          <property name="text">
-           <string>P</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </widget>
-    </item>
-    <item>
-     <widget class="wavrUserTreeWidget" name="tvUserList">
-      <column>
-       <property name="text">
-        <string notr="true">1</string>
-       </property>
-      </column>
-     </widget>
-    </item>
-   </layout>
-  </widget>
+     </column>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>QProgressIndicator</class>
-   <extends>QWidget</extends>
-   <header>QProgressIndicator.h</header>
-   <container>1</container>
-  </customwidget>
   <customwidget>
    <class>wavrUserTreeWidget</class>
    <extends>QTreeWidget</extends>

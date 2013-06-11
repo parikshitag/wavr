@@ -4,13 +4,13 @@
 #
 #-------------------------------------------------
 
-QT += core gui network webkitwidgets xml
+QT += core gui network webkitwidgets xml widgets
 
 OUTPUT += console
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Wavr
-TEMPLATE = app
+#TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     usertreewidget.cpp \
     libWavr/message.cpp \
     libWavr/settings.cpp \
-    strings.cpp
+    strings.cpp \
+    libWavr/trace.cpp
 
 HEADERS  += mainwindow.h \
     QProgressIndicator.h \
@@ -53,9 +54,11 @@ HEADERS  += mainwindow.h \
     chathelper.h \
     chatdefinitions.h \
     usertreewidget.h \
-    libWavr/stdlocation.h \
     libWavr/message.h \
-    strings.h
+    strings.h \
+    stdlocation.h \
+    libWavr/trace.h \
+    libWavr/stdlocation.h
 
 FORMS    += \
     mainwindow.ui \

@@ -194,8 +194,87 @@ void wavrMessageLog::reloadMessageLog(void) {
     }
 }
 
+QString wavrMessageLog::prepareMessageLogForSave(OutputFormat format) {
+    QDateTime time;
+
+    if(format == HtmlFormat) {
+        QString html =
+            "<html><head><style type='text/css'>"\
+            "*{font-size: 9pt;} body {-webkit-nbsp-mode: space; word-wrap: break-word;}"\
+            "span.salutation {float:left; font-weight: bold;} span.time {float: right;}"\
+            "span.message {clear: both; display: block;} p {border-bottom: 1px solid #CCC;}"\
+            "</style></head><body>";
+
+        for(int index = 0; index < messageLog.count(); index++) {
+            SingleMessage msg = messageLog.at(index);
+            if(msg.type == MT_Message || msg.type == MT_GroupMessage) {
+                time.setMSecsSinceEpoch(msg.message.header(XML_TIME).toLongLong());
+                QString messageText = msg.message.data(XML_MESSAGE);
+                decodeMessage(&messageText, true);
+                QString htmlMsg =
+                    "<p><span class='salutation'>" + msg.userName + ":</span>"\
+                    "<span class='time'>" + time.time().toString(Qt::SystemLocaleShortDate) + "</span>"\
+                    "<span class='message'>" + messageText + "</span></p>";
+                html.append(htmlMsg);
+            }
+        }
+
+        html.append("</body></html>");
+        return html;
+    } else {
+        QString text;
+        for(int index = 0; index < messageLog.count(); index++) {
+            SingleMessage msg = messageLog.at(index);
+            if(msg.type == MT_Message || msg.type == MT_GroupMessage) {
+                time.setMSecsSinceEpoch(msg.message.header(XML_TIME).toLongLong());
+                QString textMsg =
+                    msg.userName + " [" + time.time().toString(Qt::SystemLocaleShortDate) + "]:\n" +
+                    msg.message.data(XML_MESSAGE) + "\n\n";
+                text.append(textMsg);
+            }
+        }
+
+        return text;
+    }
+}
+
+
 void wavrMessageLog::setAutoScroll(bool enable) {
     autoScroll = enable;
+}
+
+void wavrMessageLog::saveMessageLog(QString filePath) {
+    if(messageLog.isEmpty())
+        return;
+
+    QDir dir = QFileInfo(filePath).dir();
+    if(!dir.exists())
+        dir.mkpath(dir.absolutePath());
+
+    QFile file(filePath);
+    if(!file.open(QIODevice::WriteOnly))
+        return;
+
+    QDataStream stream(&file);
+    stream << peerId << peerName << messageLog;
+
+    file.close();
+}
+
+void wavrMessageLog::restoreMessageLog(QString filePath, bool reload) {
+    messageLog.clear();
+
+    QFile file(filePath);
+    if(!file.open(QIODevice::ReadOnly))
+        return;
+
+    QDataStream stream(&file);
+    stream >> peerId >> peerName >> messageLog;
+
+    file.close();
+
+    if(reload)
+        reloadMessageLog();
 }
 
 void wavrMessageLog::log_LinkClicked(QUrl url) {
