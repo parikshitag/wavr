@@ -47,7 +47,7 @@ void wavrTcpNetwork::init(int nPort){
  */
 void wavrTcpNetwork::start(void) {
     wavrTrace::write("Starting TCP server");
-    isRunning = server->listen(QHostAddress::Any, tcpPort);
+    isRunning = server->listen(QHostAddress::AnyIPv4, tcpPort);
     wavrTrace::write(isRunning ? "Success" : "Failed");
 }
 
@@ -92,7 +92,7 @@ void wavrTcpNetwork::addConnection(QString* lpszUserId, QString* lpszAddress) {
 
     MsgStream* msgStream = new MsgStream(localId, *lpszUserId, *lpszAddress, tcpPort);
     connect(msgStream, SIGNAL(connectionLost(QString*)),
-            this, SLOT(mszStream_connectionLost(QString*)));
+            this, SLOT(msgStream_connectionLost(QString*)));
     connect(msgStream, SIGNAL(messageReceived(QString*,QString*,QByteArray&)),
             this, SLOT(receiveMessage(QString*,QString*,QByteArray&)));
 
@@ -129,6 +129,7 @@ void wavrTcpNetwork::sendMessage(QString *lpszReceiverId, QString *lpszData) {
             wavrTrace::write("Warning: Message could not be sent");
             return;
         }
+        wavrDatagram::addHeader(DT_Message, clearData);
         msgStream->sendMessage(clearData);
         return;
     }
@@ -161,7 +162,7 @@ void wavrTcpNetwork::socket_readyRead(void) {
     disconnect(socket, SIGNAL(readyRead()), this, SLOT(socket_readyRead()));
 
     QByteArray buffer = socket->read(64);
-    if (buffer.startsWith(ST_MESSAGE)) {
+    if (buffer.startsWith("MSG")) {
         // read user id from socket and assign socket to correct message stream
         QString userId(buffer.mid(3));  // 3 is length of "MSG"
         addMsgSocket(&userId, socket);
@@ -186,12 +187,14 @@ void wavrTcpNetwork::msgStream_connectionLost(QString *lpszUserId) {
  */
 void wavrTcpNetwork::receiveMessage(QString* lpszUserId, QString* lpszAddress, QByteArray& datagram) {
     DatagramHeader* pHeader = NULL;
+
     if (!wavrDatagram::getHeader(datagram, &pHeader))
         return;
 
+    qDebug("is this called");
     pHeader->userId = *lpszUserId;
     pHeader->address = *lpszAddress;
-    QByteArray clearData;
+    QByteArray clearData = wavrDatagram::getData(datagram);
     QString szMessage;
 
     wavrTrace::write("TCP stream type " + QString::number(pHeader->type) +
@@ -227,4 +230,6 @@ void wavrTcpNetwork::addMsgSocket(QString *lpszUserId, QTcpSocket *pSocket) {
             this, SLOT(receiveMessage(QString*,QString*,QByteArray&)));
     messageMap.insert(*lpszUserId, msgStream);
     msgStream->init(pSocket);
+
+    emit newConnection(lpszUserId, &address);
 }

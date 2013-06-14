@@ -308,7 +308,7 @@ bool wavrNetwork::getIPAddress(bool verbose) {
  *  Gets the IpAddress from the given list of IPAddresses containing associated IPV4 (and IPV6 if it support) addresses of the specified interface.
  */
 bool wavrNetwork::getIPAddress(QNetworkInterface* pNetworkInterface, QNetworkAddressEntry *pAddressEntry) {
-    wavrTrace::write("Querying IP address from network interface...");
+    //wavrTrace::write("Querying IP address from network interface...");
 
     //	get a list of all associated ip addresses of the interface
     QList<QNetworkAddressEntry> addressEntries = pNetworkInterface->addressEntries();
@@ -316,7 +316,7 @@ bool wavrNetwork::getIPAddress(QNetworkInterface* pNetworkInterface, QNetworkAdd
     for(int index = 0; index < addressEntries.count(); index++) {
         if(addressEntries[index].ip().protocol() == QAbstractSocket::IPv4Protocol) {
             *pAddressEntry = addressEntries[index];
-            wavrTrace::write("IPv4 address found for network interface.");
+            //wavrTrace::write("IPv4 address found for network interface.");
             return true;
         }
     }
@@ -324,12 +324,12 @@ bool wavrNetwork::getIPAddress(QNetworkInterface* pNetworkInterface, QNetworkAdd
     for(int index = 0; index < addressEntries.count(); index++) {
         if(addressEntries[index].ip().protocol() == QAbstractSocket::IPv6Protocol) {
             *pAddressEntry = addressEntries[index];
-            wavrTrace::write("IPv6 address found for network interface.");
+            //wavrTrace::write("IPv6 address found for network interface.");
             return true;
         }
     }
 
-    wavrTrace::write("Warning: No IP address found for network interface.");
+    //wavrTrace::write("Warning: No IP address found for network interface.");
     return false;
 }
 

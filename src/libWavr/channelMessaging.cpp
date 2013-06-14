@@ -73,13 +73,12 @@ void MsgStream::sendMessage(QByteArray& data) {
     qint32 dataLen = sizeof(quint32) + data.length();
     outDataLen += dataLen;
     outData.resize(dataLen);
-
     QDataStream stream(&outData, QIODevice::WriteOnly);
     stream << (quint32)data.length();
     stream.writeRawData(data.data(), data.length());
 
     qint64 numBytesWritten = socket->write(outData);
-    if (numBytesWritten < 0);
+    if (numBytesWritten < 0)
         wavrTrace::write("Error: Socket write failed");
 }
 
@@ -101,6 +100,7 @@ void MsgStream::disconnected(void) {
 
 void MsgStream::readyRead(void) {
     qint64 available = socket->bytesAvailable();
+
     while(available > 0) {
         if(!reading) {
             reading = true;

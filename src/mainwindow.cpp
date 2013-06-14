@@ -31,7 +31,6 @@
 wavrMainWindow::wavrMainWindow(QWidget *parent, Qt::WindowFlags flags) : QWidget(parent, flags) {
     ui.setupUi(this);
 
-    qDebug("inside main window constructor");
 //    connect(ui.tvUserList, SIGNAL(itemActivated(QTreeWidgetItem*, int)),
 //            this, SLOT(tvUserList_itemActivated(QTreeWidgetItem*, int)));
 //    connect(ui.tvUserList, SIGNAL(itemContextMenu(QTreeWidgetItem*, QPoint&)),
@@ -51,7 +50,6 @@ wavrMainWindow::~wavrMainWindow() {
 
 void wavrMainWindow::init(User *pLocalUser, bool connected) {
     setWindowIcon(QIcon(IDR_APPICON));
-    qDebug("main window");
     this->pLocalUser = pLocalUser;
 
     //createMainMenu();
@@ -68,8 +66,7 @@ void wavrMainWindow::init(User *pLocalUser, bool connected) {
     //ui.tvUserList->setBackgroundRole(QPalette::Highlight);
     //ui.tvUserList->header()->setStretchLastSection(false);
     //btnStatus->setIconSize(QSize(20,20));
-    show();
-
+    pSettings = new wavrSettings();
 }
 
 void wavrMainWindow::start(void) {
@@ -81,7 +78,7 @@ void wavrMainWindow::start(void) {
     // This method should only be called from here, otherwise an MT_Notify message is sent
     // and the program will connect to the network before start() is called.
     //setAvatar();
-    pTrayIcon->setVisible(showSysTray);
+   // pTrayIcon->setVisible(showSysTray);
     if(pSettings->value(IDS_AUTOSHOW, IDS_AUTOSHOW_VAL).toBool())
         show();
 }
@@ -154,7 +151,7 @@ void wavrMainWindow::stop(void) {
 void wavrMainWindow::addUser(User *pUser) {
     if(!pUser)
         return;
-
+    qDebug() << "Accessing user info " << pUser->name << "\n" << pUser->status;
     int index = wavrHelper::statusIndexFromCode(pUser->status);
 
     wavrUserTreeWidgetUserItem *pItem = new wavrUserTreeWidgetUserItem();

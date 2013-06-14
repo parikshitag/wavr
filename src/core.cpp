@@ -27,7 +27,6 @@
 #include "core.h"
 
 wavrCore::wavrCore(void) {
-    qDebug("hello this is parikshit");
     pMessaging = new wavrMessaging();
     connect(pMessaging, SIGNAL(messageReceived(MessageType,QString*,wavrXmlMessage*)),
             this, SLOT(receiveMessage(MessageType,QString*,wavrXmlMessage*)));
@@ -62,6 +61,7 @@ void wavrCore::init(){
     wavrTrace::write("Settings loaded");
 
     pMessaging->init(pInitParams);
+    pMessaging->setLoopback(true);
     pMainWindow->init(pMessaging->localUser, pMessaging->isConnected());
 }
 
@@ -264,6 +264,7 @@ void wavrCore::chatWindow_closed(QString *lpszUserId) {
 void wavrCore::processMessage(MessageType type, QString *lpszUserId, wavrXmlMessage *pMessage) {
     switch(type) {
     case MT_Announce:
+        qDebug() << "Adding new user in main window " << pMessaging->getUser(lpszUserId);
         pMainWindow->addUser(pMessaging->getUser(lpszUserId));
         break;
     case MT_Depart:

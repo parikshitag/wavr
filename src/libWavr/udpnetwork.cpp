@@ -42,6 +42,7 @@ wavrUdpNetwork::wavrUdpNetwork(void) {
     isRunning = false;
     ipAddress = QHostAddress::Any;
     subnetMask = QHostAddress::Any;
+    defBroadcast = QHostAddress::Broadcast;
     broadcastList.clear();
 }
 
@@ -207,7 +208,7 @@ void wavrUdpNetwork::sendDatagram(QHostAddress remoteAddress, QByteArray& datagr
 bool wavrUdpNetwork::startReceiving(void) {
     wavrTrace::write("Binding UDP listener to port " + QString::number(nUdpPort));
 
-    if(pUdpReceiver->bind(nUdpPort)) {
+    if(pUdpReceiver->bind(QHostAddress::AnyIPv4, nUdpPort)) {
         wavrTrace::write("Success");
         wavrTrace::write("Joining multicast group " + multicastAddress.toString() +
             " on interface " + multicastInterface.humanReadableName());

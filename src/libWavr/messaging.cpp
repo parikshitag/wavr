@@ -337,11 +337,11 @@ bool wavrMessaging::addUser(QString szUserId, QString szVersion, QString szAddre
                          nAvatar, szNote, QString::null, szCaps));
 
     if(!szStatus.isNull()) {
-        wavrXmlMessage wavrXmlMessage;
-        wavrXmlMessage.addHeader(XML_FROM, szUserId);
-        wavrXmlMessage.addData(XML_STATUS, szStatus);
+        wavrXmlMessage xmlMessage;
+        xmlMessage.addHeader(XML_FROM, szUserId);
+        xmlMessage.addData(XML_STATUS, szStatus);
         //	send a status message to app layer, this is different from announce message
-        emit messageReceived(MT_Status, &szUserId, &wavrXmlMessage);
+        emit messageReceived(MT_Status, &szUserId, &xmlMessage);
         int statusIndex = wavrHelper::statusIndexFromCode(szStatus);
         if(statusType[statusIndex] == StatusTypeOffline) // offline status
             return false;	//	no need to send a new user message to app layer
