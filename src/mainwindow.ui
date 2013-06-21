@@ -29,11 +29,9 @@
    </item>
    <item>
     <widget class="wavrUserTreeWidget" name="tvUserList">
-     <column>
-      <property name="text">
-       <string notr="true">1</string>
-      </property>
-     </column>
+     <attribute name="headerVisible">
+      <bool>false</bool>
+     </attribute>
     </widget>
    </item>
   </layout>

@@ -32,6 +32,7 @@
 #include "libWavr/settings.h"
 
 #define SL_CACHEDIR				"cache"
+#define SL_GROUPFILE			"group.cfg"
 #define SL_AVATARFILE			"avt_local.png"
 #define SL_LOGDIR				"logs"
 
@@ -43,6 +44,10 @@ public:
             QStandardPaths::DataLocation) + "/"SL_CACHEDIR);
     }
 
+    static QString groupFile(void) {
+        return QDir::toNativeSeparators(QStandardPaths::writableLocation(
+            QStandardPaths::DataLocation) + "/"SL_GROUPFILE);
+    }
 
 	static QString avatarFile(void) {
         return QDir::toNativeSeparators(QStandardPaths::writableLocation(

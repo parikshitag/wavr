@@ -157,6 +157,36 @@ const QString QueryOpNames[] = {
     "result"
 };
 
+/****************************************************************************
+**	Group Message operation definitions
+**	The enum and the string array should always be synced
+****************************************************************************/
+enum GroupMsgOp {
+    GMO_None = 0,
+    GMO_Request,
+    GMO_Join,
+    GMO_Message,
+    GMO_Leave,
+    GMO_Max
+};
+
+const QString GroupMsgOpNames[] = {
+    "",
+    "request",
+    "join",
+    "message",
+    "leave"
+};
+
+enum GroupOp {
+    GO_None = 0,
+    GO_New,
+    GO_Rename,
+    GO_Move,
+    GO_Delete,
+    GO_Max
+};
+
 //	User status definitions
 enum StatusType {
     StatusTypeOnline = 0,
@@ -182,6 +212,9 @@ const int statusType[] = {
     StatusTypeAway,
     StatusTypeOffline
 };
+
+#define GRP_DEFAULT		"General"
+#define GRP_DEFAULT_ID	"1CD75C10048C4E65F6082539A32DC111"
 
 enum UserCap {
     UC_None = 0x00000000,

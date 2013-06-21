@@ -1,23 +1,23 @@
 /****************************************************************************
 **
-** This file is part of Wavr IM Application.
-** 
-** Copyright (c) 2013 Parikshit Agarwal.
-** 
-** Contact:  parikshit.ag@gmail.com
-** 
-** Wavr is free software: you can redistribute it and/or modify
+** This file is part of LAN Messenger.
+**
+** Copyright (c) 2010 - 2012 Qualia Digital Solutions.
+**
+** Contact:  qualiatech@gmail.com
+**
+** LAN Messenger is free software: you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation, either version 3 of the License, or
 ** (at your option) any later version.
 **
-** Wavr is distributed in the hope that it will be useful,
+** LAN Messenger is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
 **
 ** You should have received a copy of the GNU General Public License
-** along with Wavr.  If not, see <http://www.gnu.org/licenses/>.
+** along with LAN Messenger.  If not, see <http://www.gnu.org/licenses/>.
 **
 ****************************************************************************/
 
@@ -143,31 +143,31 @@ void wavrUserTreeWidgetDelegate::paint(QPainter* painter, const QStyleOptionView
         if(pTreeWidget->checkable())
             drawCheckBox(painter, palette, checkBoxRect, pItem->checkState(0));
 
-        //	Draw the avatar image
+        //	Draw the status image
+        QPixmap statusImage = pItem->icon(0).pixmap(QSize(16, 16));
         int leftPad = checkBoxRect.width() > 0 ? checkBoxRect.right() + 5 : 5;
-        QRect avatarRect = itemRect.adjusted(leftPad, padding, 0, 0);
+        QRect statusRect = itemRect.adjusted(leftPad, padding, 0, 0);
+        statusRect.setSize(statusImage.size());
+        painter->drawPixmap(statusRect, statusImage);
+
+        //	Draw the avatar image
+        QRect avatarRect = itemRect.adjusted(itemRect.width(), padding, 0, 0);
         if(pTreeWidget->view() == ULV_Detailed) {
             QVariant avatar = pItem->data(0, AvatarRole);
             if(!avatar.isNull()) {
                 QPixmap avatarImage = ((QIcon)pItem->data(0, AvatarRole).value<QIcon>()).pixmap(32, 32);
+                avatarRect.setLeft(avatarRect.right() - avatarImage.width() - padding);
                 avatarRect.setSize(avatarImage.size());
                 painter->drawPixmap(avatarRect, avatarImage);
             }
         }
 
-        //	Draw the status image
-        QPixmap statusImage = pItem->icon(0).pixmap(QSize(16, 16));
-        QRect statusRect = itemRect.adjusted(itemRect.width(), Qt::AlignVCenter, 0, 0);
-        statusRect.setLeft(statusRect.right() - statusImage.width() - padding);
-        statusRect.setSize(statusImage.size());
-        painter->drawPixmap(statusRect, statusImage);
-
         //	Draw the text
         painter->setPen(QPen(palette.color(QPalette::WindowText)));
         int textFlags = Qt::AlignLeft;
-        textFlags |= (pTreeWidget->view() == (ULV_Detailed)? Qt::AlignTop : Qt::AlignVCenter);
+        textFlags |= (pTreeWidget->view() == ULV_Detailed ? Qt::AlignTop : Qt::AlignVCenter);
         //	Leave a padding of 5px on left and right
-        QRect textRect = itemRect.adjusted(avatarRect.right() + 5, padding, -(5 + statusRect.width() + padding), -padding);
+        QRect textRect = itemRect.adjusted(statusRect.right() + 5, padding, -(5 + avatarRect.width() + padding), -padding);
         QString text = elidedText(painter->fontMetrics(), textRect.width(), Qt::ElideRight, name);
         painter->drawText(textRect, textFlags, text);
 
@@ -182,8 +182,6 @@ void wavrUserTreeWidgetDelegate::paint(QPainter* painter, const QStyleOptionView
                 painter->drawText(textRect, textFlags, text);
             }
         }
-
-
     }
 
     painter->restore();

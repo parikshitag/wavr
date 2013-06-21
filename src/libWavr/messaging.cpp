@@ -41,7 +41,7 @@ wavrMessaging::wavrMessaging(void) {
     connect(pNetwork, SIGNAL(connectionStateChanged()), this, SLOT(network_connectionStateChanged()));
     localUser = NULL;
     userList.clear();
-    //groupList.clear();
+    groupList.clear();
     userGroupMap.clear();
     receivedList.clear();
     pendingList.clear();
@@ -76,10 +76,10 @@ void wavrMessaging::init(wavrXmlMessage *pInitParams) {
     QString userNote = pSettings->value(IDS_NOTE, IDS_NOTE_VAL).toString();
     uint userCaps = UC_File | UC_GroupMessage | UC_Folder;
     localUser = new User(userId, IDA_VERSION, pNetwork->ipAddress, userName, userStatus,
-                         nAvatar, userNote, StdLocation::avatarFile(),
+                         QString::null, nAvatar, userNote, StdLocation::avatarFile(),
                          QString::number(userCaps));
 
-    //loadGroups();
+    loadGroups();
 
     nTimeout = pSettings->value(IDS_TIMEOUT, IDS_TIMEOUT_VAL).toInt() * 1000;
     nMaxRetry = pSettings->value(IDS_MAXRETRIES, IDS_MAXRETRIES_VAL).toInt();
@@ -153,81 +153,81 @@ void wavrMessaging::settingsChanged(void) {
     }
 }
 
-//void wavrMessaging::updateGroup(GroupOp op, QVariant value1, QVariant value2) {
-//    switch(op) {
-//    case GO_New:
-//        groupList.append(Group(value1.toString(), value2.toString()));
-//        break;
-//    case GO_Rename:
-//        for(int index = 0; index < groupList.count(); index++) {
-//            if(groupList[index].id.compare(value1.toString()) == 0) {
-//                groupList[index].name = value2.toString();
-//                break;
-//            }
-//        }
-//        break;
-//    case GO_Move:
-//        for(int index = 0; index < groupList.count(); index++) {
-//            if(groupList[index].id.compare(value1.toString()) == 0) {
-//                groupList.move(index, value2.toInt());
-//                break;
-//            }
-//        }
-//        break;
-//    case GO_Delete:
-//        for(int index = 0; index < groupList.count(); index++) {
-//            if(groupList[index].id.compare(value1.toString()) == 0) {
-//                groupList.removeAt(index);
-//                break;
-//            }
-//        }
-//        break;
-//    default:
-//        break;
-//    }
+void wavrMessaging::updateGroup(GroupOp op, QVariant value1, QVariant value2) {
+    switch(op) {
+    case GO_New:
+        groupList.append(Group(value1.toString(), value2.toString()));
+        break;
+    case GO_Rename:
+        for(int index = 0; index < groupList.count(); index++) {
+            if(groupList[index].id.compare(value1.toString()) == 0) {
+                groupList[index].name = value2.toString();
+                break;
+            }
+        }
+        break;
+    case GO_Move:
+        for(int index = 0; index < groupList.count(); index++) {
+            if(groupList[index].id.compare(value1.toString()) == 0) {
+                groupList.move(index, value2.toInt());
+                break;
+            }
+        }
+        break;
+    case GO_Delete:
+        for(int index = 0; index < groupList.count(); index++) {
+            if(groupList[index].id.compare(value1.toString()) == 0) {
+                groupList.removeAt(index);
+                break;
+            }
+        }
+        break;
+    default:
+        break;
+    }
 
-//    saveGroups();
-//}
+    saveGroups();
+}
 
-//void wavrMessaging::updateGroupMap(QString oldGroup, QString newGroup) {
-//    QMap<QString, QString>::const_iterator index = userGroupMap.constBegin();
-//    while (index != userGroupMap.constEnd()) {
-//        if(((QString)index.value()).compare(oldGroup) == 0)
-//            userGroupMap.insert(index.key(), newGroup);
-//        ++index;
-//    }
-//}
+void wavrMessaging::updateGroupMap(QString oldGroup, QString newGroup) {
+    QMap<QString, QString>::const_iterator index = userGroupMap.constBegin();
+    while (index != userGroupMap.constEnd()) {
+        if(((QString)index.value()).compare(oldGroup) == 0)
+            userGroupMap.insert(index.key(), newGroup);
+        ++index;
+    }
+}
 
-//	save groups and group mapping
-//void wavrMessaging::saveGroups(void) {
-//    QSettings groupSettings(StdLocation::groupFile(), QSettings::IniFormat);
-//    groupSettings.beginWriteArray(IDS_GROUPHDR);
-//    for(int index = 0; index < groupList.count(); index++) {
-//        groupSettings.setArrayIndex(index);
-//        groupSettings.setValue(IDS_GROUP, groupList[index].id);
-//        groupSettings.setValue(IDS_GROUPNAME, groupList[index].name);
-//    }
-//    groupSettings.endArray();
+  //  save groups and group mapping
+void wavrMessaging::saveGroups(void) {
+    QSettings groupSettings(StdLocation::groupFile(), QSettings::IniFormat);
+    groupSettings.beginWriteArray(IDS_GROUPHDR);
+    for(int index = 0; index < groupList.count(); index++) {
+        groupSettings.setArrayIndex(index);
+        groupSettings.setValue(IDS_GROUP, groupList[index].id);
+        groupSettings.setValue(IDS_GROUPNAME, groupList[index].name);
+    }
+    groupSettings.endArray();
 
-//    groupSettings.beginWriteArray(IDS_GROUPMAPHDR);
-//    QMapIterator<QString, QString> i(userGroupMap);
-//    int count = 0;
-//    while(i.hasNext()) {
-//        groupSettings.setArrayIndex(count);
-//        i.next();
-//        groupSettings.setValue(IDS_USER, i.key());
-//        groupSettings.setValue(IDS_GROUP, i.value());
-//        count++;
-//    }
-//    groupSettings.endArray();
+    groupSettings.beginWriteArray(IDS_GROUPMAPHDR);
+    QMapIterator<QString, QString> i(userGroupMap);
+    int count = 0;
+    while(i.hasNext()) {
+        groupSettings.setArrayIndex(count);
+        i.next();
+        groupSettings.setValue(IDS_USER, i.key());
+        groupSettings.setValue(IDS_GROUP, i.value());
+        count++;
+    }
+    groupSettings.endArray();
 
-//    groupSettings.sync();
+    groupSettings.sync();
 
-//    // make sure the correct version is set in the preferences file
-//    // so the group settings will not be wrongly migrated next time
-//    // application starts
-//    pSettings->setValue(IDS_VERSION, IDA_VERSION);
-//}
+    // make sure the correct version is set in the preferences file
+    // so the group settings will not be wrongly migrated next time
+    // application starts
+    pSettings->setValue(IDS_VERSION, IDA_VERSION);
+}
 
 int wavrMessaging::userCount(void) {
     return userList.count();
@@ -268,35 +268,35 @@ QString wavrMessaging::getUserName(void) {
     return userName;
 }
 
-//void wavrMessaging::loadGroups(void) {
-//    bool defaultFound = false;
+void wavrMessaging::loadGroups(void) {
+    bool defaultFound = false;
 
-//    QSettings groupSettings(StdLocation::groupFile(), QSettings::IniFormat);
-//    int size = groupSettings.beginReadArray(IDS_GROUPHDR);
-//    for(int index = 0; index < size; index++) {
-//        groupSettings.setArrayIndex(index);
-//        QString groupId = groupSettings.value(IDS_GROUP).toString();
-//        QString group = groupSettings.value(IDS_GROUPNAME).toString();
-//        groupList.append(Group(groupId, group));
-//        // check if the default group is present in the group list
-//        if(groupId.compare(GRP_DEFAULT_ID) == 0)
-//            defaultFound = true;
-//    }
-//    groupSettings.endArray();
+    QSettings groupSettings(StdLocation::groupFile(), QSettings::IniFormat);
+    int size = groupSettings.beginReadArray(IDS_GROUPHDR);
+    for(int index = 0; index < size; index++) {
+        groupSettings.setArrayIndex(index);
+        QString groupId = groupSettings.value(IDS_GROUP).toString();
+        QString group = groupSettings.value(IDS_GROUPNAME).toString();
+        groupList.append(Group(groupId, group));
+        // check if the default group is present in the group list
+        if(groupId.compare(GRP_DEFAULT_ID) == 0)
+            defaultFound = true;
+    }
+    groupSettings.endArray();
 
-//    if(groupList.count() == 0 || !defaultFound)
-//        groupList.append(Group(GRP_DEFAULT_ID, GRP_DEFAULT));
+    if(groupList.count() == 0 || !defaultFound)
+        groupList.append(Group(GRP_DEFAULT_ID, GRP_DEFAULT));
 
-//    size = groupSettings.beginReadArray(IDS_GROUPMAPHDR);
-//    for(int index = 0; index < size; index++)
-//    {
-//        groupSettings.setArrayIndex(index);
-//        QString user = groupSettings.value(IDS_USER).toString();
-//        QString group = groupSettings.value(IDS_GROUP).toString();
-//        userGroupMap.insert(user, group);
-//    }
-//    groupSettings.endArray();
-//}
+    size = groupSettings.beginReadArray(IDS_GROUPMAPHDR);
+    for(int index = 0; index < size; index++)
+    {
+        groupSettings.setArrayIndex(index);
+        QString user = groupSettings.value(IDS_USER).toString();
+        QString group = groupSettings.value(IDS_GROUP).toString();
+        userGroupMap.insert(user, group);
+    }
+    groupSettings.endArray();
+}
 
 void wavrMessaging::getUserInfo(wavrXmlMessage* pMessage) {
     QString firstName = pSettings->value(IDS_USERFIRSTNAME, IDS_USERFIRSTNAME_VAL).toString();
@@ -328,12 +328,12 @@ bool wavrMessaging::addUser(QString szUserId, QString szVersion, QString szAddre
 
     wavrTrace::write("Adding new user: " + szUserId + ", " + szVersion + ", " + szAddress);
 
-   // if(!userGroupMap.contains(szUserId) || !groupList.contains(Group(userGroupMap.value(szUserId))))
-     //   userGroupMap.insert(szUserId, GRP_DEFAULT_ID);
+    if(!userGroupMap.contains(szUserId) || !groupList.contains(Group(userGroupMap.value(szUserId))))
+        userGroupMap.insert(szUserId, GRP_DEFAULT_ID);
 
     int nAvatar = szAvatar.isNull() ? -1 : szAvatar.toInt();
 
-    userList.append(User(szUserId, szVersion, szAddress, szName, szStatus, //userGroupMap[szUserId],
+    userList.append(User(szUserId, szVersion, szAddress, szName, szStatus, userGroupMap[szUserId],
                          nAvatar, szNote, QString::null, szCaps));
 
     if(!szStatus.isNull()) {

@@ -62,7 +62,7 @@ void wavrCore::init(){
 
     pMessaging->init(pInitParams);
     pMessaging->setLoopback(true);
-    pMainWindow->init(pMessaging->localUser, pMessaging->isConnected());
+    pMainWindow->init(pMessaging->localUser, &pMessaging->groupList, pMessaging->isConnected());
 }
 
 bool wavrCore::start(void) {
@@ -264,7 +264,7 @@ void wavrCore::chatWindow_closed(QString *lpszUserId) {
 void wavrCore::processMessage(MessageType type, QString *lpszUserId, wavrXmlMessage *pMessage) {
     switch(type) {
     case MT_Announce:
-        qDebug() << "Adding new user in main window " << pMessaging->getUser(lpszUserId);
+        qDebug() << "Adding new user in main window " << lpszUserId;
         pMainWindow->addUser(pMessaging->getUser(lpszUserId));
         break;
     case MT_Depart:

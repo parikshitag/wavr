@@ -237,7 +237,7 @@ void wavrMainWindow::sendAvatar(QString* lpszUserId) {
     if(!QFile::exists(filePath))
         return;
 
-    //sendMessage(MT_Avatar, lpszUserId, &filePath);
+    sendMessage(MT_Avatar, lpszUserId, &filePath);
 }
 
 void wavrMainWindow::setUserAvatar(QString* lpszUserId, QString *lpszFilePath) {

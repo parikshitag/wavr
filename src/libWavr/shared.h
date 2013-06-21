@@ -37,19 +37,22 @@ struct User {
     QString version;
     QString status;
     int avatar;
+    QString group;
     QString note;
     QString avatarPath;
     uint caps;
 
     User(void) {}
-    User(QString szId, QString szVersion, QString szAddress, QString szName, QString szStatus,
+    User(QString szId, QString szVersion, QString szAddress, QString szName, QString szStatus, QString szGroup,
          int nAvatar, QString szNote, QString szAvatarPath, QString szCaps) {
         this->id = szId;
         this->version = szVersion;
         this->address = szAddress;
         this->name = szName;
         this->status = szStatus;
+        this->group = szGroup;
         this->avatar = nAvatar;
+        this->note = szNote;
         this->avatarPath = szAvatarPath;
         this->caps = szCaps.toUInt();
     }

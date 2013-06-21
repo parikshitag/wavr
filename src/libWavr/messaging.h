@@ -86,14 +86,14 @@ public:
     void sendBroadcast(MessageType type, wavrXmlMessage* pMessage);
     void sendMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
     void settingsChanged(void);
-    //void updateGroup(GroupOp op, QVariant value1, QVariant value2);
-    //void updateGroupMap(QString oldGroup, QString newGroup);
+    void updateGroup(GroupOp op, QVariant value1, QVariant value2);
+    void updateGroupMap(QString oldGroup, QString newGroup);
     void saveGroups(void);
     int userCount(void);
 
     User* localUser;
     QList<User> userList;
-    //QList<Group> groupList;
+    QList<Group> groupList;
 
 signals:
     void messageReceived(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);

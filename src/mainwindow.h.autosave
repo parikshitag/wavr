@@ -109,7 +109,7 @@ private:
     void setAvatar(QString fileName = QString());
     QTreeWidgetItem* getUserItem(QString* lpszUserId);
     QTreeWidgetItem* getGroupItem(QString* lpszGroupId);
-    void sentMessage(MessageType type, QString* lpszUserId, QString* lpszMessage);
+    void sendMessage(MessageType type, QString* lpszUserId, QString* lpszMessage);
     void sendAvatar(QString* lpszUserId);
     void setUserAvatar(QString* lpszUserId, QString* lpszFilePath);
     void processTrayIconTrigger(void);

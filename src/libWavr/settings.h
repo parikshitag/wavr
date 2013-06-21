@@ -87,9 +87,12 @@
 #define IDS_NOTE                "User/Note"
 #define IDS_NOTE_VAL            ""
 
+#define IDS_GROUPHDR			"Groups"
 #define IDS_GROUP               "Group"
+#define IDS_GROUPNAME			"GroupName"
 #define IDS_GROUPEXPHDR         "GroupExp"
-
+#define IDS_GROUPMAPHDR			"GroupMap"
+#define IDS_USER				"User"
 class wavrSettingsBase : public QSettings {
 public:
     wavrSettingsBase(void);
