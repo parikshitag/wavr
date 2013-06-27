@@ -32,7 +32,10 @@ SOURCES += main.cpp\
     libWavr/message.cpp \
     libWavr/settings.cpp \
     strings.cpp \
-    libWavr/trace.cpp
+    libWavr/trace.cpp \
+    settingsdialog.cpp \
+    imagepickeraction.cpp \
+    imagepicker.cpp
 
 HEADERS  += mainwindow.h \
     QProgressIndicator.h \
@@ -58,11 +61,15 @@ HEADERS  += mainwindow.h \
     strings.h \
     stdlocation.h \
     libWavr/trace.h \
-    libWavr/stdlocation.h
+    libWavr/stdlocation.h \
+    settingsdialog.h \
+    imagepickeraction.h \
+    imagepicker.h
 
 FORMS    += \
     mainwindow.ui \
-    chatwindow.ui
+    chatwindow.ui \
+    settingsdialog.ui
 
 RESOURCES += \
     wavrIcons.qrc \

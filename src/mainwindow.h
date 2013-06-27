@@ -64,7 +64,7 @@ public:
     void removeUser(QString* lpszUserId);
     void receiveMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
     void connectionStateChanged(bool connected);
-    void settingsChanged(bool init = false);
+    void settingsChanged();
     //void showTrayMessage(TrayMessageType type, QString szMessage, QString szTitle = QString::null, TrayMessageIcon icon = TMI_info);
     QList<QTreeWidgetItem*> getContactsList(void);
 
@@ -80,9 +80,9 @@ protected:
 //    void changeEvent(QEvent *pEvent);
 
 private slots:
-//    void sendMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
+    void sendMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
 //    void trayShowAction_triggered(void);
-//    void traySettingsAction_triggered(void);
+    void traySettingsAction_triggered(void);
 //    void trayExistAction_triggered(void);
 //    void statusAction_triggered(QAction* action);
 //    void avatarAction_triggered(void);
@@ -109,7 +109,7 @@ private:
     void setAvatar(QString fileName = QString());
     QTreeWidgetItem* getUserItem(QString* lpszUserId);
     QTreeWidgetItem* getGroupItem(QString* lpszGroupId);
-    void sentMessage(MessageType type, QString* lpszUserId, QString* lpszMessage);
+    void sendMessage(MessageType type, QString* lpszUserId, QString* lpszMessage);
     void sendAvatar(QString* lpszUserId);
     void setUserAvatar(QString* lpszUserId, QString* lpszFilePath);
     void processTrayIconTrigger(void);
@@ -117,10 +117,9 @@ private:
 
     Ui::MainWindow ui;
     wavrSettings* pSettings;
-    QMenuBar* pMainMenu;
+    QMenuBar* pMainMenuBar;
     QSystemTrayIcon* pTrayIcon;
-    QMenu* pToolsMenu;
-    QMenu* pTrayMenu;
+    QMenu* pMainMenu;
     QComboBox* pCmbPresence;
     QLineEdit* pEditSrch;
 

@@ -27,12 +27,15 @@
 
 #include <QSettings>
 #include <QApplication>
+#include <QStandardPaths>
 #include <QDir>
 #include "shared.h"
 
 //  Application settings definitions and default values
 #define IDS_VERSION             "Application/Version"
 #define IDS_VERSION_VAL         "0.1.0"
+#define IDS_OPENPATH			"Application/OpenPath"
+#define IDS_OPENPATH_VAL		QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
 
 #define IDS_WINDOWMAIN          "Window/Main"
 
@@ -49,8 +52,22 @@
 #define IDS_REFRESHTIME         "RefreshInterval"
 #define IDS_REFRESHTIME_VAL     300
 
-#define IDS_MESSAGEPOP         "Messages/MessagePop"        // set incoming messages foreground or minimize to taskbar
-#define IDS_MESSAGEPOP_VAL      false
+#define IDS_EMOTICON			"Messages/Emoticon"
+#define IDS_EMOTICON_VAL		true
+#define IDS_MESSAGETIME			"Messages/MessageTime"
+#define IDS_MESSAGETIME_VAL		true
+#define IDS_MESSAGEDATE			"Messages/MessageDate"
+#define IDS_MESSAGEDATE_VAL		false
+#define IDS_ALLOWLINKS			"Messages/AllowLinks"
+#define IDS_ALLOWLINKS_VAL		true
+#define IDS_PATHTOLINK			"Messages/PathToLink"
+#define IDS_PATHTOLINK_VAL		false
+#define IDS_TRIMMESSAGE			"Messages/Trim"
+#define IDS_TRIMMESSAGE_VAL		true
+#define IDS_CLEARONCLOSE        "Messages/ClearOnClose"
+#define IDS_CLEARONCLOSE_VAL    true
+#define IDS_MESSAGETOP         "Messages/MessagePop"        // set incoming messages foreground or minimize to taskbar
+#define IDS_MESSAGETOP_VAL      false
 #define IDS_PUBMESSAGEPOP       "Messages/PubMessagePop"    // set above to public messages or not
 #define IDS_PUBMESSAGEPOP_VAL   false
 
@@ -75,8 +92,7 @@
 #define IDS_STATUS_VAL          statusCode[0]
 #define IDS_AVATAR              "User/Avatar"
 #define IDS_AVATAR_VAL			65535	//	this should be a number bigger than AVT_COUNT, 65535 set arbitrarily
-
-#define IDS_USERNAME            "User/Avatar"
+#define IDS_USERNAME            "User/Name"
 #define IDS_USERNAME_VAL        ""
 #define IDS_USERFIRSTNAME		"User/FirstName"
 #define IDS_USERFIRSTNAME_VAL	""

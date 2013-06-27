@@ -107,38 +107,37 @@
         <file>resources/menu/web.png</file>
     </qresource>
     <qresource prefix="/avatars">
-        <file>resources/avatars/0.png</file>
-        <file>resources/avatars/1.png</file>
-        <file>resources/avatars/2.png</file>
-        <file>resources/avatars/3.png</file>
-        <file>resources/avatars/4.png</file>
-        <file>resources/avatars/5.png</file>
-        <file>resources/avatars/6.png</file>
-        <file>resources/avatars/7.png</file>
-        <file>resources/avatars/8.png</file>
-        <file>resources/avatars/9.png</file>
-        <file>resources/avatars/10.png</file>
-        <file>resources/avatars/11.png</file>
-        <file>resources/avatars/12.png</file>
-        <file>resources/avatars/13.png</file>
-        <file>resources/avatars/14.png</file>
-        <file>resources/avatars/15.png</file>
-        <file>resources/avatars/16.png</file>
-        <file>resources/avatars/17.png</file>
-        <file>resources/avatars/18.png</file>
-        <file>resources/avatars/19.png</file>
-        <file>resources/avatars/default.png</file>
+        <file alias="0">resources/avatars/0.png</file>
+        <file alias="1">resources/avatars/1.png</file>
+        <file alias="2">resources/avatars/2.png</file>
+        <file alias="3">resources/avatars/3.png</file>
+        <file alias="4">resources/avatars/4.png</file>
+        <file alias="5">resources/avatars/5.png</file>
+        <file alias="6">resources/avatars/6.png</file>
+        <file alias="7">resources/avatars/7.png</file>
+        <file alias="8">resources/avatars/8.png</file>
+        <file alias="9">resources/avatars/9.png</file>
+        <file alias="10">resources/avatars/10.png</file>
+        <file alias="11">resources/avatars/11.png</file>
+        <file alias="12">resources/avatars/12.png</file>
+        <file alias="13">resources/avatars/13.png</file>
+        <file alias="14">resources/avatars/14.png</file>
+        <file alias="15">resources/avatars/15.png</file>
+        <file alias="16">resources/avatars/16.png</file>
+        <file alias="17">resources/avatars/17.png</file>
+        <file alias="18">resources/avatars/18.png</file>
+        <file alias="default">resources/avatars/default.png</file>
     </qresource>
     <qresource prefix="/settings">
-        <file>resources/settings/alertsettings.png</file>
-        <file>resources/settings/historysettings.png</file>
-        <file>resources/settings/hotkeysettings.png</file>
-        <file>resources/settings/messagesettings.png</file>
-        <file>resources/settings/networksettings.png</file>
-        <file>resources/settings/systemsettings.png</file>
-        <file>resources/settings/themesettings.png</file>
-        <file>resources/settings/transfersettings.png</file>
-        <file>resources/settings/usersettings.png</file>
+        <file alias="alert">resources/settings/alertsettings.png</file>
+        <file alias="history">resources/settings/historysettings.png</file>
+        <file alias="hotkey">resources/settings/hotkeysettings.png</file>
+        <file alias="message">resources/settings/messagesettings.png</file>
+        <file alias="network">resources/settings/networksettings.png</file>
+        <file alias="system">resources/settings/systemsettings.png</file>
+        <file alias="theme">resources/settings/themesettings.png</file>
+        <file alias="transfer">resources/settings/transfersettings.png</file>
+        <file alias="user">resources/settings/usersettings.png</file>
         <file>resources/settings/play.png</file>
     </qresource>
     <qresource prefix="/status">

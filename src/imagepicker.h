@@ -22,29 +22,31 @@
 ****************************************************************************/
 
 
-#include "datagram.h"
 
-void wavrDatagram::addHeader(DatagramType type, QByteArray &baData) {
-    QByteArray datagramType = DatagramTypeNames[type].toLocal8Bit();
-    baData.insert(0, datagramType);
-}
+#ifndef IMAGEPICKER_H
+#define IMAGEPICKER_H
 
-bool wavrDatagram::getHeader(QByteArray &baDatagram, DatagramHeader **ppHeader) {
-    QString datagramType(baDatagram.mid(0, 6)); // first 6 bytes represent datagram type
-    int type = wavrHelper::indexOf(DatagramTypeNames, DT_Max, datagramType);
-    if (type < 0)
-        return false;
+#include <QTableWidget>
 
-    *ppHeader = new DatagramHeader(
-                (DatagramType)type,
-                QString(),
-                QString());
-    return true;
-}
+class wavrImagePicker : public QTableWidget {
+    Q_OBJECT
 
-QByteArray wavrDatagram::getData(QByteArray &baDatagram) {
-    if(baDatagram.length() > 6)
-        return baDatagram.mid(6);
+public:
+    wavrImagePicker(QWidget *parent, QList<QString>* source, int picSize, int columns, int* selected, int actionIndex);
+    ~wavrImagePicker();
 
-    return QByteArray();
-}
+protected:
+    void currentChanged(const QModelIndex& current, const QModelIndex& preious);
+    void mouseMoveEvent(QMouseEvent* e);
+    void paintEvent(QPaintEvent* e);
+    void leaveEvent(QEvent* e);
+
+private:
+    int* selected;
+    int actionIndex;
+    int max_col;
+
+    QTableWidgetItem* hoverItem;
+};
+
+#endif // IMAGEPICKER_H

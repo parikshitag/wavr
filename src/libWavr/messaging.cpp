@@ -25,6 +25,7 @@
 #include "messaging.h"
 #include "stdlocation.h"
 #include "trace.h"
+#include <QDebug>
 
 wavrMessaging::wavrMessaging(void) {
     pNetwork = new wavrNetwork();
@@ -145,11 +146,23 @@ void wavrMessaging::settingsChanged(void) {
     pNetwork->settingsChanged();
 
     QString userName = getUserName();
+    qDebug() << userName << " " << localUser->name;
     if(localUser->name.compare(userName) != 0) {
         localUser->name = userName;
-        wavrXmlMessage wavrXmlMessage;
-        wavrXmlMessage.addData(XML_NAME, userName);
-        sendMessage(MT_UserName, NULL, &wavrXmlMessage);
+        wavrXmlMessage xmlMessage;
+        xmlMessage.addData(XML_NAME, userName);
+        sendMessage(MT_UserName, NULL, &xmlMessage);
+    }
+
+    int userAvatar = pSettings->value(IDS_AVATAR, IDS_AVATAR_VAL).toInt();
+    if (localUser->avatar != userAvatar) {
+        localUser->avatar = userAvatar;
+        QString filePath = StdLocation::avatarFile();
+        if(!QFile::exists(filePath))
+            return;
+        wavrXmlMessage xmlMessage;
+        xmlMessage.addData(XML_AVATAR, filePath);
+        sendMessage(MT_Avatar, NULL,  &xmlMessage);
     }
 }
 

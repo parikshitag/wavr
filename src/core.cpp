@@ -35,10 +35,14 @@ wavrCore::wavrCore(void) {
     connect(pMainWindow, SIGNAL(appExiting()), this, SLOT(exitApp()));
     connect(pMainWindow, SIGNAL(chatStarting(QString*)), this, SLOT(startChat(QString*)));
 
+    connect(pMainWindow, SIGNAL(showSettings()), this, SLOT(showSettings()));
+
     connect(pMainWindow, SIGNAL(messageSent(MessageType, QString*, wavrXmlMessage*)),
             this, SLOT(sendMessage(MessageType,QString*,wavrXmlMessage*)));
 
     pTabWidget = new QTabWidget;
+
+    pSettingsDialog = NULL;
 
 }
 
@@ -98,16 +102,18 @@ void wavrCore::loadSettings(void) {
     lang = pSettings->value(IDS_LANGUAGE, IDS_LANGUAGE_VAL).toString();
     //Application::setLanguage(lang);
    // Application::setLayoutDirection(tr("LAYOUT_DIRECTION") == RTL_LAYOUT ? Qt::RightToLeft : Qt::LeftToRight);
-    messagePop = pSettings->value(IDS_MESSAGEPOP, IDS_MESSAGEPOP_VAL).toBool();
+    messageTop = pSettings->value(IDS_MESSAGETOP, IDS_MESSAGETOP_VAL).toBool();
     pubMessagePop = pSettings->value(IDS_PUBMESSAGEPOP, IDS_PUBMESSAGEPOP_VAL).toBool();
     refreshTime = pSettings->value(IDS_REFRESHTIME, IDS_REFRESHTIME_VAL).toInt() * 1000;
+
+
 }
 
-void wavrCore::settingsChanged(void) {
+void wavrCore::settingsChanged() {
     pMessaging->settingsChanged();
-    //pMainWindow->settingsChanged();
+    pMainWindow->settingsChanged();
 
-    messagePop = pSettings->value(IDS_MESSAGEPOP, IDS_MESSAGEPOP_VAL).toBool();
+    messageTop = pSettings->value(IDS_MESSAGETOP, IDS_MESSAGETOP_VAL).toBool();
     pubMessagePop = pSettings->value(IDS_PUBMESSAGEPOP, IDS_PUBMESSAGEPOP_VAL).toInt() * 1000;
     pTimer->setInterval(refreshTime);
     bool autoStart = pSettings->value(IDS_AUTOSTART, IDS_AUTOSTART_VAL).toBool();
@@ -119,6 +125,7 @@ void wavrCore::settingsChanged(void) {
         //Application::setLayoutDirection(tr("LAYOUT_DIRECTION") == RTL_LAYOUT ? Qt::RightToLeft : Qt::LeftToRight);
         //wavrStrings::retranslate();
     }
+
 }
 
 void wavrCore::stop(void) {
@@ -242,6 +249,16 @@ void wavrCore::connectionStateChanged(void) {
     }
 }
 
+void wavrCore::showSettings(void) {
+    if(!pSettingsDialog) {
+        pSettingsDialog = new wavrSettingsDialog(pMainWindow);
+        pSettingsDialog->init();
+    }
+
+    if(pSettingsDialog->exec())
+        settingsChanged();
+}
+
 void wavrCore::chatWindow_closed(QString *lpszUserId) {
     for(int index = 0; index < chatWindows.count(); index++) {
         if(chatWindows[index]->peerIds.contains(*lpszUserId)) {
@@ -264,7 +281,6 @@ void wavrCore::chatWindow_closed(QString *lpszUserId) {
 void wavrCore::processMessage(MessageType type, QString *lpszUserId, wavrXmlMessage *pMessage) {
     switch(type) {
     case MT_Announce:
-        qDebug() << "Adding new user in main window " << lpszUserId;
         pMainWindow->addUser(pMessaging->getUser(lpszUserId));
         break;
     case MT_Depart:
@@ -321,7 +337,7 @@ void wavrCore::routeMessage(MessageType type, QString *lpszUserId, wavrXmlMessag
                 if(chatWindows[index]->peerIds.contains(*lpszUserId)) {
                     //chatWindows[index]->receiveMessage(type, lpszUserId, pMessage);
                     if(needsNotice)
-                        showChatWindow(chatWindows[index], messagePop, needsNotice);
+                        showChatWindow(chatWindows[index], messageTop, needsNotice);
                     windowExists = true;
                     break;
                 }
@@ -336,7 +352,7 @@ void wavrCore::routeMessage(MessageType type, QString *lpszUserId, wavrXmlMessag
         createChatWindow(lpszUserId);
         //chatWindows.last()->receiveMessage(type, lpszUserId, pMessage);
         if(needsNotice)
-            showChatWindow(chatWindows.last(), messagePop, needsNotice);
+            showChatWindow(chatWindows.last(), messageTop, needsNotice);
     }
 }
 

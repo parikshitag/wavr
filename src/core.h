@@ -27,6 +27,7 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QPointer>
 
 #include "libWavr/shared.h"
 #include "libWavr/settings.h"
@@ -34,7 +35,7 @@
 #include "mainwindow.h"
 #include "chatwindow.h"
 #include "strings.h"
-#include "uidefinitions.h"
+#include "settingsdialog.h"
 
 class wavrCore : public QObject {
     Q_OBJECT
@@ -53,36 +54,40 @@ private slots:
     void aboutToExit(void);
     void timer_timeout(void);
     void startChat(QString* lpszUserId);
+    void settingsChanged();
     //void startChatRoom(QString* lpszThreadId);
     void sendMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
     void receiveMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
     void connectionStateChanged(void);
+
+    void showSettings(void);
+
     void chatWindow_closed(QString* lpszUserId);
 
 private:
     void stop(void);
     void loadSettings(void);
-    void settingsChanged(void);
     void processMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
     void routeMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
     void createChatWindow(QString* lpszUserId);
     void showChatWindow(wavrChatWindow* chatWindow, bool show, bool alert = false);
     void showPortConflictMessage(void);
 
-    wavrSettings*           pSettings;
-    QTimer*                 pTimer;
-    wavrMessaging*          pMessaging;
-    wavrMainWindow*         pMainWindow;
-    QTabWidget*             pTabWidget;
-    QList<wavrChatWindow*>  chatWindows;
+    wavrSettings*                       pSettings;
+    QTimer*                             pTimer;
+    wavrMessaging*                      pMessaging;
+    wavrMainWindow*                     pMainWindow;
+    QTabWidget*                         pTabWidget;
+    QList<wavrChatWindow*>              chatWindows;
 
+    QPointer<wavrSettingsDialog>        pSettingsDialog;
 
-    bool                    messagePop;
-    bool                    pubMessagePop;
-    QString                 lang;
-    bool                    adaptiveRefresh;
-    int                     refreshTime;
-    wavrXmlMessage*         pInitParams;
+    bool                                messageTop;
+    bool                                pubMessagePop;
+    QString                             lang;
+    bool                                adaptiveRefresh;
+    int                                 refreshTime;
+    wavrXmlMessage*                     pInitParams;
 };
 
 #endif // CORE_H

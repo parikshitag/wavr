@@ -60,15 +60,15 @@
 #define IDR_HGRIP               ":/images/hgrip"
 #define IDR_VGRIP               ":/images/vgrip"
 #define IDR_SENDFOLDER          ":/images/sendfolder"
-#define IDR_GENERALSET          ":/settings/systemsettings" //-----------settings-------------//
-#define IDR_ACCOUTNSET          ":/settings/usersettings"
-#define IDDR_MESSAGESET         ":/settings/messagesettings"
-#define IDR_HISTORYSET          ":/settings/historysettings"
-#define IDR_ALERTSET            ":/settings/alertsettings"
-#define IDR_NETWORKSET          ":/settings/networksettings"
-#define IDR_TRANSFERSET         ":/settings/transfersettings"
-#define IDR_THEMESET            ":/settings/themesettings"
-#define IDR_HOTKEYSET           ":/settings/hotkeysettings"
+#define IDR_GENERALSET          ":/settings/system" //-----------settings-------------//
+#define IDR_ACCOUNTSET          ":/settings/user"
+#define IDR_MESSAGESET          ":/settings/message"
+#define IDR_HISTORYSET          ":/settings/history"
+#define IDR_ALERTSET            ":/settings/alert"
+#define IDR_NETWORKSET          ":/settings/network"
+#define IDR_TRANSFERSET         ":/settings/transfer"
+#define IDR_THEMESET            ":/settings/theme"
+#define IDR_HOTKEYSET           ":/settings/hotkey"
 #define IDR_PLAY                ":/settings/play"
 
 //	item data role definitions
@@ -210,8 +210,8 @@ const QString smileyPic[] = {
 #define AVT_19				":/avatars/19"
 
 #define AVT_COUNT	20
-const QString avtPic[] = {AVT_0, AVT_1, AVT_2, AVT_3, AVT_4, AVT_5, AVT_6, AVT_7, AVT_8, AVT_9,
-    AVT_10, AVT_11, AVT_12, AVT_13, AVT_14, AVT_15, AVT_16, AVT_17, AVT_18, AVT_19};
+const QString avtPic[] = {AVT_DEFAULT, AVT_0, AVT_1, AVT_2, AVT_3, AVT_4, AVT_5, AVT_6, AVT_7, AVT_8, AVT_9,
+    AVT_10, AVT_11, AVT_12, AVT_13, AVT_14, AVT_15, AVT_16, AVT_17, AVT_18};
 
 #define AVT_WIDTH		48
 #define AVT_HEIGHT		48

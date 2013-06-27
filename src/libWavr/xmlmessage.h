@@ -54,6 +54,11 @@
 #define XML_MESSAGE             "message"
 #define XML_BROADCAST           "broadcast"
 
+#define XML_FILEOP			"fileop"
+#define XML_FILETYPE			"filetype"
+
+#define XML_FILEPATH			"filepath"
+
 #define XML_CHATSTATE           "chatstate"
 
 #define XML_QUERYOP             "queryop"

@@ -22,29 +22,27 @@
 ****************************************************************************/
 
 
-#include "datagram.h"
 
-void wavrDatagram::addHeader(DatagramType type, QByteArray &baData) {
-    QByteArray datagramType = DatagramTypeNames[type].toLocal8Bit();
-    baData.insert(0, datagramType);
-}
+#ifndef IMAGEPICKERACTION_H
+#define IMAGEPICKERACTION_H
 
-bool wavrDatagram::getHeader(QByteArray &baDatagram, DatagramHeader **ppHeader) {
-    QString datagramType(baDatagram.mid(0, 6)); // first 6 bytes represent datagram type
-    int type = wavrHelper::indexOf(DatagramTypeNames, DT_Max, datagramType);
-    if (type < 0)
-        return false;
+#include <QWidget>
+#include <QWidgetAction>
+#include "imagepicker.h"
 
-    *ppHeader = new DatagramHeader(
-                (DatagramType)type,
-                QString(),
-                QString());
-    return true;
-}
+class wavrImagePickerAction: public QWidgetAction {
+public:
+    wavrImagePickerAction(QObject* parent, const QString source[], int sourceCount, int picSize, int columns, int* selected);
+    ~wavrImagePickerAction(void);
 
-QByteArray wavrDatagram::getData(QByteArray &baDatagram) {
-    if(baDatagram.length() > 6)
-        return baDatagram.mid(6);
+    void releaseWidget(QWidget* widget);
+    QWidget* createWidget(QWidget* parent);
 
-    return QByteArray();
-}
+private:
+    QList<QString>* source;
+    int picSize;
+    int columns;
+    int* selected;
+};
+
+#endif // IMAGEPICKERACTION_H

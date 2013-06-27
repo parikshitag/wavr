@@ -141,6 +141,59 @@ const QString MessageTypeNames[] = {
 };
 
 /****************************************************************************
+**	File operation definitions
+**	The enum and the string array should always be synced
+****************************************************************************/
+enum FileOp {
+    FO_Blank = 0,
+    FO_Init,    // Id assigned, but request not yet sent. Used for files that are part of a folder transfer
+    FO_Request,
+    FO_Accept,
+    FO_Decline,
+    FO_Cancel,
+    FO_Progress,
+    FO_Error,
+    FO_Abort,
+    FO_Complete,
+    FO_Next,
+    FO_Max
+};
+
+const QString FileOpNames[] = {
+    "",
+    "init",
+    "request",
+    "accept",
+    "decline",
+    "cancel",
+    "progress",
+    "error",
+    "abort",
+    "complete",
+    "next"
+};
+
+
+/****************************************************************************
+**	File operation definitions
+**	The enum and the string array should always be synced
+****************************************************************************/
+enum FileType {
+    FT_None = 0,
+    FT_Normal,
+    FT_Avatar,
+    FT_Folder,
+    FT_Max
+};
+
+const QString FileTypeNames[] = {
+    "",
+    "normal",
+    "avatar",
+    "folder"
+};
+
+/****************************************************************************
 **	Query operation definitions
 **	The enum and the string array should always be synced
 ****************************************************************************/

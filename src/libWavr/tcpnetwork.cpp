@@ -191,7 +191,6 @@ void wavrTcpNetwork::receiveMessage(QString* lpszUserId, QString* lpszAddress, Q
     if (!wavrDatagram::getHeader(datagram, &pHeader))
         return;
 
-    qDebug("is this called");
     pHeader->userId = *lpszUserId;
     pHeader->address = *lpszAddress;
     QByteArray clearData = wavrDatagram::getData(datagram);
