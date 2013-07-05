@@ -6,16 +6,80 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>233</width>
-    <height>299</height>
+    <width>265</width>
+    <height>445</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetMinimumSize</enum>
+   </property>
    <item>
-    <widget class="QFrame" name="presence_toolbar"/>
+    <widget class="QComboBox" name="cmbPresence">
+     <property name="editable">
+      <bool>true</bool>
+     </property>
+     <property name="insertPolicy">
+      <enum>QComboBox::NoInsert</enum>
+     </property>
+     <item>
+      <property name="text">
+       <string>Available</string>
+      </property>
+      <property name="icon">
+       <iconset resource="wavrIcons.qrc">
+        <normaloff>:/status/available</normaloff>:/status/available</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Away</string>
+      </property>
+      <property name="icon">
+       <iconset resource="wavrIcons.qrc">
+        <normaloff>:/status/away</normaloff>:/status/away</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Extended Away</string>
+      </property>
+      <property name="icon">
+       <iconset resource="wavrIcons.qrc">
+        <normaloff>:/status/extended-away</normaloff>:/status/extended-away</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Busy</string>
+      </property>
+      <property name="icon">
+       <iconset resource="wavrIcons.qrc">
+        <normaloff>:/status/busy</normaloff>:/status/busy</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Invisible</string>
+      </property>
+      <property name="icon">
+       <iconset resource="wavrIcons.qrc">
+        <normaloff>:/status/invisible</normaloff>:/status/invisible</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Offline</string>
+      </property>
+      <property name="icon">
+       <iconset resource="wavrIcons.qrc">
+        <normaloff>:/status/offline</normaloff>:/status/offline</iconset>
+      </property>
+     </item>
+    </widget>
    </item>
    <item>
     <widget class="QFrame" name="search_toolbar">
@@ -29,9 +93,47 @@
    </item>
    <item>
     <widget class="wavrUserTreeWidget" name="tvUserList">
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::EditKeyPressed</set>
+     </property>
+     <property name="tabKeyNavigation">
+      <bool>true</bool>
+     </property>
+     <property name="dragEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="dragDropMode">
+      <enum>QAbstractItemView::InternalMove</enum>
+     </property>
+     <property name="defaultDropAction">
+      <enum>Qt::MoveAction</enum>
+     </property>
+     <property name="indentation">
+      <number>0</number>
+     </property>
+     <property name="animated">
+      <bool>true</bool>
+     </property>
+     <property name="allColumnsShowFocus">
+      <bool>true</bool>
+     </property>
      <attribute name="headerVisible">
       <bool>false</bool>
      </attribute>
+     <column>
+      <property name="text">
+       <string>Contacts</string>
+      </property>
+     </column>
     </widget>
    </item>
   </layout>
@@ -43,6 +145,8 @@
    <header>usertreewidget.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="wavrIcons.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -284,17 +284,17 @@ void wavrCore::processMessage(MessageType type, QString *lpszUserId, wavrXmlMess
         pMainWindow->addUser(pMessaging->getUser(lpszUserId));
         break;
     case MT_Depart:
-        //pMainWindow->removeUser(lpszUserId);
+        pMainWindow->removeUser(lpszUserId);
         routeMessage(type, lpszUserId, pMessage);
         break;
     case MT_Status:
     case MT_UserName:
     case MT_Note:
-        //pMainWindow->updateUser(pMessaging->getUser(lpszUserId));
+        pMainWindow->updateUser(pMessaging->getUser(lpszUserId));
         routeMessage(type, lpszUserId, pMessage);
         break;
     case MT_Avatar:
-        //pMainWindow->receiveMessage(type, lpszUserId, pMessage);
+        pMainWindow->receiveMessage(type, lpszUserId, pMessage);
         routeMessage(type, lpszUserId, pMessage);
         break;
     case MT_Message:

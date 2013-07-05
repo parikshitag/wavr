@@ -146,7 +146,6 @@ void wavrMessaging::settingsChanged(void) {
     pNetwork->settingsChanged();
 
     QString userName = getUserName();
-    qDebug() << userName << " " << localUser->name;
     if(localUser->name.compare(userName) != 0) {
         localUser->name = userName;
         wavrXmlMessage xmlMessage;
@@ -155,12 +154,15 @@ void wavrMessaging::settingsChanged(void) {
     }
 
     int userAvatar = pSettings->value(IDS_AVATAR, IDS_AVATAR_VAL).toInt();
+    qDebug() << userAvatar << " " << localUser->avatar;
     if (localUser->avatar != userAvatar) {
         localUser->avatar = userAvatar;
         QString filePath = StdLocation::avatarFile();
         if(!QFile::exists(filePath))
             return;
         wavrXmlMessage xmlMessage;
+        xmlMessage.addData(XML_FILETYPE, FileTypeNames[FT_Avatar]);
+        xmlMessage.addData(XML_FILEOP, FileOpNames[FO_Request]);
         xmlMessage.addData(XML_AVATAR, filePath);
         sendMessage(MT_Avatar, NULL,  &xmlMessage);
     }

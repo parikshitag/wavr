@@ -53,7 +53,7 @@ void wavrMainWindow::init(User *pLocalUser, QList<Group>* pGroupList, bool conne
 
     createMainMenu();
     //createToolBar();
-    createPresenceToolbar();
+    //createPresenceToolbar();
     //createAvatarMenu();
 
     //createTrayMenu();
@@ -165,7 +165,7 @@ void wavrMainWindow::addUser(User *pUser) {
         pItem->setToolTip(0, wavrStrings::statusDesc()[index]);
 
     if(index != -1)
-        pItem->setIcon(0, QIcon(QPixmap(StatusPic[index], "PNG")));
+        pItem->setIcon(0, QIcon(QPixmap(statusPic[index], "PNG")));
 
     wavrUserTreeWidgetGroupItem* pGroupItem = (wavrUserTreeWidgetGroupItem*)getGroupItem(&pUser->group);
     pGroupItem->addChild(pItem);
@@ -184,6 +184,53 @@ void wavrMainWindow::addUser(User *pUser) {
 
     sendAvatar(&pUser->id);
 }
+
+void wavrMainWindow::updateUser(User *pUser) {
+    if(!pUser)
+        return;
+
+    QTreeWidgetItem* pItem = getUserItem(&pUser->id);
+    if(pItem) {
+        updateStatusImage(pItem, &pUser->status);
+        int index = wavrHelper::statusIndexFromCode(pUser->status);
+        pItem->setData(0, StatusRole, index);
+        pItem->setData(0, SubtextRole, pUser->note);
+        pItem->setText(0, pUser->name);
+        if(statusToolTip)
+            pItem->setToolTip(0, wavrStrings::statusDesc()[index]);
+        QTreeWidgetItem* pGroupItem = pItem->parent();
+        pGroupItem->sortChildren(0, Qt::AscendingOrder);
+    }
+}
+
+void wavrMainWindow::removeUser(QString *lpszUserId) {
+    QTreeWidgetItem* pItem = getUserItem(lpszUserId);
+    if(!pItem)
+        return;
+
+    QTreeWidgetItem* pGroup = pItem->parent();
+    pGroup->removeChild(pItem);
+
+//    if(isHidden() || !isActiveWindow()) {
+//        QString msg = tr("%1 is offline.");
+//        showTrayMessage(TM_Status, msg.arg(pItem->text(0)));
+//        pSoundPlayer->play(SE_UserOffline);
+//    }
+}
+
+void wavrMainWindow::receiveMessage(MessageType type, QString *lpszUserId, wavrXmlMessage *pMessage) {
+    QString filePath;
+
+    switch(type) {
+    case MT_Avatar:
+        filePath = pMessage->data(XML_FILEPATH);
+        setUserAvatar(lpszUserId, &filePath);
+        break;
+    default:
+        break;
+    }
+}
+
 
 void wavrMainWindow::settingsChanged() {
 //	showSysTray = pSettings->value(IDS_SYSTRAY, IDS_SYSTRAY_VAL).toBool();
@@ -219,6 +266,14 @@ void wavrMainWindow::settingsChanged() {
 
 }
 
+QList<QTreeWidgetItem*> wavrMainWindow::getContactsList(void) {
+    QList<QTreeWidgetItem*> contactsList;
+    for(int index = 0; index < ui.tvUserList->topLevelItemCount(); index++)
+        contactsList.append(ui.tvUserList->topLevelItem(index)->clone());
+
+    return contactsList;
+}
+
 void wavrMainWindow::sendMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage) {
     emit messageSent(type, lpszUserId, pMessage);
 }
@@ -237,15 +292,15 @@ void wavrMainWindow::createMainMenu(void) {
     layout()->setMenuBar(pMainMenuBar);
 }
 
-void wavrMainWindow::createPresenceToolbar(void) {
-pCmbPresence = new QComboBox(this);
-for(int index = 0; index < ST_COUNT; index++) {
-    pCmbPresence->addItem(QIcon(QPixmap(StatusPic[index], "PNG")), wavrStrings::statusDesc()[index]);
-}
-QHBoxLayout *hbox = new QHBoxLayout;
-hbox->addWidget(pCmbPresence, 0);
-ui.presence_toolbar->setLayout(hbox);
-}
+//void wavrMainWindow::createPresenceToolbar(void) {
+//pCmbPresence = new QComboBox(this);
+//for(int index = 0; index < ST_COUNT; index++) {
+//    pCmbPresence->addItem(QIcon(QPixmap(statusPic[index], "PNG")), wavrStrings::statusDesc()[index]);
+//}
+//QHBoxLayout *hbox = new QHBoxLayout;
+//hbox->addWidget(pCmbPresence, 0);
+//ui.presence_toolbar->setLayout(hbox);
+//}
 
 void wavrMainWindow::createSearchToolbar(void) {
 
@@ -260,24 +315,30 @@ if(showMinimizeMsg) {
 }
 
 void wavrMainWindow::initGroups(QList<Group>* pGroupList) {
-for(int index = 0; index < pGroupList->count(); index++) {
-    wavrUserTreeWidgetGroupItem *pItem = new wavrUserTreeWidgetGroupItem();
-    pItem->setData(0, IdRole, pGroupList->value(index).id);
-    pItem->setData(0, TypeRole, "Group");
-    pItem->setText(0, pGroupList->value(index).name);
-    pItem->setSizeHint(0, QSize(0, 22));
-    ui.tvUserList->addTopLevelItem(pItem);
+    for(int index = 0; index < pGroupList->count(); index++) {
+        wavrUserTreeWidgetGroupItem *pItem = new wavrUserTreeWidgetGroupItem();
+        pItem->setData(0, IdRole, pGroupList->value(index).id);
+        pItem->setData(0, TypeRole, "Group");
+        pItem->setText(0, pGroupList->value(index).name);
+        pItem->setSizeHint(0, QSize(0, 22));
+        ui.tvUserList->addTopLevelItem(pItem);
+    }
+
+    ui.tvUserList->expandAll();
+    // size will be either number of items in group expansion list or number of top level items in
+    // treeview control, whichever is less. This is to  eliminate arary out of bounds error.
+    int size = qMin(pSettings->beginReadArray(IDS_GROUPEXPHDR), ui.tvUserList->topLevelItemCount());
+    for(int index = 0; index < size; index++) {
+        pSettings->setArrayIndex(index);
+        ui.tvUserList->topLevelItem(index)->setExpanded(pSettings->value(IDS_GROUP).toBool());
+    }
+    pSettings->endArray();
 }
 
-ui.tvUserList->expandAll();
-// size will be either number of items in group expansion list or number of top level items in
-// treeview control, whichever is less. This is to  eliminate arary out of bounds error.
-int size = qMin(pSettings->beginReadArray(IDS_GROUPEXPHDR), ui.tvUserList->topLevelItemCount());
-for(int index = 0; index < size; index++) {
-    pSettings->setArrayIndex(index);
-    ui.tvUserList->topLevelItem(index)->setExpanded(pSettings->value(IDS_GROUP).toBool());
-}
-pSettings->endArray();
+void wavrMainWindow::updateStatusImage(QTreeWidgetItem* pItem, QString* lpszStatus) {
+    int index = wavrHelper::statusIndexFromCode(*lpszStatus);
+    if(index != -1)
+        pItem->setIcon(0, QIcon(QPixmap(statusPic[index], "PNG")));
 }
 
 void wavrMainWindow::sendMessage(MessageType type, QString* lpszUserId, QString* lpszMessage) {

@@ -98,7 +98,7 @@ private:
     void createMainMenu(void);
     void createTrayMenu(void);
     void createTrayIcon(void);
-    void createPresenceToolbar(void);
+    //void createPresenceToolbar(void);
     void createSearchToolbar(void);
     void createUserMenu(void);
     void createToolBar(void);
