@@ -53,12 +53,13 @@
 
 #define XML_MESSAGE             "message"
 #define XML_BROADCAST           "broadcast"
-
-#define XML_FILEOP			"fileop"
+#define XML_MODE                 "mode"
+#define XML_FILEOP              "fileop"
 #define XML_FILETYPE			"filetype"
-
+#define XML_FILEID              "fileid"
 #define XML_FILEPATH			"filepath"
-
+#define XML_FILENAME             "filename"
+#define XML_FILESIZE             "filesize"
 #define XML_CHATSTATE           "chatstate"
 
 #define XML_QUERYOP             "queryop"

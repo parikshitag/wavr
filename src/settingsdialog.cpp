@@ -89,7 +89,6 @@ void wavrSettingsDialog::init(void) {
 
 //    //	if no avatar is set, select a random avatar (useful when running for the first time)
     nAvatar = pSettings->value(IDS_AVATAR, IDS_AVATAR_VAL).toInt();
-//    qDebug() << "nAvatar " << nAvatar;
     if(nAvatar > AVT_COUNT) {
         nAvatar = 0;
     }
@@ -350,7 +349,7 @@ void wavrSettingsDialog::saveSettings(void) {
     pSettings->setValue(IDS_UDPPORT, ui.txtUDPPort->text(), IDS_UDPPORT_VAL);
     pSettings->setValue(IDS_TCPPORT, ui.txtTCPPort->text(), IDS_TCPPORT_VAL);
 
-    if(pSettings->value(IDS_AVATAR, IDS_AVATAR_VAL).toInt() != nAvatar)
+    //if(pSettings->value(IDS_AVATAR, IDS_AVATAR_VAL).toInt() != nAvatar)
         pSettings->setValue(IDS_AVATAR, nAvatar, IDS_AVATAR_VAL);
 
     pSettings->sync();

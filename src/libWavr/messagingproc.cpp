@@ -155,17 +155,22 @@ void wavrMessaging::connectionLost(QString* lpszUserId) {
  */
 void wavrMessaging::sendUserData(MessageType type, QueryOp op, QString* lpszUserId, QString* lpszAddress) {
     wavrTrace::write("Sending local user details to user " + *lpszUserId + " at " + *lpszAddress);
+    QString avt = pSettings->value(IDS_AVATAR, IDS_AVATAR_VAL).toString();
+    qDebug() << avt;
     wavrXmlMessage xmlMessage;
     xmlMessage.addData(XML_USERID, localUser->id);
     xmlMessage.addData(XML_NAME, localUser->name);
     xmlMessage.addData(XML_ADDRESS, localUser->address);
     xmlMessage.addData(XML_VERSION, localUser->version);
     xmlMessage.addData(XML_STATUS, localUser->status);
+    xmlMessage.addData(XML_AVATAR, avt );
     xmlMessage.addData(XML_NOTE, localUser->note);
+    xmlMessage.addData(XML_FILEPATH, StdLocation::avatarFile());
     xmlMessage.addData(XML_USERCAPS, QString::number(localUser->caps));
     xmlMessage.addData(XML_QUERYOP, QueryOpNames[op]);
     QString szMessage = Message::addHeader(type, msgId, &localUser->id, lpszUserId, &xmlMessage);
     pNetwork->sendMessage(lpszUserId, lpszAddress, &szMessage);
+    //sendAvatar();
 }
 
 void wavrMessaging::prepareBroadcast(MessageType type, wavrXmlMessage* pMessage) {
@@ -240,7 +245,7 @@ void wavrMessaging::prepareMessage(MessageType type, qint64 msgId, bool retry, Q
         break;
     case MT_File:
     case MT_Avatar:
-        //prepareFile(type, msgId, retry, lpszUserId, pMessage);
+        prepareFile(type, msgId, retry, lpszUserId, pMessage);
         break;
     case MT_Folder:
        // prepareFolder(type, msgId, retry, lpszUserId, pMessage);
@@ -301,7 +306,7 @@ void wavrMessaging::processMessage(MessageHeader* pHeader, wavrXmlMessage* pMess
             sendUserData(pHeader->type, QO_Result, &pHeader->userId, &pHeader->address);
         //	add the user only after sending back user data, this way both parties will have added each other
         addUser(pMessage->data(XML_USERID), pMessage->data(XML_VERSION), pMessage->data(XML_ADDRESS),
-            pMessage->data(XML_NAME), pMessage->data(XML_STATUS), QString::null, pMessage->data(XML_NOTE),
+            pMessage->data(XML_NAME), pMessage->data(XML_STATUS), pMessage->data(XML_AVATAR), pMessage->data(XML_FILEPATH), pMessage->data(XML_NOTE),
             pMessage->data(XML_USERCAPS));
         break;
     case MT_Broadcast:
@@ -368,7 +373,7 @@ void wavrMessaging::processMessage(MessageHeader* pHeader, wavrXmlMessage* pMess
         break;
     case MT_File:
     case MT_Avatar:
-        //processFile(pHeader, pMessage);
+        processFile(pHeader, pMessage);
         break;
     case MT_Folder:
         //processFolder(pHeader, pMessage);

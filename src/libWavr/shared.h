@@ -27,7 +27,7 @@
 
 #include <QString>
 #include <QtNetwork/QHostInfo>
-
+#include <QUuid>
 #include "definitions.h"
 
 struct User {
@@ -108,6 +108,7 @@ class wavrHelper {
 public:
     static int indexOf(const QString array[], int size, const QString& value);
     static int statusIndexFromCode(QString status);
+    static QString getUuid(void);
     static QString getLogonName(void);
     static QString getHostName(void);
     static QString getOSName(void);

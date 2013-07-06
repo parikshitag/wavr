@@ -30,6 +30,17 @@
 #include "uidefinitions.h"
 #include "imagepicker.h"
 
+wavrToolButton::wavrToolButton(QWidget* parent) : QToolButton(parent) {
+}
+
+void wavrToolButton::paintEvent(QPaintEvent*) {
+    QStylePainter p(this);
+    QStyleOptionToolButton opt;
+    initStyleOption(&opt);
+    opt.features &= (~QStyleOptionToolButton::HasMenu);
+    p.drawComplexControl(QStyle::CC_ToolButton, opt);
+}
+
 wavrImagePicker::wavrImagePicker(QWidget *parent, QList<QString>* source, int picSize, int columns, int* selected, int actionIndex)
     : QTableWidget(parent)
 {

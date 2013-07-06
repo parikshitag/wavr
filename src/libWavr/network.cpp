@@ -40,6 +40,8 @@ wavrNetwork::wavrNetwork(void) {
             this, SLOT(tcp_connectionLost(QString*)));
     connect(pTcpNetwork, SIGNAL(messageReceived(DatagramHeader*,QString*)),
             this, SLOT(tcp_receiveMessage(DatagramHeader*,QString*)));
+    connect(pTcpNetwork, SIGNAL(progressReceived(QString*, QString*)),
+        this, SLOT(tcp_receiveProgress(QString*, QString*)));
 
     pTimer = NULL;
     ipAddress = QString::null;
@@ -158,6 +160,10 @@ void wavrNetwork::sendMessage(QString* lpszReceiverId, QString* lpszAddress, QSt
     pTcpNetwork->sendMessage(lpszReceiverId, lpszData);
 }
 
+void wavrNetwork::initSendFile(QString* lpszReceiverId, QString* lpszAddress, QString* lpszData) {
+    pTcpNetwork->initSendFile(lpszReceiverId, lpszAddress, lpszData);
+}
+
 /**
  * @brief Method for acknowledgement of settings changed in UI.
  *  Calls the UdpNetwork and TcpNetwork settingsChanged methods.
@@ -230,6 +236,10 @@ void wavrNetwork::tcp_connectionLost(QString* lpszUserId) {
  */
 void wavrNetwork::tcp_receiveMessage(DatagramHeader* pHeader, QString* lpszData) {
     emit messageReceived(pHeader, lpszData);
+}
+
+void wavrNetwork::tcp_receiveProgress(QString* lpszUserId, QString* lpszData) {
+    emit progressReceived(lpszUserId, lpszData);
 }
 
 /**

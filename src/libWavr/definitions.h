@@ -140,6 +140,19 @@ const QString MessageTypeNames[] = {
     "leave"
 };
 
+enum FileMode {
+    FM_Blank = 0,
+    FM_Send,
+    FM_Receive,
+    FM_Max
+};
+
+const QString FileModeNames[] = {
+    "",
+    "send",
+    "receive"
+};
+
 /****************************************************************************
 **	File operation definitions
 **	The enum and the string array should always be synced
@@ -278,6 +291,8 @@ enum UserCap {
 };
 
 #define WAVR_TRUE       "true"
+
+#define PROGRESS_TIMEOUT    1500
 
 #endif // DEFINITIONS_H
 

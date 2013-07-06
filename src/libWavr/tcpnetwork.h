@@ -32,6 +32,7 @@
 #include "datagram.h"
 #include "settings.h"
 #include "channelMessaging.h"
+#include "channelFile.h"
 
 class wavrTcpNetwork : public QObject {
     Q_OBJECT
@@ -46,6 +47,7 @@ public:
     void setLocalId(QString* lpszLocalId);
     void addConnection(QString* lpszUserId, QString* lpszAddress);
     void sendMessage(QString* lpszReceiverId, QString* lpszData);
+    void initSendFile(QString* lpszReceiverId, QString* lpszAddress, QString* lpszData);
     void settingsChanged(void) {}
     void setIPAddress(const QString& szAddress);
 
@@ -53,17 +55,20 @@ signals:
     void newConnection(QString* lpszUserId, QString* lpszAddress);
     void connectionLost(QString* lpszUserId);
     void messageReceived(DatagramHeader* pHeader, QString* lpszData);
+    void progressReceived(QString* lpszUserId, QString* lpszData);
 
 private slots:
     void server_newConnection(void);
     void socket_readyRead(void);
     void msgStream_connectionLost(QString* lpszUserId);
+    void update(FileMode mode, FileOp op, FileType type, QString* lpszId, QString* lpszUserId, QString* lpszData);
     void receiveMessage(QString* lpszUserId, QString* lpszAddress, QByteArray& data);
 
 private:
     void addMsgSocket(QString* lpszUserId, QTcpSocket* pSocket);
 
     QTcpServer*                 server;
+    QList<FileSender*>		  sendList;
     QMap<QString, MsgStream*>   messageMap;
     MsgStream*                  locMsgStream;
     wavrSettings*               pSettings;

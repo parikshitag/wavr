@@ -26,7 +26,17 @@
 #ifndef IMAGEPICKER_H
 #define IMAGEPICKER_H
 
+#include <QToolButton>
+#include <QStylePainter>
 #include <QTableWidget>
+
+class wavrToolButton : public QToolButton {
+public:
+    wavrToolButton(QWidget* parent = 0);
+
+protected:
+    void paintEvent(QPaintEvent*);
+};
 
 class wavrImagePicker : public QTableWidget {
     Q_OBJECT

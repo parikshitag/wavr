@@ -263,7 +263,6 @@ void wavrMainWindow::settingsChanged() {
 //	}
 //	pSoundPlayer->settingsChanged();
 //	ui.lblUserName->setText(pLocalUser->name);	// in case display name has been changed
-
 }
 
 QList<QTreeWidgetItem*> wavrMainWindow::getContactsList(void) {

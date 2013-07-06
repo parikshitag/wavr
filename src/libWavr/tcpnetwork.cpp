@@ -137,6 +137,18 @@ void wavrTcpNetwork::sendMessage(QString *lpszReceiverId, QString *lpszData) {
     wavrTrace::write("Warning: Socket not found. Message sending failed");
 }
 
+void wavrTcpNetwork::initSendFile(QString* lpszReceiverId, QString* lpszAddress, QString* lpszData) {
+    wavrXmlMessage xmlMessage(*lpszData);
+    int type = wavrHelper::indexOf(FileTypeNames, FT_Max, xmlMessage.data(XML_FILETYPE));
+
+    FileSender* sender = new FileSender(xmlMessage.data(XML_FILEID), localId, *lpszReceiverId, xmlMessage.data(XML_FILEPATH),
+        xmlMessage.data(XML_FILENAME), xmlMessage.data(XML_FILESIZE).toLongLong(), *lpszAddress, tcpPort, (FileType)type);
+    connect(sender, SIGNAL(progressUpdated(FileMode, FileOp, FileType, QString*, QString*, QString*)),
+        this, SLOT(update(FileMode, FileOp, FileType, QString*, QString*, QString*)));
+    sendList.prepend(sender);
+    sender->init();
+}
+
 /**
  * Setter method
  * @param szAddress sets the IP Address
@@ -211,6 +223,35 @@ void wavrTcpNetwork::receiveMessage(QString* lpszUserId, QString* lpszAddress, Q
     default:
         break;
     }
+}
+
+void wavrTcpNetwork::update(FileMode mode, FileOp op, FileType type, QString* lpszId, QString* lpszUserId, QString* lpszData) {
+    wavrXmlMessage xmlMessage;
+    xmlMessage.addHeader(XML_FROM, *lpszUserId);
+    xmlMessage.addHeader(XML_TO, localId);
+    xmlMessage.addData(XML_MODE, FileModeNames[mode]);
+    xmlMessage.addData(XML_FILETYPE, FileTypeNames[type]);
+    xmlMessage.addData(XML_FILEOP, FileOpNames[op]);
+    xmlMessage.addData(XML_FILEID, *lpszId);
+
+    switch(op) {
+    case FO_Complete:
+    case FO_Error:
+        xmlMessage.addData(XML_FILEPATH, *lpszData);
+//        if(mode == FM_Send)
+//            removeSender(static_cast<FileSender*>(sender()));
+//        else
+//            removeReceiver(static_cast<FileReceiver*>(sender()));
+        break;
+    case FO_Progress:
+        xmlMessage.addData(XML_FILESIZE, *lpszData);
+        break;
+    default:
+        break;
+    }
+
+    QString szMessage = xmlMessage.toString();
+    emit progressReceived(lpszUserId, &szMessage);
 }
 
 /**

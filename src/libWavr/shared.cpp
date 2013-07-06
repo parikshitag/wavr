@@ -45,6 +45,12 @@ int wavrHelper::statusIndexFromCode(QString status) {
     return -1;
 }
 
+QString wavrHelper::getUuid(void) {
+    QString Uuid = QUuid::createUuid().toString();
+    Uuid = Uuid.remove("{").remove("}").remove("-");
+    return Uuid;
+}
+
 QString wavrHelper::getLogonName(void) {
 #if defined Q_WS_WIN	//	if platform is Windows
     TCHAR szUserName[UNLEN + 1];

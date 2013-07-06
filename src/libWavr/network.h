@@ -48,6 +48,7 @@ public:
     void sendBroadcast(QString* lpszLocalId);
     void addConnection(QString* lpszUserId, QString* lpszAddress);
     void sendMessage(QString* lpszReceiverId, QString* lpszAddress, QString* lpszData);
+    void initSendFile(QString* lpszReceiverId, QString* lpszAddress, QString* lpszData);
     void settingsChanged(void);
 
     QString ipAddress;
@@ -61,6 +62,7 @@ signals:
     void newConnection(QString* lpszUserId, QString* lpszAddress);
     void connectionLost(QString* lpszUserId);
     void messageReceived(DatagramHeader* pHeader, QString* lpszData);
+    void progressReceived(QString* lpszUserId, QString* lpszData);
 
 private slots:
     void timer_timeout(void);
@@ -68,6 +70,7 @@ private slots:
     void tcp_newConnection(QString* lpszUserId, QString* lpszAddress);
     void tcp_connectionLost(QString* lpszUserId);
     void tcp_receiveMessage(DatagramHeader* pHeader, QString* lpszData);
+    void tcp_receiveProgress(QString* lpszUserId, QString* lpszData);
 
 private:
     bool getIPAddress(bool verbose = true);

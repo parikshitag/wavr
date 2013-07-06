@@ -37,8 +37,8 @@ wavrMessaging::wavrMessaging(void) {
         this, SLOT(newConnection(QString*, QString*)));
     connect(pNetwork, SIGNAL(connectionLost(QString*)),
         this, SLOT(connectionLost(QString*)));
-    //connect(pNetwork, SIGNAL(progressReceived(QString*, QString*)),
-    //    this, SLOT(receiveProgress(QString*, QString*)));
+    connect(pNetwork, SIGNAL(progressReceived(QString*, QString*)),
+        this, SLOT(receiveProgress(QString*, QString*)));
     connect(pNetwork, SIGNAL(connectionStateChanged()), this, SLOT(network_connectionStateChanged()));
     localUser = NULL;
     userList.clear();
@@ -154,7 +154,6 @@ void wavrMessaging::settingsChanged(void) {
     }
 
     int userAvatar = pSettings->value(IDS_AVATAR, IDS_AVATAR_VAL).toInt();
-    qDebug() << userAvatar << " " << localUser->avatar;
     if (localUser->avatar != userAvatar) {
         localUser->avatar = userAvatar;
         QString filePath = StdLocation::avatarFile();
@@ -163,7 +162,7 @@ void wavrMessaging::settingsChanged(void) {
         wavrXmlMessage xmlMessage;
         xmlMessage.addData(XML_FILETYPE, FileTypeNames[FT_Avatar]);
         xmlMessage.addData(XML_FILEOP, FileOpNames[FO_Request]);
-        xmlMessage.addData(XML_AVATAR, filePath);
+        xmlMessage.addData(XML_FILEPATH, filePath);
         sendMessage(MT_Avatar, NULL,  &xmlMessage);
     }
 }
@@ -336,7 +335,7 @@ void wavrMessaging::getUserInfo(wavrXmlMessage* pMessage) {
 }
 
 bool wavrMessaging::addUser(QString szUserId, QString szVersion, QString szAddress, QString szName, QString szStatus,
-                           QString szAvatar, QString szNote, QString szCaps) {
+                           QString szAvatar, QString szAvatarPath, QString szNote, QString szCaps) {
     for(int index = 0; index < userList.count(); index++)
         if(userList[index].id.compare(szUserId) == 0)
             return false;
@@ -347,9 +346,9 @@ bool wavrMessaging::addUser(QString szUserId, QString szVersion, QString szAddre
         userGroupMap.insert(szUserId, GRP_DEFAULT_ID);
 
     int nAvatar = szAvatar.isNull() ? -1 : szAvatar.toInt();
-
+    qDebug() << "received avatar " << nAvatar;
     userList.append(User(szUserId, szVersion, szAddress, szName, szStatus, userGroupMap[szUserId],
-                         nAvatar, szNote, QString::null, szCaps));
+                         nAvatar, szNote, szAvatarPath, szCaps));
 
     if(!szStatus.isNull()) {
         wavrXmlMessage xmlMessage;

@@ -35,7 +35,9 @@ SOURCES += main.cpp\
     libWavr/trace.cpp \
     settingsdialog.cpp \
     imagepickeraction.cpp \
-    imagepicker.cpp
+    imagepicker.cpp \
+    libWavr/filemessagingproc.cpp \
+    libWavr/channelFile.cpp
 
 HEADERS  += mainwindow.h \
     QProgressIndicator.h \
@@ -64,7 +66,8 @@ HEADERS  += mainwindow.h \
     libWavr/stdlocation.h \
     settingsdialog.h \
     imagepickeraction.h \
-    imagepicker.h
+    imagepicker.h \
+    libWavr/channelFile.h
 
 FORMS    += \
     mainwindow.ui \
