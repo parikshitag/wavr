@@ -85,8 +85,8 @@
 #define IDS_TCPPORT             "Connection/TCPPort"
 #define IDS_TCPPORT_VAL         50000
 
-#define IDS_BROADCASTHDR        "BroadcastHdr"
-#define IDS_BROADCAST           "Broadcast"
+#define IDS_USERLISTVIEW		"Appearance/UserListView"
+#define IDS_USERLISTVIEW_VAL	ULV_Detailed
 
 #define IDS_STATUS              "User/Status"
 #define IDS_STATUS_VAL          statusCode[0]
@@ -109,6 +109,8 @@
 #define IDS_GROUPEXPHDR         "GroupExp"
 #define IDS_GROUPMAPHDR			"GroupMap"
 #define IDS_USER				"User"
+#define IDS_BROADCASTHDR        "BroadcastHdr"
+#define IDS_BROADCAST           "Broadcast"
 class wavrSettingsBase : public QSettings {
 public:
     wavrSettingsBase(void);

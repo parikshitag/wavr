@@ -148,6 +148,7 @@ void wavrCore::stop(void) {
     wavrTrace::write("Application stopped");
 }
 
+
 /**
  * @brief Quit Application manually.
  *  This slot handles the exit signal emitted by main window when the user
@@ -200,7 +201,6 @@ void wavrCore::startChat(QString* lpszUserId) {
 
 
 void wavrCore::sendMessage(MessageType type, QString *lpszUserId, wavrXmlMessage *pMessage) {
-    QString data;
 
     switch(type) {
     case MT_Broadcast:

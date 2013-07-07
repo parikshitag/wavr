@@ -42,9 +42,9 @@ const QString wavrStrings::appName(void) {
 const QStringList wavrStrings::statusDesc(void) {
     if(m_statusDesc.isEmpty()) {
         m_statusDesc.append(tr("Available"));
+        m_statusDesc.append(tr("Busy"));
         m_statusDesc.append(tr("Away"));
         m_statusDesc.append(tr("Extended Away"));
-        m_statusDesc.append(tr("Busy"));
         m_statusDesc.append(tr("Invisible"));
         m_statusDesc.append(tr("Offline"));
     }

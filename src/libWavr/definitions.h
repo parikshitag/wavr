@@ -257,22 +257,20 @@ enum GroupOp {
 enum StatusType {
     StatusTypeOnline = 0,
     StatusTypeBusy,
-    StatusTypeOffline,
     StatusTypeAway,
+    StatusTypeOffline,
     StatusTypeMax
 };
-#define ST_COUNT	6
+#define ST_COUNT	5
 const QString statusCode[] = {
     "chat",
     "busy",
-    "dnd",
-    "brb",
     "away",
+    "extaway",
     "gone"
 };
 const int statusType[] = {
     StatusTypeOnline,
-    StatusTypeBusy,
     StatusTypeBusy,
     StatusTypeAway,
     StatusTypeAway,

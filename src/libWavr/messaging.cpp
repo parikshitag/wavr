@@ -378,8 +378,9 @@ void wavrMessaging::updateUser(MessageType type, QString szUserId, QString szUse
             pUser->status = szUserData;
 
             int statusIndex = wavrHelper::statusIndexFromCode(oldStatus);
-            if(statusType[statusIndex] == StatusTypeOffline) // old status is offline
+            if(statusType[statusIndex] == StatusTypeOffline) {// old status is offline
                 emit messageReceived(MT_Announce, &szUserId, NULL);
+            }
 
             updateMsg.addData(XML_STATUS, pUser->status);
             emit messageReceived(MT_Status, &szUserId, &updateMsg);
@@ -388,8 +389,8 @@ void wavrMessaging::updateUser(MessageType type, QString szUserId, QString szUse
             if(statusType[statusIndex] == StatusTypeOffline) { // new status is offline
                 // Send a dummy xml message. A non null xml message implies that the
                 // user is only in offline status, and not actually offline.
-                wavrXmlMessage wavrXmlMessage;
-                emit messageReceived(MT_Depart, &szUserId, &wavrXmlMessage);
+                wavrXmlMessage xmlMessage;
+                emit messageReceived(MT_Depart, &szUserId, &xmlMessage);
             }
         }
         break;

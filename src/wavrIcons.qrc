@@ -89,6 +89,7 @@
         <file>resources/images/blank.png</file>
         <file>resources/images/hgrip.png</file>
         <file>resources/images/vgrip.png</file>
+        <file alias="close">resources/images/close.png</file>
     </qresource>
     <qresource prefix="/menu">
         <file>resources/menu/addcontact.png</file>
@@ -145,7 +146,6 @@
         <file alias="away">resources/status/away.png</file>
         <file alias="busy">resources/status/busy.png</file>
         <file alias="extended-away">resources/status/extended-away.png</file>
-        <file alias="invisible">resources/status/invisible.png</file>
         <file alias="offline">resources/status/offline.png</file>
     </qresource>
 </RCC>

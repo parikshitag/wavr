@@ -27,6 +27,7 @@
 #include <QUrl>
 #include "mainwindow.h"
 #include "messagelog.h"
+#include <QLineEdit>
 
 wavrMainWindow::wavrMainWindow(QWidget *parent, Qt::WindowFlags flags) : QWidget(parent, flags) {
     ui.setupUi(this);
@@ -39,8 +40,13 @@ wavrMainWindow::wavrMainWindow(QWidget *parent, Qt::WindowFlags flags) : QWidget
 //        this, SLOT(tvUserList_itemDragDropped(QTreeWidgetItem*)));
 //    connect(ui.tvUserList, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)),
 //        this, SLOT(tvUserList_currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)));
-    ui.tvUserList->installEventFilter(this);
 
+    connect(ui.cmbPresence->lineEdit(), SIGNAL(returnPressed()), this, SLOT(cmbPresence_returnPressed()));
+    connect(ui.cmbPresence->lineEdit(), SIGNAL(editingFinished()), this, SLOT(cmbPresence_editingFinished()));
+    connect(ui.txtSearch, SIGNAL(textChanged(QString)), this, SLOT(txtSearch_textChanged(QString)));
+    //ui.txtSearch->installEventFilter(this);
+    ui.tvUserList->installEventFilter(this);
+    ui.tvUserList->setFocus();
     windowLoaded = true;
 }
 
@@ -61,12 +67,16 @@ void wavrMainWindow::init(User *pLocalUser, QList<Group>* pGroupList, bool conne
     //connectionStateChanged(connected);
 
     //createUserMenu();
-
+    ui.txtSearch->setVisible(false);
     ui.tvUserList->setIconSize(QSize(16, 16));
     ui.tvUserList->header()->setSectionsMovable(false);
     ui.tvUserList->header()->setStretchLastSection(false);
     ui.tvUserList->header()->setSectionResizeMode(0, QHeaderView::Stretch);
-    //btnStatus->setIconSize(QSize(20,20));
+    int index = wavrHelper::statusIndexFromCode(pLocalUser->status);
+    //	if status is not recognized, default to available
+    index = qMax(index, 0);
+    qDebug() << "status index " << index;
+    ui.cmbPresence->setCurrentIndex(index);
     nAvatar = pLocalUser->avatar;
 
     pSettings = new wavrSettings();
@@ -75,6 +85,7 @@ void wavrMainWindow::init(User *pLocalUser, QList<Group>* pGroupList, bool conne
 }
 
 void wavrMainWindow::start(void) {
+    connect(ui.cmbPresence, SIGNAL(currentIndexChanged(int)), this, SLOT(statusAction_triggered(int)));
 
     // This method should only be called from here, otherwise an MT_Notify message is sent
     // and the program will connect to the network before start() is called.
@@ -153,7 +164,6 @@ void wavrMainWindow::addUser(User *pUser) {
     if(!pUser)
         return;
     int index = wavrHelper::statusIndexFromCode(pUser->status);
-
     wavrUserTreeWidgetUserItem *pItem = new wavrUserTreeWidgetUserItem();
     pItem->setData(0, IdRole, pUser->id);
     pItem->setData(0, TypeRole, "User");
@@ -248,8 +258,8 @@ void wavrMainWindow::settingsChanged() {
 //	noBusyAlert = pSettings->value(IDS_NOBUSYALERT, IDS_NOBUSYALERT_VAL).toBool();
 //	noDNDAlert = pSettings->value(IDS_NODNDALERT, IDS_NODNDALERT_VAL).toBool();
 //	statusToolTip = pSettings->value(IDS_STATUSTOOLTIP, IDS_STATUSTOOLTIP_VAL).toBool();
-//	int viewType = pSettings->value(IDS_USERLISTVIEW, IDS_USERLISTVIEW_VAL).toInt();
-//	ui.tvUserList->setView((UserListView)viewType);
+    int viewType = pSettings->value(IDS_USERLISTVIEW, IDS_USERLISTVIEW_VAL).toInt();
+    ui.tvUserList->setView((UserListView)viewType);
 //	for(int index = 0; index < ui.tvUserList->topLevelItemCount(); index++) {
 //		QTreeWidgetItem* item = ui.tvUserList->topLevelItem(index);
 //		for(int childIndex = 0; childIndex < item->childCount(); childIndex++) {
@@ -273,12 +283,74 @@ QList<QTreeWidgetItem*> wavrMainWindow::getContactsList(void) {
     return contactsList;
 }
 
+//void wavrMainWindow::keyPressEvent(QKeyEvent *pKeyEvent) {
+//    if(ui.txtSearch->is
+//}
+
+bool wavrMainWindow::eventFilter(QObject* pObject, QEvent* pEvent) {
+
+    if(pEvent->type() == QEvent::KeyPress) {
+        QKeyEvent* pKeyEvent = static_cast<QKeyEvent*>(pEvent);
+        if(pKeyEvent->key() == Qt::Key_Escape) {
+            ui.txtSearch->setVisible(false);
+            ui.txtSearch->clear();
+            return true;
+        } else {
+            ui.txtSearch->setVisible(true);
+            ui.txtSearch->setFocus();
+            ui.txtSearch->setText(pKeyEvent->text());
+        }
+    }
+    return false;
+}
+
 void wavrMainWindow::sendMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage) {
     emit messageSent(type, lpszUserId, pMessage);
 }
 
 void wavrMainWindow::traySettingsAction_triggered(void) {
     emit showSettings();
+}
+
+void wavrMainWindow::statusAction_triggered(int index) {
+    if(index != -1) {
+        QString status = statusCode[index];
+        pLocalUser->status = status;
+        pSettings->setValue(IDS_STATUS, status);
+        if (!pLocalUser->note.isEmpty() || !pLocalUser->note.isNull()) {
+            QString null = NULL;
+            pSettings->setValue(IDS_NOTE, "", IDS_NOTE_VAL);
+            sendMessage(MT_Note, NULL, &(null));
+        }
+        sendMessage(MT_Status, NULL, &status);
+    }
+}
+
+void wavrMainWindow::cmbPresence_returnPressed(void) {
+    //	Shift the focus from txtNote to another control
+    ui.tvUserList->setFocus();
+}
+
+void wavrMainWindow::cmbPresence_editingFinished(void) {
+    QString note = ui.cmbPresence->currentText();
+    int index = ui.cmbPresence->currentIndex();
+    if(note.compare(wavrStrings::statusDesc()[index]) !=0) {
+        pSettings->setValue(IDS_NOTE, note, IDS_NOTE_VAL);
+        pLocalUser->note = note;
+        sendMessage(MT_Note, NULL, &note);
+    }
+}
+
+void wavrMainWindow::txtSearch_textChanged(QString text) {
+    for(int topIndex = 0; topIndex < ui.tvUserList->topLevelItemCount(); topIndex++) {
+        for(int index = 0; index < ui.tvUserList->topLevelItem(topIndex)->childCount(); index++) {
+            QTreeWidgetItem* pItem = ui.tvUserList->topLevelItem(topIndex)->child(index);
+            pItem->setHidden(true);
+            if(pItem->text(0).startsWith(text)) {
+                pItem->setHidden(false);
+            }
+        }
+    }
 }
 
 void wavrMainWindow::createMainMenu(void) {

@@ -51,6 +51,7 @@
 #define IDR_SAVE                ":/images/save"
 #define IDR_LOGO                ":/images/logo"
 #define IDR_LOGOSMALL           ":/images/logosmall"
+#define IDR_SRCHCLOSE           ":/images/close"
 #define IDR_DECLINE             IDR_CLOSE
 #define IDR_STOP                ":/images/stop"
 #define IDR_FOLDER              ":/images/folder"
@@ -87,11 +88,10 @@ enum ItemDataRole {
 #define IDR_AWAY                ":/status/away"
 #define IDR_EXTAWAY             ":/status/extended-away"
 #define IDR_BUSY                ":/status/busy"
-#define IDR_NODISTURB           ":/status/invisible"
 #define IDR_OFFLINE             ":/status/offline"
 
-//const QString statusDesc[] = {"Available", "Away", "Extended Away", "Busy", "Invisible", "Offline"};
-const QString statusPic[] = {IDR_AVAILABLE, IDR_AWAY, IDR_EXTAWAY, IDR_BUSY, IDR_NODISTURB, IDR_OFFLINE};
+//const QString statusDesc[] = {"Available", "Away", "Extended Away", "Busy",  "Offline"};
+const QString statusPic[] = {IDR_AVAILABLE, IDR_BUSY, IDR_AWAY, IDR_EXTAWAY, IDR_OFFLINE};
 
 //	Smiley definitions
 #define SMI_01			":/smileys/01"
@@ -250,10 +250,10 @@ const int itemViewHeight[] = {36, 20};
 
 #define RTL_LAYOUT			"RTL"
 
-#ifdef Q_WS_MAC
-#define GRAY_TEXT_COLOR     QApplication::palette().color(QPalette::Shadow).darker(175)
-#else
+//#ifdef Q_WS_MAC
+//#define GRAY_TEXT_COLOR     QApplication::palette().color(QPalette::Shadow).darker(175)
+//#else
 #define GRAY_TEXT_COLOR     QApplication::palette().color(QPalette::Shadow)
-#endif
+//#endif
 
 #endif // UIDEFINITIONS_H

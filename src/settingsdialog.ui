@@ -1071,7 +1071,7 @@
   <customwidget>
    <class>wavrToolButton</class>
    <extends>QToolButton</extends>
-   <header>imagepicker.h</header>
+   <header>subcontrols.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -43,7 +43,6 @@
 #include "libWavr/settings.h"
 #include "libWavr/xmlmessage.h"
 #include "libWavr/stdlocation.h"
-#include "QProgressIndicator.h"
 
 class wavrMainWindow : public QWidget
 {
@@ -75,7 +74,8 @@ signals:
     void showSettings(void);
 
 protected:
-//    bool eventFilter(QObject *pObject, QEvent *pEvent);
+   // void keyPressEvent(QKeyEvent *);
+    bool eventFilter(QObject *pObject, QEvent *pEvent);
 //    void closeEvent(QCloseEvent* pEvent);
 //    void changeEvent(QEvent *pEvent);
 
@@ -84,7 +84,7 @@ private slots:
 //    void trayShowAction_triggered(void);
     void traySettingsAction_triggered(void);
 //    void trayExistAction_triggered(void);
-//    void statusAction_triggered(QAction* action);
+    void statusAction_triggered(int index);
 //    void avatarAction_triggered(void);
 //    void avatarBrowseAction_triggered(void);
 //    void refreshAction_triggered(void);
@@ -92,7 +92,9 @@ private slots:
 //    void trayMessage_clicked(void);
 //    void tvUserList_itemActivated(QTreeWidgetItem* pItem, int column);
 //    void tvUserList_itemContextMenu(QTreeWidgetItem* pItem, QPoint& pos);
-
+    void cmbPresence_returnPressed(void);
+    void cmbPresence_editingFinished(void);
+    void txtSearch_textChanged(QString);
 
 private:
     void createMainMenu(void);

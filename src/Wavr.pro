@@ -14,7 +14,6 @@ TARGET = Wavr
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    QProgressIndicator.cpp \
     libWavr/network.cpp \
     libWavr/udpnetwork.cpp \
     libWavr/tcpnetwork.cpp \
@@ -37,10 +36,10 @@ SOURCES += main.cpp\
     imagepickeraction.cpp \
     imagepicker.cpp \
     libWavr/filemessagingproc.cpp \
-    libWavr/channelFile.cpp
+    libWavr/channelFile.cpp \
+    subcontrols.cpp
 
 HEADERS  += mainwindow.h \
-    QProgressIndicator.h \
     definitions.h \
     libWavr/network.h \
     libWavr/udpnetwork.h \
@@ -67,7 +66,8 @@ HEADERS  += mainwindow.h \
     settingsdialog.h \
     imagepickeraction.h \
     imagepicker.h \
-    libWavr/channelFile.h
+    libWavr/channelFile.h \
+    subcontrols.h
 
 FORMS    += \
     mainwindow.ui \
