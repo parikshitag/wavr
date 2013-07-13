@@ -65,8 +65,8 @@ void wavrMessageLog::initMessageLog(QString themePath, bool clearLog) {
         messageLog.clear();
     lastId = QString::null;
     this->themePath = themePath;
-    //themeData = wavrTheme::localTheme(themePath);
-    //setHtml(themeData.document);
+    themeData = wavrTheme::loadTheme(themePath);
+    setHtml(themeData.document);
 }
 
 void wavrMessageLog::createContextMenu(void) {
@@ -104,7 +104,7 @@ void wavrMessageLog::appendMessageLog(MessageType type, QString *lpszUserId, QSt
     QString id = QString::null;
     bool addToLog = true;
 
-    //removeMessageLog("_wavr_statediv"); theme part
+    removeMessageLog("_wavr_statediv");
 
     switch(type) {
     case MT_Message:
@@ -112,6 +112,7 @@ void wavrMessageLog::appendMessageLog(MessageType type, QString *lpszUserId, QSt
         message = pMessage->data(XML_MESSAGE);
         font.fromString(pMessage->data(XML_FONT));
         color.setNamedColor(pMessage->data(XML_COLOR));
+        qDebug() << "message received is " << message;
         appendMessage(lpszUserId, lpszUserName, &message, &time, &font, &color);
         lastId = *lpszUserId;
         break;
@@ -125,7 +126,7 @@ void wavrMessageLog::appendMessageLog(MessageType type, QString *lpszUserId, QSt
         message = pMessage->data(XML_CHATSTATE);
         caption = getChatStateMessage((ChatState)wavrHelper::indexOf(ChatStateNames, CS_Max, message));
         if(!caption.isNull()) {
-            //html = themeData.stateMsg;
+            html = themeData.stateMsg;
             html.replace("%iconpath%", "qrc"IDR_BLANK);
             html.replace("%sender%", caption.arg(*lpszUserName));
             html.replace("%message%", "");
@@ -137,7 +138,7 @@ void wavrMessageLog::appendMessageLog(MessageType type, QString *lpszUserId, QSt
         message = pMessage->data(XML_MESSAGE);
         font.fromString(pMessage->data(XML_FONT));
         color.setNamedColor(pMessage->data(XML_COLOR));
-        //html = themeData.sysMsg;
+        html = themeData.sysMsg;
         caption = tr("Message not delivered to %1:");
         fontStyle = getFontStyle(&font, &color, true);
         decodeMessage(&message);
@@ -187,7 +188,7 @@ void wavrMessageLog::updateAvatar(QString *lpszUserId, QString *lpszFilePath) {
 }
 
 void wavrMessageLog::reloadMessageLog(void) {
-    initMessageLog(themePath, false);
+    initMessageLog(false);
     for (int index = 0; index < messageLog.count(); index++) {
         SingleMessage msg = messageLog[index];
         appendMessageLog(msg.type, &msg.userId, &msg.userName, &msg.message, true);
@@ -353,7 +354,7 @@ void wavrMessageLog::appendBroadcast(QString* lpszUserId, QString* lpszUserName,
 
     decodeMessage(lpszMessage);
 
-    QString html;// = themeData.pubMsg;
+    QString html = themeData.pubMsg;
     QString caption = tr("Broadcast message from %1:");
     html.replace("%iconpath%", "qrc"IDR_BROADCASTMSG);
     html.replace("%sender%", caption.arg(*lpszUserName));
@@ -374,7 +375,7 @@ void wavrMessageLog::appendMessage(QString* lpszUserId, QString* lpszUserName, Q
     QString fontStyle = getFontStyle(pFont, pColor, localUser);
 
     if(lpszUserId->compare(lastId) != 0) {
-        //html = localUser ? themeData.outMsg : themeData.inMsg;
+        html = localUser ? themeData.outMsg : themeData.inMsg;
 
         //	get the avatar image for this user from the cache folder
         QString filePath = participantAvatars.value(*lpszUserId);
@@ -392,7 +393,7 @@ void wavrMessageLog::appendMessage(QString* lpszUserId, QString* lpszUserName, Q
         QWebElement body = document.findFirst("body");
         body.appendInside(html);
     } else {
-        //html = localUser ? themeData.outNextMsg : themeData.inNextMsg;
+        html = localUser ? themeData.outNextMsg : themeData.inNextMsg;
         html.replace("%time%", getTimeString(pTime));
         html.replace("%style%", fontStyle);
         html.replace("%message%", *lpszMessage);

@@ -32,8 +32,8 @@
 wavrMainWindow::wavrMainWindow(QWidget *parent, Qt::WindowFlags flags) : QWidget(parent, flags) {
     ui.setupUi(this);
 
-//    connect(ui.tvUserList, SIGNAL(itemActivated(QTreeWidgetItem*, int)),
-//            this, SLOT(tvUserList_itemActivated(QTreeWidgetItem*, int)));
+    connect(ui.tvUserList, SIGNAL(itemActivated(QTreeWidgetItem*, int)),
+            this, SLOT(tvUserList_itemActivated(QTreeWidgetItem*, int)));
 //    connect(ui.tvUserList, SIGNAL(itemContextMenu(QTreeWidgetItem*, QPoint&)),
 //        this, SLOT(tvUserList_itemContextMenu(QTreeWidgetItem*, QPoint&)));
 //    connect(ui.tvUserList, SIGNAL(itemDragDropped(QTreeWidgetItem*)),
@@ -326,6 +326,21 @@ void wavrMainWindow::statusAction_triggered(int index) {
     }
 }
 
+void wavrMainWindow::refreshAction_triggered(void) {
+    QString szUserId;
+    QString szMessage;
+
+    sendMessage(MT_Refresh, &szUserId, &szMessage);
+}
+
+void wavrMainWindow::tvUserList_itemActivated(QTreeWidgetItem* pItem, int column) {
+    Q_UNUSED(column);
+    if(pItem->data(0, TypeRole).toString().compare("User") == 0) {
+        QString szUserId = pItem->data(0, IdRole).toString();
+        emit chatStarting(&szUserId);
+    }
+}
+
 void wavrMainWindow::cmbPresence_returnPressed(void) {
     //	Shift the focus from txtNote to another control
     ui.tvUserList->setFocus();
@@ -357,6 +372,8 @@ void wavrMainWindow::createMainMenu(void) {
     pMainMenuBar = new QMenuBar(this);
     pMainMenu = pMainMenuBar->addMenu(tr("&Messenger"));
 
+    refreshAction = pMainMenu->addAction(QIcon(QPixmap(IDR_REFRESH, "PNG")), "&Refresh contacts list",
+        this, SLOT(refreshAction_triggered()), QKeySequence::Refresh);
     settingsAction = pMainMenu->addAction(QIcon(QPixmap(IDR_TOOLS, "PNG")), "&Preferences",
         this, SLOT(traySettingsAction_triggered()), QKeySequence::Preferences);
 

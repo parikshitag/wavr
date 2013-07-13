@@ -32,6 +32,7 @@
 #include "chatdefinitions.h"
 #include "chathelper.h"
 #include "libWavr/xmlmessage.h"
+#include "theme.h"
 
 enum OutputFormat{ HtmlFormat, TextFormat };
 
@@ -103,7 +104,7 @@ private:
     void setUIText(void);
 
     QList<SingleMessage> messageLog;
-    //ThemeData themeData;
+    ThemeData themeData;
     QMenu* contextMenu;
     QAction* copyAction;
     QAction* copyLinkAction;

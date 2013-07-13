@@ -32,6 +32,7 @@
 #include "libWavr/settings.h"
 
 #define SL_CACHEDIR				"cache"
+#define SL_THEMEDIR				"themes"
 #define SL_GROUPFILE			"group.cfg"
 #define SL_AVATARFILE			"avt_local.png"
 #define SL_LOGDIR				"logs"
@@ -42,6 +43,19 @@ public:
 	static QString cacheDir(void) {
         return QDir::toNativeSeparators(QStandardPaths::writableLocation(
             QStandardPaths::DataLocation) + "/"SL_CACHEDIR);
+    }
+
+    static QString resThemeDir(void) {
+        return ":/"SL_THEMEDIR;
+    }
+
+    static QString sysThemeDir(void) {
+        return QDir::toNativeSeparators(QDir::currentPath() + "/"SL_THEMEDIR);
+    }
+
+    static QString userThemeDir(void) {
+        return QDir::toNativeSeparators(QStandardPaths::writableLocation(
+             QStandardPaths::DataLocation) + "/"SL_THEMEDIR);
     }
 
     static QString groupFile(void) {

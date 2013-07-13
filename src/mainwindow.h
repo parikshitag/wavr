@@ -87,10 +87,10 @@ private slots:
     void statusAction_triggered(int index);
 //    void avatarAction_triggered(void);
 //    void avatarBrowseAction_triggered(void);
-//    void refreshAction_triggered(void);
+    void refreshAction_triggered(void);
 //    void trayIcon_activated(QSystemTrayIcon::ActivationReason reason);
 //    void trayMessage_clicked(void);
-//    void tvUserList_itemActivated(QTreeWidgetItem* pItem, int column);
+    void tvUserList_itemActivated(QTreeWidgetItem* pItem, int column);
 //    void tvUserList_itemContextMenu(QTreeWidgetItem* pItem, QPoint& pos);
     void cmbPresence_returnPressed(void);
     void cmbPresence_editingFinished(void);

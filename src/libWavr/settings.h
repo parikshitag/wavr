@@ -70,6 +70,8 @@
 #define IDS_MESSAGETOP_VAL      false
 #define IDS_PUBMESSAGEPOP       "Messages/PubMessagePop"    // set above to public messages or not
 #define IDS_PUBMESSAGEPOP_VAL   false
+#define IDS_HISTORY				"History/History"
+#define IDS_HISTORY_VAL			true
 
 #define IDS_CONNECTION          "Connection/Connection"
 #define IDS_CONNECTION_VAL      "Auto"
@@ -85,9 +87,12 @@
 #define IDS_TCPPORT             "Connection/TCPPort"
 #define IDS_TCPPORT_VAL         50000
 
+#define IDS_THEME				"Appearance/Theme"
+#define IDS_THEME_VAL			":/themes/Classic"
 #define IDS_USERLISTVIEW		"Appearance/UserListView"
 #define IDS_USERLISTVIEW_VAL	ULV_Detailed
-
+#define IDS_SENDKEYMOD			"Hotkeys/SendKeyMod"
+#define IDS_SENDKEYMOD_VAL		false
 #define IDS_STATUS              "User/Status"
 #define IDS_STATUS_VAL          statusCode[0]
 #define IDS_AVATAR              "User/Avatar"

@@ -77,7 +77,7 @@ private:
     QTimer*                             pTimer;
     wavrMessaging*                      pMessaging;
     wavrMainWindow*                     pMainWindow;
-    QTabWidget*                         pTabWidget;
+    //QTabWidget*                         pTabWidget;
     QList<wavrChatWindow*>              chatWindows;
 
     QPointer<wavrSettingsDialog>        pSettingsDialog;

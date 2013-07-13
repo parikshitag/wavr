@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     imagepicker.cpp \
     libWavr/filemessagingproc.cpp \
     libWavr/channelFile.cpp \
-    subcontrols.cpp
+    subcontrols.cpp \
+    theme.cpp
 
 HEADERS  += mainwindow.h \
     definitions.h \
@@ -67,7 +68,8 @@ HEADERS  += mainwindow.h \
     imagepickeraction.h \
     imagepicker.h \
     libWavr/channelFile.h \
-    subcontrols.h
+    subcontrols.h \
+    theme.h
 
 FORMS    += \
     mainwindow.ui \

@@ -147,7 +147,7 @@ void wavrUserTreeWidgetDelegate::paint(QPainter* painter, const QStyleOptionView
         QRect statusRect = itemRect.adjusted(itemRect.width(), padding, 0, 0);
         QPixmap statusImage = pItem->icon(0).pixmap(QSize(16, 16));
         statusRect.setLeft(statusRect.right() - statusImage.width() - 2 * padding);
-        statusRect.setTop(itemRect.bottom() / 2 + padding);
+        //statusRect.setTop(itemRect.bottom() / 2 + padding);
         statusRect.setSize(statusImage.size());
         painter->drawPixmap(statusRect, statusImage);
 
