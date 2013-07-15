@@ -240,7 +240,7 @@ void wavrChatWindow::settingsChanged(void) {
     showSmiley = pSettings->value(IDS_EMOTICON, IDS_EMOTICON_VAL).toBool();
     pMessageLog->showSmiley = showSmiley;
     //pMessageLog->fontSizeVal = pSettings->value(IDS_FONTSIZE, IDS_FONTSIZE_VAL).toInt();
-    //pMessageLog->autoFile = pSettings->value(IDS_AUTOFILE, IDS_AUTOFILE_VAL).toBool();
+    pMessageLog->autoFile = pSettings->value(IDS_AUTOFILE, IDS_AUTOFILE_VAL).toBool();
     //sendKeyMod = pSettings->value(IDS_SENDKEYMOD, IDS_SENDKEYMOD_VAL).toBool();
     clearOnClose = pSettings->value(IDS_CLEARONCLOSE, IDS_CLEARONCLOSE_VAL).toBool();
     //pSoundPlayer->settingsChanged();

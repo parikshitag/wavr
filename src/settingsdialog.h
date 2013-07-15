@@ -34,6 +34,8 @@
 #include "libWavr/settings.h"
 #include "libWavr/stdlocation.h"
 #include "imagepickeraction.h"
+#include "messagelog.h"
+#include "theme.h"
 
 class wavrSettingsDialog : public QDialog
 {
@@ -51,7 +53,7 @@ private slots:
     void chkMessageTime_toggled(bool checked);
     void chkAllowLinks_toggled(bool checked);
     void btnReset_clicked(void);
-
+    void cboTheme_currentIndexChanged(int index);
     void lvBroadcasts_currentRowChanged(int index);
     void txtBroadcast_textEdited(const QString& text);
     void btnAddBroadcast_clicked(void);
@@ -75,6 +77,7 @@ private:
     QRegExpValidator*   pIpValidator;
     QMenu* pAvatarMenu;
     QAction* avatarBrowseAction;
+    wavrMessageLog* pMessageLog;
 };
 
 #endif // SETTINGSDIALOG_H

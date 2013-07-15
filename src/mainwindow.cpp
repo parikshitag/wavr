@@ -260,19 +260,19 @@ void wavrMainWindow::settingsChanged() {
 //	statusToolTip = pSettings->value(IDS_STATUSTOOLTIP, IDS_STATUSTOOLTIP_VAL).toBool();
     int viewType = pSettings->value(IDS_USERLISTVIEW, IDS_USERLISTVIEW_VAL).toInt();
     ui.tvUserList->setView((UserListView)viewType);
-//	for(int index = 0; index < ui.tvUserList->topLevelItemCount(); index++) {
-//		QTreeWidgetItem* item = ui.tvUserList->topLevelItem(index);
-//		for(int childIndex = 0; childIndex < item->childCount(); childIndex++) {
-//			QTreeWidgetItem* childItem = item->child(childIndex);
-////			QSize itemSize = ui.tvUserList->view() == ULV_Detailed ? QSize(0, 36) : QSize(0, 20);
-////			childItem->setSizeHint(0, itemSize);
+//    for(int index = 0; index < ui.tvUserList->topLevelItemCount(); index++) {
+//        QTreeWidgetItem* item = ui.tvUserList->topLevelItem(index);
+//        for(int childIndex = 0; childIndex < item->childCount(); childIndex++) {
+//            QTreeWidgetItem* childItem = item->child(childIndex);
+//            QSize itemSize = ui.tvUserList->view() == ULV_Detailed ? QSize(0, 36) : QSize(0, 20);
+//            childItem->setSizeHint(0, itemSize);
 
-//			QString toolTip = statusToolTip ? lmcStrings::statusDesc()[childItem->data(0, StatusRole).toInt()] : QString::null;
-//			childItem->setToolTip(0, toolTip);
-//		}
-//	}
-//	pSoundPlayer->settingsChanged();
-//	ui.lblUserName->setText(pLocalUser->name);	// in case display name has been changed
+//            QString toolTip = statusToolTip ? wavrStrings::statusDesc()[childItem->data(0, StatusRole).toInt()] : QString::null;
+//            childItem->setToolTip(0, toolTip);
+//        }
+//    }
+    //pSoundPlayer->settingsChanged();
+    //ui.lblUserName->setText(pLocalUser->name);	// in case display name has been changed
 }
 
 QList<QTreeWidgetItem*> wavrMainWindow::getContactsList(void) {
@@ -378,6 +378,13 @@ void wavrMainWindow::tvUserList_itemContextMenu(QTreeWidgetItem *pItem, QPoint &
         pUserMenu->actions()[2]->setEnabled(folderCap);
         pUserMenu->exec(pos);
     }
+}
+
+void wavrMainWindow::tvUserList_currentItemChanged(QTreeWidgetItem *pCurrent, QTreeWidgetItem *pPrevious) {
+    Q_UNUSED(pPrevious);
+    bool bEnabled = (pCurrent && pCurrent->data(0, TypeRole).toString().compare("User") == 0);
+    //toolChatAction->setEnabled(bEnabled);
+    //toolFileAction->setEnabled(bEnabled);
 }
 
 void wavrMainWindow::cmbPresence_returnPressed(void) {

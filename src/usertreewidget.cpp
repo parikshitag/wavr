@@ -76,7 +76,6 @@ void wavrUserTreeWidgetDelegate::paint(QPainter* painter, const QStyleOptionView
     wavrUserTreeWidget* pTreeWidget = static_cast<wavrUserTreeWidget*>(pItem->treeWidget());
     QString type = pItem->data(0, TypeRole).toString();
     QString name = pItem->data(0, Qt::DisplayRole).toString();
-
     int padding = 2;
 
     if(type == "Group") {
@@ -145,7 +144,11 @@ void wavrUserTreeWidgetDelegate::paint(QPainter* painter, const QStyleOptionView
 
         //	Draw the status image
         QPixmap statusImage = pItem->icon(0).pixmap(QSize(16, 16));
-        QRect statusRect = itemRect.adjusted(itemRect.width(), 5 * padding , 0, 0);
+        QRect statusRect;
+        if(pTreeWidget->view() == ULV_Detailed)
+            statusRect = itemRect.adjusted(itemRect.width(), 5 * padding , 0, 0);
+        else
+            statusRect = itemRect.adjusted(itemRect.width(), padding , 0, 0);
         statusRect.setLeft(statusRect.right() - statusImage.width() - 2 * padding);
         //statusRect.setTop(statusRect.top() + statusImage.height() + padding);
         statusRect.setSize(statusImage.size());        
@@ -163,13 +166,19 @@ void wavrUserTreeWidgetDelegate::paint(QPainter* painter, const QStyleOptionView
                 avatarRect.setSize(avatarImage.size());
                 painter->drawPixmap(avatarRect, avatarImage);
             }
-        }
+        } else
+            avatarRect.setWidth(10);
 
         //	Draw the text
         painter->setPen(QPen(palette.color(QPalette::WindowText)));
         QString note = pItem->data(0, SubtextRole).toString();
         int textFlags = Qt::AlignLeft;
-        textFlags |= (note.isNull()  || note.isEmpty() ?  Qt::AlignVCenter : Qt::AlignTop);
+        if (pTreeWidget->view() == ULV_Detailed)
+            textFlags |= (note.isNull()  || note.isEmpty() ?  Qt::AlignVCenter : Qt::AlignTop);
+        else
+            textFlags |= Qt::AlignVCenter;
+        textFlags |= (pTreeWidget->view() == ULV_Detailed ? Qt::AlignTop : Qt::AlignVCenter);
+
         //	Leave a padding of 5px on left and right
         QRect textRect = itemRect.adjusted(avatarRect.right() + 5, padding, -(5 + statusRect.width() + padding), -padding);
         QString text = elidedText(painter->fontMetrics(), textRect.width(), Qt::ElideRight, name);
@@ -212,7 +221,7 @@ wavrUserTreeWidget::wavrUserTreeWidget(QWidget* parent) : QTreeWidget(parent) {
     setItemDelegate(itemDelegate);
 
     isCheckable = false;
-    viewType = ULV_Detailed;
+    viewType =  ULV_Detailed;
 }
 
 bool wavrUserTreeWidget::checkable(void) {

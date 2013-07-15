@@ -113,6 +113,9 @@ void wavrCore::settingsChanged() {
     pMessaging->settingsChanged();
     pMainWindow->settingsChanged();
 
+    for(int index = 0; index < chatWindows.count(); index++)
+        chatWindows[index]->settingsChanged();
+
     messageTop = pSettings->value(IDS_MESSAGETOP, IDS_MESSAGETOP_VAL).toBool();
     pubMessagePop = pSettings->value(IDS_PUBMESSAGEPOP, IDS_PUBMESSAGEPOP_VAL).toInt() * 1000;
     pTimer->setInterval(refreshTime);
@@ -123,7 +126,7 @@ void wavrCore::settingsChanged() {
         lang = appLang;
         //Application::setLanguage(lang);
         //Application::setLayoutDirection(tr("LAYOUT_DIRECTION") == RTL_LAYOUT ? Qt::RightToLeft : Qt::LeftToRight);
-        //wavrStrings::retranslate();
+        wavrStrings::retranslate();
     }
 
 }

@@ -90,6 +90,7 @@ private slots:
 //    void trayMessage_clicked(void);
     void tvUserList_itemActivated(QTreeWidgetItem* pItem, int column);
     void tvUserList_itemContextMenu(QTreeWidgetItem* pItem, QPoint& pos);
+    void tvUserList_currentItemChanged(QTreeWidgetItem* pCurrent, QTreeWidgetItem* pPrevious);
     void cmbPresence_returnPressed(void);
     void cmbPresence_editingFinished(void);
     void txtSearch_textChanged(QString);

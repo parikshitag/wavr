@@ -35,11 +35,15 @@ wavrSettingsDialog::wavrSettingsDialog(QWidget *parent, Qt::WindowFlags flags) :
     //  Destroy the window when it closes
     setAttribute(Qt::WA_DeleteOnClose, true);
 
+    pMessageLog = new wavrMessageLog(ui.fraMessageLog);
+    ui.logLayout->addWidget(pMessageLog);
+
     connect(ui.lvCategories, SIGNAL(currentRowChanged(int)), this, SLOT(lvCategories_currentRowChanged(int)));
     connect(ui.btnOK, SIGNAL(clicked()), this, SLOT(btnOk_clicked()));
     connect(ui.chkMessageTime, SIGNAL(toggled(bool)), this, SLOT(chkMessageTime_toggled(bool)));
     connect(ui.chkAllowLinks, SIGNAL(toggled(bool)), this, SLOT(chkAllowLinks_toggled(bool)));
     connect(ui.btnReset, SIGNAL(clicked()), this, SLOT(btnReset_clicked()));
+    connect(ui.cboTheme, SIGNAL(currentIndexChanged(int)), this, SLOT(cboTheme_currentIndexChanged(int)));
     connect(ui.lvBroadcasts, SIGNAL(currentRowChanged(int)), this, SLOT(lvBroadcasts_currentRowChanged(int)));
     connect(ui.txtBroadcast, SIGNAL(textEdited(QString)), this, SLOT(txtBroadcast_textEdited(QString)));
     connect(ui.txtBroadcast, SIGNAL(returnPressed()), this, SLOT(btnAddBroadcast_clicked()));
@@ -58,6 +62,18 @@ void wavrSettingsDialog::init(void) {
 
     createAvatarMenu();
 
+    Themes themes = wavrTheme::availableThemes();
+    qDebug() << "total themes " << themes.count();
+    for(int index = 0; index < themes.count(); index++)
+        ui.cboTheme->addItem(themes.at(index).name, themes.at(index).path);
+
+    for(int index = 0; index < ULV_Max; index++)
+        ui.cboUserListView->addItem(wavrStrings::userListView()[index], index);
+
+    ui.lvCategories->setCurrentRow(0);
+
+    setWindowIcon(QIcon(IDR_APPICON));
+
     ui.lvCategories->setIconSize(QSize(32, 32));
     ui.lvCategories->item(0)->setIcon(QIcon(QPixmap(IDR_GENERALSET, "PNG")));
     ui.lvCategories->item(1)->setIcon(QIcon(QPixmap(IDR_ACCOUNTSET, "PNG")));
@@ -73,6 +89,7 @@ void wavrSettingsDialog::init(void) {
     setPageHeaderStyle(ui.lblAccountPage);
     setPageHeaderStyle(ui.lblMessagesPage);
     setPageHeaderStyle(ui.lblNetworkPage);
+    setPageHeaderStyle(ui.lblThemePage);
 
     pPortValidator = new QIntValidator(1, 65535, this);
     ui.txtUDPPort->setValidator(pPortValidator);
@@ -81,6 +98,8 @@ void wavrSettingsDialog::init(void) {
     ipRegExp = QRegExp("\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b");
     pIpValidator = new QRegExpValidator(ipRegExp, this);
     ui.txtMulticast->setValidator(pIpValidator);
+
+    pMessageLog->setAutoScroll(false);
 
     pSettings = new wavrSettings();
     setUIText();
@@ -124,6 +143,53 @@ void wavrSettingsDialog::btnReset_clicked(void) {
         pSettings->sync();
         accept();
     }
+}
+
+void wavrSettingsDialog::cboTheme_currentIndexChanged(int index) {
+    QString themePath = ui.cboTheme->itemData(index, Qt::UserRole).toString();
+
+    //pMessageLog->fontSizeVal = FS_SMALL;
+    pMessageLog->localId = "Myself";
+    pMessageLog->peerId = "Jack";
+    pMessageLog->messageTime = true;
+    pMessageLog->initMessageLog(themePath);
+
+    wavrXmlMessage msg;
+    msg.addData(XML_TIME, QString::number(QDateTime::currentMSecsSinceEpoch()));
+    msg.addData(XML_FONT, QFont().toString());
+    msg.addData(XML_COLOR, QColor::fromRgb(96, 96, 96).name());
+
+    QString userId = "Jack";
+    QString userName = "Jack";
+
+    msg.addData(XML_MESSAGE, "Hello, this is an incoming message.");
+    pMessageLog->appendMessageLog(MT_Message, &userId, &userName, &msg, true);
+
+    msg.removeData(XML_MESSAGE);
+    msg.addData(XML_MESSAGE, "Hello, this is a consecutive incoming message.");
+    pMessageLog->appendMessageLog(MT_Message, &userId, &userName, &msg, true);
+
+    msg.removeData(XML_MESSAGE);
+    msg.addData(XML_BROADCAST, "This is a broadcast message!");
+    pMessageLog->appendMessageLog(MT_Broadcast, &userId, &userName, &msg, true);
+
+    userId = "Myself";
+    userName = "Myself";
+
+    msg.removeData(XML_BROADCAST);
+    msg.addData(XML_MESSAGE, "Hi, this is an outgoing message.");
+    pMessageLog->appendMessageLog(MT_Message, &userId, &userName, &msg, true);
+
+    msg.removeData(XML_MESSAGE);
+    msg.addData(XML_MESSAGE, "Hi, this is a consecutive outgoing message.");
+    pMessageLog->appendMessageLog(MT_Message, &userId, &userName, &msg, true);
+
+    userId = "Jack";
+    userName = "Jack";
+
+    msg.removeData(XML_MESSAGE);
+    msg.addData(XML_MESSAGE, "This is another incoming message.");
+    pMessageLog->appendMessageLog(MT_Message, &userId, &userName, &msg, true);
 }
 
 void wavrSettingsDialog::lvBroadcasts_currentRowChanged(int index) {
@@ -249,8 +315,14 @@ void wavrSettingsDialog::setUIText(void) {
         ui.grpSysTray->setTitle(tr("System Tray (Not Available)"));
     }
 
+    for(int index = 0; index < ULV_Max; index++)
+        ui.cboUserListView->setItemText(index, wavrStrings::userListView()[index]);
+
+    cboTheme_currentIndexChanged(ui.cboTheme->currentIndex());
+
     //	set minimum possible size
     layout()->setSizeConstraint(QLayout::SetMinimumSize);
+
 }
 
 void wavrSettingsDialog::loadSettings(void) {
@@ -297,6 +369,20 @@ void wavrSettingsDialog::loadSettings(void) {
         ui.txtMulticast->setText(pSettings->value(IDS_MULTICAST, IDS_MULTICAST_VAL).toString());
         ui.txtUDPPort->setText(pSettings->value(IDS_UDPPORT, IDS_UDPPORT_VAL).toString());
         ui.txtTCPPort->setText(pSettings->value(IDS_TCPPORT, IDS_TCPPORT_VAL).toString());
+
+        QString themePath = pSettings->value(IDS_THEME, IDS_THEME_VAL).toString();
+        for(int index = 0; index < ui.cboTheme->count(); index ++) {
+            QString theme = ui.cboTheme->itemData(index, Qt::UserRole).toString();
+            if(themePath.compare(theme) == 0) {
+                ui.cboTheme->setCurrentIndex(index);
+                break;
+            }
+        }
+
+        int userListView = pSettings->value(IDS_USERLISTVIEW, IDS_USERLISTVIEW_VAL).toInt();
+        ui.cboUserListView->setCurrentIndex(userListView);
+        //ui.chkUserListToolTip->setChecked(pSettings->value(IDS_STATUSTOOLTIP, IDS_STATUSTOOLTIP_VAL).toBool());
+
 }
 
 void wavrSettingsDialog::saveSettings(void) {
@@ -348,6 +434,10 @@ void wavrSettingsDialog::saveSettings(void) {
     pSettings->setValue(IDS_MULTICAST, ui.txtMulticast->text(), IDS_MULTICAST_VAL);
     pSettings->setValue(IDS_UDPPORT, ui.txtUDPPort->text(), IDS_UDPPORT_VAL);
     pSettings->setValue(IDS_TCPPORT, ui.txtTCPPort->text(), IDS_TCPPORT_VAL);
+
+    QString themePath = ui.cboTheme->itemData(ui.cboTheme->currentIndex(), Qt::UserRole).toString();
+    pSettings->setValue(IDS_THEME, themePath, IDS_THEME_VAL);
+    pSettings->setValue(IDS_USERLISTVIEW, ui.cboUserListView->currentIndex(), IDS_USERLISTVIEW_VAL);
 
     //if(pSettings->value(IDS_AVATAR, IDS_AVATAR_VAL).toInt() != nAvatar)
         pSettings->setValue(IDS_AVATAR, nAvatar, IDS_AVATAR_VAL);

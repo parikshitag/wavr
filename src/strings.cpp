@@ -26,11 +26,23 @@
 
 QString wavrStrings::m_appName;
 QStringList wavrStrings::m_statusDesc;
+QStringList wavrStrings::m_userListView;
 
 wavrStrings::wavrStrings(void) {
 }
 
 wavrStrings::~wavrStrings(void){
+}
+
+void wavrStrings::retranslate(void) {
+    m_appName.clear();
+    //m_appDesc.clear();
+    //m_autoConn.clear();
+    //m_fontSize.clear();
+    m_statusDesc.clear();
+    //m_soundDesc.clear();
+    //m_awayTimeDesc.clear();
+    m_userListView.clear();
 }
 
 const QString wavrStrings::appName(void) {
@@ -49,4 +61,12 @@ const QStringList wavrStrings::statusDesc(void) {
         m_statusDesc.append(tr("Offline"));
     }
     return m_statusDesc;
+}
+
+const QStringList wavrStrings::userListView(void) {
+    if(m_userListView.isEmpty()) {
+        m_userListView.append(tr("Detailed"));
+        m_userListView.append(tr("Compact"));
+    }
+    return m_userListView;
 }

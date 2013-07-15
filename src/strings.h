@@ -36,12 +36,15 @@ public:
     wavrStrings(void);
     ~wavrStrings(void);
 
+    static void retranslate(void);
     static const QString appName(void);
     static const QStringList statusDesc(void);
+    static const QStringList userListView(void);
 
 private:
     static QString m_appName;
     static QStringList m_statusDesc;
+    static QStringList m_userListView;
 };
 
 #endif // STRINGS_H
