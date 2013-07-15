@@ -34,12 +34,12 @@ wavrMainWindow::wavrMainWindow(QWidget *parent, Qt::WindowFlags flags) : QWidget
 
     connect(ui.tvUserList, SIGNAL(itemActivated(QTreeWidgetItem*, int)),
             this, SLOT(tvUserList_itemActivated(QTreeWidgetItem*, int)));
-//    connect(ui.tvUserList, SIGNAL(itemContextMenu(QTreeWidgetItem*, QPoint&)),
-//        this, SLOT(tvUserList_itemContextMenu(QTreeWidgetItem*, QPoint&)));
+    connect(ui.tvUserList, SIGNAL(itemContextMenu(QTreeWidgetItem*, QPoint&)),
+        this, SLOT(tvUserList_itemContextMenu(QTreeWidgetItem*, QPoint&)));
 //    connect(ui.tvUserList, SIGNAL(itemDragDropped(QTreeWidgetItem*)),
 //        this, SLOT(tvUserList_itemDragDropped(QTreeWidgetItem*)));
-//    connect(ui.tvUserList, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)),
-//        this, SLOT(tvUserList_currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)));
+    connect(ui.tvUserList, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)),
+        this, SLOT(tvUserList_currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)));
 
     connect(ui.cmbPresence->lineEdit(), SIGNAL(returnPressed()), this, SLOT(cmbPresence_returnPressed()));
     connect(ui.cmbPresence->lineEdit(), SIGNAL(editingFinished()), this, SLOT(cmbPresence_editingFinished()));
@@ -66,7 +66,7 @@ void wavrMainWindow::init(User *pLocalUser, QList<Group>* pGroupList, bool conne
    // createTrayIcon();
     //connectionStateChanged(connected);
 
-    //createUserMenu();
+    createUserMenu();
     ui.txtSearch->setVisible(false);
     ui.tvUserList->setIconSize(QSize(16, 16));
     ui.tvUserList->header()->setSectionsMovable(false);
@@ -283,25 +283,48 @@ QList<QTreeWidgetItem*> wavrMainWindow::getContactsList(void) {
     return contactsList;
 }
 
-//void wavrMainWindow::keyPressEvent(QKeyEvent *pKeyEvent) {
-//    if(ui.txtSearch->is
-//}
-
 bool wavrMainWindow::eventFilter(QObject* pObject, QEvent* pEvent) {
 
     if(pEvent->type() == QEvent::KeyPress) {
         QKeyEvent* pKeyEvent = static_cast<QKeyEvent*>(pEvent);
-        if(pKeyEvent->key() == Qt::Key_Escape) {
+        int key = pKeyEvent->key();
+        if(key == Qt::Key_Escape) {
             ui.txtSearch->setVisible(false);
             ui.txtSearch->clear();
             return true;
-        } else {
+        }
+        if(!(pKeyEvent->modifiers() & Qt::ControlModifier)){
             ui.txtSearch->setVisible(true);
             ui.txtSearch->setFocus();
             ui.txtSearch->setText(pKeyEvent->text());
         }
     }
     return false;
+}
+
+void wavrMainWindow::closeEvent(QCloseEvent *pEvent) {
+    // close main window to system tray
+    pEvent->ignore();
+    minimize();
+}
+
+void wavrMainWindow::changeEvent(QEvent *pEvent) {
+    switch(pEvent->type()) {
+    case QEvent::WindowStateChange:
+        if(minimizeHide) {
+            QWindowStateChangeEvent* e = (QWindowStateChangeEvent*)pEvent;
+            if(isMinimized() && e->oldState() != Qt::WindowMinimized) {
+                QTimer::singleShot(0, this, SLOT(hide()));
+                pEvent->ignore();
+                showMinimizeMessage();
+            }
+        }
+        break;
+    default:
+        break;
+    }
+
+    QWidget::changeEvent(pEvent);
 }
 
 void wavrMainWindow::sendMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage) {
@@ -341,6 +364,22 @@ void wavrMainWindow::tvUserList_itemActivated(QTreeWidgetItem* pItem, int column
     }
 }
 
+void wavrMainWindow::tvUserList_itemContextMenu(QTreeWidgetItem *pItem, QPoint &pos) {
+    if (!pItem)
+        return;
+
+    if(pItem->data(0, TypeRole).toString().compare("User") == 0) {
+        for(int index = 0; index < pUserMenu->actions().count(); index++)
+            pUserMenu->actions()[index]->setData(pItem->data(0, IdRole));
+
+        bool fileCap = ((pItem->data(0, CapsRole).toUInt() & UC_File) == UC_File);
+        pUserMenu->actions()[1]->setEnabled(fileCap);
+        bool folderCap = ((pItem->data(0, CapsRole).toUInt() & UC_Folder) == UC_Folder);
+        pUserMenu->actions()[2]->setEnabled(folderCap);
+        pUserMenu->exec(pos);
+    }
+}
+
 void wavrMainWindow::cmbPresence_returnPressed(void) {
     //	Shift the focus from txtNote to another control
     ui.tvUserList->setFocus();
@@ -368,6 +407,41 @@ void wavrMainWindow::txtSearch_textChanged(QString text) {
     }
 }
 
+void wavrMainWindow::userConversationAction_triggered(void) {
+    QString userId = ui.tvUserList->currentItem()->data(0, IdRole).toString();
+    emit chatStarting(&userId);
+}
+
+void wavrMainWindow::userBroadcastAction_triggered(void) {
+    //emit showBroadcast();
+}
+
+void wavrMainWindow::userFileAction_triggered(void) {
+    QString userId = ui.tvUserList->currentItem()->data(0, IdRole).toString();
+    QString dir = pSettings->value(IDS_OPENPATH, IDS_OPENPATH_VAL).toString();
+    QString fileName = QFileDialog::getOpenFileName(this, QString(), dir);
+    if(!fileName.isEmpty()) {
+        pSettings->setValue(IDS_OPENPATH, QFileInfo(fileName).dir().absolutePath());
+        sendMessage(MT_File, &userId, &fileName);
+    }
+}
+
+void wavrMainWindow::userFolderAction_triggered(void) {
+    QString userId = ui.tvUserList->currentItem()->data(0, IdRole).toString();
+    QString dir = pSettings->value(IDS_OPENPATH, IDS_OPENPATH_VAL).toString();
+    QString path = QFileDialog::getExistingDirectory(this, QString(), dir, QFileDialog::ShowDirsOnly);
+    if(!path.isEmpty()) {
+        pSettings->setValue(IDS_OPENPATH, QFileInfo(path).absolutePath());
+        sendMessage(MT_Folder, &userId, &path);
+    }
+}
+
+void wavrMainWindow::userInfoAction_triggered(void) {
+    QString userId = ui.tvUserList->currentItem()->data(0, IdRole).toString();
+    QString message;
+    sendMessage(MT_Query, &userId, &message);
+}
+
 void wavrMainWindow::createMainMenu(void) {
     pMainMenuBar = new QMenuBar(this);
     pMainMenu = pMainMenuBar->addMenu(tr("&Messenger"));
@@ -378,6 +452,18 @@ void wavrMainWindow::createMainMenu(void) {
         this, SLOT(traySettingsAction_triggered()), QKeySequence::Preferences);
 
     layout()->setMenuBar(pMainMenuBar);
+}
+
+void wavrMainWindow::createUserMenu(void) {
+    pUserMenu = new QMenu(this);
+
+    userChatAction = pUserMenu->addAction("&Conversation", this, SLOT(userConversationAction_triggered()));
+    userFileAction = pUserMenu->addAction("Send &File", this, SLOT(userFileAction_triggered()));
+    userFolderAction = pUserMenu->addAction("Send a Fol&der", this, SLOT(userFolderAction_triggered()));
+    pUserMenu->addSeparator();
+    userBroadcastAction = pUserMenu->addAction("Send &Broadcast Message", this, SLOT(userBroadcastAction_triggered()));
+    pUserMenu->addSeparator();
+    userInfoAction = pUserMenu->addAction("Get &Information", this, SLOT(userInfoAction_triggered()));
 }
 
 //void wavrMainWindow::createPresenceToolbar(void) {
@@ -445,10 +531,11 @@ void wavrMainWindow::sendMessage(MessageType type, QString* lpszUserId, QString*
         //xmlMessage.addData(XML_GROUP, *lpszMessage);
         break;
     case MT_File:
+        qDebug() << "sending file inside main window";
     case MT_Folder:
-        //xmlMessage.addData(XML_FILETYPE, FileTypeNames[FT_Normal]);
-            //xmlMessage.addData(XML_FILEOP, FileOpNames[FO_Request]);
-            //xmlMessage.addData(XML_FILEPATH, *lpszMessage);
+        xmlMessage.addData(XML_FILETYPE, FileTypeNames[FT_Normal]);
+            xmlMessage.addData(XML_FILEOP, FileOpNames[FO_Request]);
+            xmlMessage.addData(XML_FILEPATH, *lpszMessage);
             break;
     case MT_Avatar:
         xmlMessage.addData(XML_FILETYPE, FileTypeNames[FT_Avatar]);

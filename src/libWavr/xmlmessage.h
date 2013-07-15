@@ -66,6 +66,7 @@
 
 #define XML_FONT                "font"
 #define XML_COLOR               "color"
+#define XML_TEMPID               "tempid"
 
 #define XML_NOTE                "note"
 

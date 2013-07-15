@@ -88,20 +88,20 @@ void wavrMessaging::prepareFile(MessageType type, qint64 msgId, bool retry, QStr
         //  New file transfer request, add to file transfer list.
         addFileTransfer(FM_Send, lpszUserId, pMessage);
         break;
-//    case FO_Accept:
-//        updateFileTransfer(FM_Receive, (FileOp)fileOp, lpszUserId, pMessage);
-//        // pMessage now contains the generated id, file mode and other details.
-//        // Convert this to string now.
-//        szMessage = pMessage->toString();
-//        pNetwork->initReceiveFile(&user->id, &user->address, &szMessage);
-//        break;
-//    case FO_Decline:
-//        updateFileTransfer(FM_Receive, (FileOp)fileOp, lpszUserId, pMessage);
-//        break;
-//    case FO_Cancel:
-//        updateFileTransfer((FileMode)fileMode, (FileOp)fileOp, lpszUserId, pMessage);
-//        szMessage = pMessage->toString();
-//        pNetwork->fileOperation((FileMode)fileMode, &user->id, &szMessage);
+    case FO_Accept:
+        updateFileTransfer(FM_Receive, (FileOp)fileOp, lpszUserId, pMessage);
+        // pMessage now contains the generated id, file mode and other details.
+        // Convert this to string now.
+        szMessage = pMessage->toString();
+        pNetwork->initReceiveFile(&user->id, &user->address, &szMessage);
+        break;
+    case FO_Decline:
+        updateFileTransfer(FM_Receive, (FileOp)fileOp, lpszUserId, pMessage);
+        break;
+    case FO_Cancel:
+        updateFileTransfer((FileMode)fileMode, (FileOp)fileOp, lpszUserId, pMessage);
+        szMessage = pMessage->toString();
+        pNetwork->fileOperation((FileMode)fileMode, &user->id, &szMessage);
         break;
     }
 }
@@ -234,6 +234,7 @@ bool wavrMessaging::addFileTransfer(FileMode fileMode, QString* lpszUserId, wavr
         xmlMessage = pMessage->clone();
         switch(fileType) {
         case FT_Normal:
+            qDebug() << "sendnig file filemessaginproc";
             emit messageReceived(MT_File, lpszUserId, &xmlMessage);
             break;
 //        case FT_Folder:

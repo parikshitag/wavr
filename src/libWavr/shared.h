@@ -108,6 +108,7 @@ class wavrHelper {
 public:
     static int indexOf(const QString array[], int size, const QString& value);
     static int statusIndexFromCode(QString status);
+    static QString formatSize(qint64 size);
     static QString getUuid(void);
     static QString getLogonName(void);
     static QString getHostName(void);

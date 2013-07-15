@@ -51,11 +51,13 @@ public:
 
     void initMessageLog(QString themePath, bool clearLog = true);
     void appendMessageLog(MessageType type, QString* lpszUserId, QString* lpszUserName, wavrXmlMessage* pMessage, bool bReload = false);
+    void updateFileMessage(FileMode mode, FileOp op, QString fileId);
     void updateUserName(QString* lpszUserId, QString* lpszUserName);
     void updateAvatar(QString* lpszUserId, QString* lpszFilePath);
     void reloadMessageLog(void);
     QString prepareMessageLogForSave(OutputFormat format = HtmlFormat);
     void setAutoScroll(bool enable);
+    void abortPendingFileOperations(void);
     void saveMessageLog(QString filePath);
     void restoreMessageLog(QString filePath, bool reload = true);
 
@@ -66,6 +68,7 @@ public:
     QString lastId;
     bool hasData;
     bool showSmiley;
+    bool autoFile;
     int fontSizeVal;
     bool messageTime;
     bool messageDate;
@@ -81,7 +84,7 @@ protected:
     //void changeEvent(QEvent* event);
 
 private slots:
-    void log_LinkClicked(QUrl url);
+    void log_linkClicked(QUrl url);
     void log_contentsSizeChanged(QSize size);
     void log_linkHovered(const QString& link, const QString& title, const QString& textContent);
     void showContextMenu(const QPoint& pos);
@@ -96,13 +99,18 @@ private:
     void appendBroadcast(QString* lpszUserId, QString* lpszUserName, QString* lpszMessage, QDateTime* pTime);
     void appendMessage(QString* lpszUserId, QString* lpszUserName, QString* lpszMessage, QDateTime* pTime,
                        QFont* pFont, QColor* pColor);
+    void appendFileMessage(MessageType type, QString* lpszUserName, wavrXmlMessage* pMessage, bool bReload = false);
     QString getFontStyle(QFont* pFont, QColor* pColor, bool size = false);
+    QString getFileStatusMessage(FileMode mode, FileOp op);
     QString getChatStateMessage(ChatState chatState);
+    void fileOperation(QString fileId, QString action, QString fileType, FileMode mode = FM_Receive);
     void decodeMessage(QString* lpszMessage, bool useDefaults = false);
     void processMessageText(QString* lpszMessageText, bool useDefaults);
     QString getTimeString(QDateTime* pTime);
     void setUIText(void);
 
+    QMap<QString, wavrXmlMessage> sendFileMap;
+    QMap<QString, wavrXmlMessage> receiveFileMap;
     QList<SingleMessage> messageLog;
     ThemeData themeData;
     QMenu* contextMenu;

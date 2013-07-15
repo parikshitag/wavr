@@ -114,7 +114,7 @@ void wavrChatWindow::init(User *pLocalUser, User *pRemoteUser, bool connected) {
     pSettings = new wavrSettings();
     showSmiley = pSettings->value(IDS_EMOTICON, IDS_EMOTICON_VAL).toBool();
     pMessageLog->showSmiley = showSmiley;
-    //pMessageLog->autoFile = pSettings->value(IDS_AUTOFILE, IDS_AUTOFILE_VAL).toBool();
+    pMessageLog->autoFile = pSettings->value(IDS_AUTOFILE, IDS_AUTOFILE_VAL).toBool();
     pMessageLog->messageTime = pSettings->value(IDS_MESSAGETIME, IDS_MESSAGETIME_VAL).toBool();
     pMessageLog->messageDate = pSettings->value(IDS_MESSAGEDATE, IDS_MESSAGEDATE_VAL).toBool();
     pMessageLog->allowLinks = pSettings->value(IDS_ALLOWLINKS, IDS_ALLOWLINKS_VAL).toBool();
@@ -175,6 +175,7 @@ void wavrChatWindow::receiveMessage(MessageType type, QString* lpszUserId, wavrX
         }
         break;
     case MT_ChatState:
+        qDebug() << "Chat state message received";
         appendMessageLog(type, lpszUserId, &senderName, pMessage);
         break;
     case MT_Status:
@@ -220,11 +221,11 @@ void wavrChatWindow::receiveMessage(MessageType type, QString* lpszUserId, wavrX
             }
         } else {
             // a file message of op other than request has been received
-            //processFileOp(pMessage);
+            processFileOp(pMessage);
         }
         break;
     case MT_Depart:
-        //pMessageLog->abortPendingFileOperations();
+        pMessageLog->abortPendingFileOperations();
         break;
     default:
         break;
@@ -253,16 +254,16 @@ void wavrChatWindow::settingsChanged(void) {
     bool allowLinks = pSettings->value(IDS_ALLOWLINKS, IDS_ALLOWLINKS_VAL).toBool();
     bool pathToLink = pSettings->value(IDS_PATHTOLINK, IDS_PATHTOLINK_VAL).toBool();
     bool trim = pSettings->value(IDS_TRIMMESSAGE, IDS_TRIMMESSAGE_VAL).toBool();
-    //QString theme = pSettings->value(IDS_THEME, IDS_THEME_VAL).toString();
+    QString theme = pSettings->value(IDS_THEME, IDS_THEME_VAL).toString();
     if(msgTime != pMessageLog->messageTime || msgDate != pMessageLog->messageDate ||
             allowLinks != pMessageLog->allowLinks || pathToLink != pMessageLog->pathToLink ||
-            trim != pMessageLog->trimMessage /*|| theme.compare(pMessageLog->themePath) != 0*/) {
+            trim != pMessageLog->trimMessage || theme.compare(pMessageLog->themePath) != 0) {
         pMessageLog->messageTime = msgTime;
         pMessageLog->messageDate = msgDate;
         pMessageLog->allowLinks = allowLinks;
         pMessageLog->pathToLink = pathToLink;
         pMessageLog->trimMessage = trim;
-//		pMessageLog->themePath = theme;
+        pMessageLog->themePath = theme;
         pMessageLog->reloadMessageLog();
     }
 }
@@ -356,19 +357,20 @@ void wavrChatWindow::dropEvent(QDropEvent* pEvent) {
         if(!fileInfo.exists())
             continue;
 
-//        if(fileInfo.isFile())
-//            //sendFile(&path);
-//        else if(fileInfo.isDir())
-//            //sendFolder(&path);
+        if(fileInfo.isFile())
+            sendFile(&path);
+        else if(fileInfo.isDir())
+            sendFolder(&path);
     }
 }
 
 void wavrChatWindow::btnFile_clicked(void) {
     QString dir = pSettings->value(IDS_OPENPATH, IDS_OPENPATH_VAL).toString();
     QString fileName = QFileDialog::getOpenFileName(this, QString(), dir);
+    qDebug() << fileName;
     if(!fileName.isEmpty()) {
         pSettings->setValue(IDS_OPENPATH, QFileInfo(fileName).dir().absolutePath());
-        //sendFile(&fileName);
+        sendFile(&fileName);
     }
 }
 
@@ -457,10 +459,10 @@ void wavrChatWindow::createToolBar(void) {
 //	pTransferAction = pRightBar->addAction(QIcon(QPixmap(IDR_TRANSFER, "PNG")), "File &Transfers", this, SLOT(btnTransfers_clicked()));
 //	pTransferAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_J));
 
-//	ui.lblDividerTop->setBackgroundRole(QPalette::Light);
-//	ui.lblDividerTop->setAutoFillBackground(true);
-//	ui.lblDividerBottom->setBackgroundRole(QPalette::Dark);
-//	ui.lblDividerBottom->setAutoFillBackground(true);
+    ui.lblDividerTop->setBackgroundRole(QPalette::Light);
+    ui.lblDividerTop->setAutoFillBackground(true);
+    ui.lblDividerBottom->setBackgroundRole(QPalette::Dark);
+    ui.lblDividerBottom->setAutoFillBackground(true);
 }
 
 void wavrChatWindow::setUIText(void) {
@@ -534,10 +536,50 @@ void wavrChatWindow::sendMessage(void) {
     ui.txtMessage->setFocus();
 }
 
+void wavrChatWindow::sendFile(QString* lpszFilePath) {
+    sendObject(MT_File, lpszFilePath);
+}
+
+void wavrChatWindow::sendFolder(QString* lpszFolderPath) {
+    sendObject(MT_Folder, lpszFolderPath);
+}
+
+void wavrChatWindow::sendObject(MessageType type, QString* lpszPath) {
+    if(bConnected) {
+        wavrXmlMessage xmlMessage;
+        xmlMessage.addData(XML_FILETYPE, FileTypeNames[FT_Normal]);
+        xmlMessage.addData(XML_FILEOP, FileOpNames[FO_Request]);
+        xmlMessage.addData(XML_FILEPATH, *lpszPath);
+        qDebug() << "file delivering process";
+        QString userId = peerIds.value(peerId);
+        emit messageSent(type, &userId, &xmlMessage);
+    } else
+        appendMessageLog(MT_Error, NULL, NULL, NULL);
+}
+
 //	Called before sending message
 void wavrChatWindow::encodeMessage(QString* lpszMessage) {
     //	replace all emoticon images with corresponding text code
     ChatHelper::encodeSmileys(lpszMessage);
+}
+
+void wavrChatWindow::processFileOp(wavrXmlMessage *pMessage) {
+    int fileOp = wavrHelper::indexOf(FileOpNames, FO_Max, pMessage->data(XML_FILEOP));
+    int fileMode = wavrHelper::indexOf(FileModeNames, FM_Max, pMessage->data(XML_MODE));
+    QString fileId = pMessage->data(XML_FILEID);
+
+    switch(fileOp) {
+    case FO_Cancel:
+    case FO_Accept:
+    case FO_Decline:
+    case FO_Error:
+    case FO_Abort:
+    case FO_Complete:
+        updateFileMessage((FileMode)fileMode, (FileOp)fileOp, fileId);
+        break;
+    default:
+        break;
+    }
 }
 
 void wavrChatWindow::appendMessageLog(MessageType type, QString* lpszUserId, QString* lpszUserName, wavrXmlMessage* pMessage) {
@@ -545,6 +587,10 @@ void wavrChatWindow::appendMessageLog(MessageType type, QString* lpszUserId, QSt
     pMessageLog->appendMessageLog(type, lpszUserId, lpszUserName, pMessage);
 //    if(!pSaveAction->isEnabled())
 //        pSaveAction->setEnabled(pMessageLog->hasData);
+}
+
+void wavrChatWindow::updateFileMessage(FileMode mode, FileOp op, QString fileId) {
+    pMessageLog->updateFileMessage(mode, op, fileId);
 }
 
 void wavrChatWindow::showStatus(int flag, bool add) {
@@ -625,7 +671,7 @@ void wavrChatWindow::setChatState(ChatState newChatState) {
     // send a chat state message
     if(bNotify && bConnected) {
         wavrXmlMessage xmlMessage;
-        if(groupMode)
+        //if(groupMode)
             //xmlMessage.addData(XML_THREAD, threadId);
         xmlMessage.addData(XML_CHATSTATE, ChatStateNames[chatState]);
 

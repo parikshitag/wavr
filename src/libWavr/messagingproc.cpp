@@ -245,10 +245,11 @@ void wavrMessaging::prepareMessage(MessageType type, qint64 msgId, bool retry, Q
         break;
     case MT_File:
     case MT_Avatar:
+        qDebug() << "sending file message of messaging layer";
         prepareFile(type, msgId, retry, lpszUserId, pMessage);
         break;
     case MT_Folder:
-       // prepareFolder(type, msgId, retry, lpszUserId, pMessage);
+        //prepareFolder(type, msgId, retry, lpszUserId, pMessage);
         break;
     default:
         break;

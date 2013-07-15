@@ -149,6 +149,53 @@ void wavrTcpNetwork::initSendFile(QString* lpszReceiverId, QString* lpszAddress,
     sender->init();
 }
 
+void wavrTcpNetwork::initReceiveFile(QString* lpszSenderId, QString* lpszAddress, QString* lpszData) {
+    wavrXmlMessage xmlMessage(*lpszData);
+    int type = wavrHelper::indexOf(FileTypeNames, FT_Max, xmlMessage.data(XML_FILETYPE));
+
+    FileReceiver* receiver = new FileReceiver(xmlMessage.data(XML_FILEID), *lpszSenderId, xmlMessage.data(XML_FILEPATH),
+        xmlMessage.data(XML_FILENAME), xmlMessage.data(XML_FILESIZE).toLongLong(), *lpszAddress, tcpPort, (FileType)type);
+    connect(receiver, SIGNAL(progressUpdated(FileMode, FileOp, FileType, QString*, QString*, QString*)),
+        this, SLOT(update(FileMode, FileOp, FileType, QString*, QString*, QString*)));
+    receiveList.prepend(receiver);
+}
+
+void wavrTcpNetwork::fileOperation(FileMode mode, QString* lpszUserId, QString* lpszData) {
+    Q_UNUSED(lpszUserId);
+
+    wavrXmlMessage xmlMessage(*lpszData);
+
+    int fileOp = wavrHelper::indexOf(FileOpNames, FO_Max, xmlMessage.data(XML_FILEOP));
+    QString id = xmlMessage.data(XML_FILEID);
+
+    if(mode == FM_Send) {
+        FileSender* sender = getSender(id, *lpszUserId);
+        if(!sender)
+            return;
+
+        switch(fileOp) {
+        case FO_Cancel:
+        case FO_Abort:
+            sender->stop();
+            removeSender(sender);
+            break;
+        }
+    } else {
+        FileReceiver* receiver = getReceiver(id, *lpszUserId);
+        if(!receiver)
+            return;
+
+        switch(fileOp) {
+        case FO_Cancel:
+        case FO_Abort:
+            receiver->stop();
+            removeReceiver(receiver);
+            break;
+        }
+    }
+}
+
+
 /**
  * Setter method
  * @param szAddress sets the IP Address
@@ -272,4 +319,32 @@ void wavrTcpNetwork::addMsgSocket(QString *lpszUserId, QTcpSocket *pSocket) {
     msgStream->init(pSocket);
 
     emit newConnection(lpszUserId, &address);
+}
+
+FileSender* wavrTcpNetwork::getSender(QString id, QString userId) {
+    for(int index = 0; index < sendList.count(); index++)
+        if(sendList[index]->id.compare(id) == 0 && sendList[index]->peerId.compare(userId) == 0)
+            return sendList[index];
+
+    return NULL;
+}
+
+FileReceiver* wavrTcpNetwork::getReceiver(QString id, QString userId) {
+    for(int index = 0; index < receiveList.count(); index++)
+        if(receiveList[index]->id.compare(id) == 0 && receiveList[index]->peerId.compare(userId) == 0)
+            return receiveList[index];
+
+    return NULL;
+}
+
+void wavrTcpNetwork::removeSender(FileSender* pSender) {
+    int index = sendList.indexOf(pSender);
+    FileSender* sender = sendList.takeAt(index);
+    sender->deleteLater();  // deleting later is generally safer
+}
+
+void wavrTcpNetwork::removeReceiver(FileReceiver* pReceiver) {
+    int index = receiveList.indexOf(pReceiver);
+    FileReceiver* receiver = receiveList.takeAt(index);
+    receiver->deleteLater();  // deleting later is generally safer
 }

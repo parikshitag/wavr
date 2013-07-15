@@ -68,6 +68,7 @@ private:
     void stop(void);
     void loadSettings(void);
     void processMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
+    void processFile(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
     void routeMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
     void createChatWindow(QString* lpszUserId);
     void showChatWindow(wavrChatWindow* chatWindow, bool show, bool alert = false);

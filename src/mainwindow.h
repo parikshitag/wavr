@@ -38,6 +38,7 @@
 #include <qevent.h>
 #include <QTreeWidget>
 #include <QWidgetAction>
+#include <QFileDialog>
 #include "ui_mainwindow.h"
 #include "libWavr/shared.h"
 #include "libWavr/settings.h"
@@ -74,10 +75,9 @@ signals:
     void showSettings(void);
 
 protected:
-   // void keyPressEvent(QKeyEvent *);
     bool eventFilter(QObject *pObject, QEvent *pEvent);
-//    void closeEvent(QCloseEvent* pEvent);
-//    void changeEvent(QEvent *pEvent);
+    void closeEvent(QCloseEvent* pEvent);
+    void changeEvent(QEvent *pEvent);
 
 private slots:
     void sendMessage(MessageType type, QString* lpszUserId, wavrXmlMessage* pMessage);
@@ -85,16 +85,19 @@ private slots:
     void traySettingsAction_triggered(void);
 //    void trayExistAction_triggered(void);
     void statusAction_triggered(int index);
-//    void avatarAction_triggered(void);
-//    void avatarBrowseAction_triggered(void);
     void refreshAction_triggered(void);
 //    void trayIcon_activated(QSystemTrayIcon::ActivationReason reason);
 //    void trayMessage_clicked(void);
     void tvUserList_itemActivated(QTreeWidgetItem* pItem, int column);
-//    void tvUserList_itemContextMenu(QTreeWidgetItem* pItem, QPoint& pos);
+    void tvUserList_itemContextMenu(QTreeWidgetItem* pItem, QPoint& pos);
     void cmbPresence_returnPressed(void);
     void cmbPresence_editingFinished(void);
     void txtSearch_textChanged(QString);
+    void userConversationAction_triggered(void);
+    void userBroadcastAction_triggered(void);
+    void userFileAction_triggered(void);
+    void userFolderAction_triggered(void);
+    void userInfoAction_triggered(void);
 
 private:
     void createMainMenu(void);
@@ -145,6 +148,10 @@ private:
     QAction* settingsAction;
 
     QAction* userChatAction;
+    QAction* userBroadcastAction;
+    QAction* userFileAction;
+    QAction* userFolderAction;
+    QAction* userInfoAction;
     QAction* avatarBrowseAction;
     bool windowLoaded;
 };

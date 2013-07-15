@@ -49,6 +49,8 @@ public:
     void addConnection(QString* lpszUserId, QString* lpszAddress);
     void sendMessage(QString* lpszReceiverId, QString* lpszAddress, QString* lpszData);
     void initSendFile(QString* lpszReceiverId, QString* lpszAddress, QString* lpszData);
+    void initReceiveFile(QString* lpszSenderId, QString* lpszAddress, QString* lpszData);
+    void fileOperation(FileMode mode, QString* lpszUserId, QString* lpszData);
     void settingsChanged(void);
 
     QString ipAddress;

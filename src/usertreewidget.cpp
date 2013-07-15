@@ -144,11 +144,11 @@ void wavrUserTreeWidgetDelegate::paint(QPainter* painter, const QStyleOptionView
             drawCheckBox(painter, palette, checkBoxRect, pItem->checkState(0));
 
         //	Draw the status image
-        QRect statusRect = itemRect.adjusted(itemRect.width(), padding, 0, 0);
         QPixmap statusImage = pItem->icon(0).pixmap(QSize(16, 16));
+        QRect statusRect = itemRect.adjusted(itemRect.width(), 5 * padding , 0, 0);
         statusRect.setLeft(statusRect.right() - statusImage.width() - 2 * padding);
-        //statusRect.setTop(itemRect.bottom() / 2 + padding);
-        statusRect.setSize(statusImage.size());
+        //statusRect.setTop(statusRect.top() + statusImage.height() + padding);
+        statusRect.setSize(statusImage.size());        
         painter->drawPixmap(statusRect, statusImage);
 
         //	Draw the avatar image

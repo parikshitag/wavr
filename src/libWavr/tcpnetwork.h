@@ -48,6 +48,8 @@ public:
     void addConnection(QString* lpszUserId, QString* lpszAddress);
     void sendMessage(QString* lpszReceiverId, QString* lpszData);
     void initSendFile(QString* lpszReceiverId, QString* lpszAddress, QString* lpszData);
+    void initReceiveFile(QString* lpszSenderId, QString* lpszAddress, QString* lpszData);
+    void fileOperation(FileMode mode, QString* lpszUserId, QString* lpszData);
     void settingsChanged(void) {}
     void setIPAddress(const QString& szAddress);
 
@@ -66,9 +68,14 @@ private slots:
 
 private:
     void addMsgSocket(QString* lpszUserId, QTcpSocket* pSocket);
+    FileSender* getSender(QString id, QString userId);
+    FileReceiver* getReceiver(QString id, QString userId);
+    void removeSender(FileSender* pSender);
+    void removeReceiver(FileReceiver* pReceiver);
 
     QTcpServer*                 server;
-    QList<FileSender*>		  sendList;
+    QList<FileSender*>          sendList;
+    QList<FileReceiver*>        receiveList;
     QMap<QString, MsgStream*>   messageMap;
     MsgStream*                  locMsgStream;
     wavrSettings*               pSettings;

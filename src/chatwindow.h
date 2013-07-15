@@ -85,8 +85,13 @@ private:
     void createToolBar(void);
     void setUIText(void);
     void sendMessage(void);
+    void sendFile(QString* lpszFilePath);
+    void sendFolder(QString* lpszFolderPath);
+    void sendObject(MessageType type, QString* lpszPath);
     void encodeMessage(QString* lpszMessage);
+    void processFileOp(wavrXmlMessage* pMessage);
     void appendMessageLog(MessageType type, QString* lpszUserId, QString* lpszUserName, wavrXmlMessage* pMessage);
+    void updateFileMessage(FileMode mode, FileOp op, QString fileId);
     void showStatus(int flag, bool add);
     QString getWindowTitle(void);
     void setChatState(ChatState newChatState);

@@ -207,7 +207,9 @@ void wavrCore::sendMessage(MessageType type, QString *lpszUserId, wavrXmlMessage
     case MT_Message:
     case MT_ChatState:
     case MT_Version:
+    case MT_File:
     case MT_Avatar:
+    case MT_Folder:
         pMessaging->sendMessage(type, lpszUserId, pMessage);
         break;
     case MT_Status:
@@ -307,14 +309,38 @@ void wavrCore::processMessage(MessageType type, QString *lpszUserId, wavrXmlMess
     case MT_ChatState:
         routeMessage(type, lpszUserId, pMessage);
         break;
+    case MT_File:
+    case MT_Folder:
+        processFile(type, lpszUserId, pMessage);
+        break;
     default:
         break;
     }
 }
 
+void wavrCore::processFile(MessageType type, QString *lpszUserId, wavrXmlMessage* pMessage) {
+    int fileOp = wavrHelper::indexOf(FileOpNames, FO_Max, pMessage->data(XML_FILEOP));
+    int fileMode = wavrHelper::indexOf(FileModeNames, FM_Max, pMessage->data(XML_MODE));
+    switch(fileOp) {
+    case FO_Accept:
+        //initFileTransfer(type, (FileMode)fileMode, lpszUserId, pMessage);
+        //showTransferWindow();
+        break;
+    default:
+        break;
+    }
+//    if(fileOp != FO_Request && pTransferWindow)
+//        pTransferWindow->receiveMessage(type, lpszUserId, pMessage);
+
+    routeMessage(type, lpszUserId, pMessage);
+}
+
 void wavrCore::routeMessage(MessageType type, QString *lpszUserId, wavrXmlMessage *pMessage) {
     bool windowExists = false;
-    bool needsNotice = (type == MT_Message || type == MT_Broadcast || type == MT_Failed);
+    bool needsNotice = (type == MT_Message || type == MT_Broadcast || type == MT_Failed
+        || (type == MT_File && pMessage->data(XML_FILEOP) == FileOpNames[FO_Request])
+        || (type == MT_Folder && pMessage->data(XML_FILEOP) == FileOpNames[FO_Request])
+        || type == MT_GroupMessage);
 
     // if no specific user is specified, send this message to all windows
     if(!lpszUserId) {

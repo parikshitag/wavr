@@ -45,6 +45,21 @@ int wavrHelper::statusIndexFromCode(QString status) {
     return -1;
 }
 
+QString wavrHelper::formatSize(qint64 size) {
+    qint64 gb = 1073741824;
+    qint64 mb = 1048576;
+    qint64 kb = 1024;
+
+    if(size > gb)
+        return QString("%1 GB").arg((double)size / gb, 0, 'f', 2);
+    else if(size > mb)
+        return QString("%1 MB").arg((double)size / mb, 0, 'f', 2);
+    else if(size > kb)
+        return QString("%1 KB").arg((double)size / kb, 0, 'f', 2);
+    else
+        return QString("%1 bytes").arg(size);
+}
+
 QString wavrHelper::getUuid(void) {
     QString Uuid = QUuid::createUuid().toString();
     Uuid = Uuid.remove("{").remove("}").remove("-");

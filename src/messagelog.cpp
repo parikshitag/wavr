@@ -29,8 +29,12 @@
 #include <QDir>
 #include "messagelog.h"
 
+const QString acceptOp("accept");
+const QString declineOp("decline");
+const QString cancelOp("cancel");
+
 wavrMessageLog::wavrMessageLog(QWidget *parent) : QWebView(parent) {
-    connect(this, SIGNAL(linkClicked(QUrl)), this, SLOT(log_LinkClicked(QUrl)));
+    connect(this, SIGNAL(linkClicked(QUrl)), this, SLOT(log_linkClicked(QUrl)));
     connect(this->page()->mainFrame(), SIGNAL(contentsSizeChanged(QSize)),
             this, SLOT(log_contentsSizeChanged(QSize)));
     connect(this->page(), SIGNAL(linkHovered(QString, QString, QString)),
@@ -125,6 +129,7 @@ void wavrMessageLog::appendMessageLog(MessageType type, QString *lpszUserId, QSt
     case MT_ChatState:
         message = pMessage->data(XML_CHATSTATE);
         caption = getChatStateMessage((ChatState)wavrHelper::indexOf(ChatStateNames, CS_Max, message));
+        qDebug() << "chatstate message " << message << " caption: " << caption;
         if(!caption.isNull()) {
             html = themeData.stateMsg;
             html.replace("%iconpath%", "qrc"IDR_BLANK);
@@ -150,13 +155,20 @@ void wavrMessageLog::appendMessageLog(MessageType type, QString *lpszUserId, QSt
         lastId  = QString::null;
         break;
     case MT_Error:
-        //html = themeData.sysMsg;
+        html = themeData.sysMsg;
         html.replace("%iconpath%", "qrc"IDR_CRITICALMSG);
         html.replace("%sender%", tr("Your message was not sent."));
         html.replace("%message%", "");
         appendMessageLog(&html);
         lastId  = QString::null;
         addToLog = false;
+        break;
+    case MT_File:
+    case MT_Folder:
+        appendFileMessage(type, lpszUserName, pMessage, bReload);
+        id = pMessage->data(XML_TEMPID);
+        pMessage->removeData(XML_TEMPID);
+        lastId = QString::null;
         break;
     default:
         break;
@@ -167,6 +179,31 @@ void wavrMessageLog::appendMessageLog(MessageType type, QString *lpszUserId, QSt
         QString userId = lpszUserId ? *lpszUserId : QString::null;
         QString userName = lpszUserName ? *lpszUserName : QString::null;
         messageLog.append(SingleMessage(type, userId, userName, xmlMessage, id));
+    }
+}
+
+void wavrMessageLog::updateFileMessage(FileMode mode, FileOp op, QString fileId) {
+    QString szMessage = getFileStatusMessage(mode, op);
+    QWebFrame* frame = page()->mainFrame();
+    QWebElement document = frame->documentElement();
+    QWebElement body = document.findFirst("body");
+    QString selector = "span#";
+    QString tempId = (mode == FM_Send) ? "send" : "receive";
+    tempId.append(fileId);
+    selector.append(tempId);
+    QWebElement span = body.findFirst(selector);
+    span.setPlainText(szMessage);
+
+    //	update the entry in message log
+    for(int index = 0; index < messageLog.count(); index++) {
+        SingleMessage msg = messageLog.at(index);
+        if(tempId.compare(msg.id) == 0) {
+            wavrXmlMessage xmlMessage = msg.message;
+            xmlMessage.removeData(XML_FILEOP);
+            xmlMessage.addData(XML_FILEOP, FileOpNames[op]);
+            msg.message = xmlMessage;
+            break;
+        }
     }
 }
 
@@ -244,6 +281,31 @@ void wavrMessageLog::setAutoScroll(bool enable) {
     autoScroll = enable;
 }
 
+void wavrMessageLog::abortPendingFileOperations(void) {
+    QMap<QString, wavrXmlMessage>::iterator sIndex = sendFileMap.begin();
+    while(sIndex != sendFileMap.end()) {
+        wavrXmlMessage fileData = sIndex.value();
+        FileOp fileOp = (FileOp)wavrHelper::indexOf(FileOpNames, FO_Max, fileData.data(XML_FILEOP));
+        if(fileOp == FO_Request) {
+            updateFileMessage(FM_Send, FO_Abort, fileData.data(XML_FILEID));
+            sIndex.value().removeData(XML_FILEOP);
+            sIndex.value().addData(XML_FILEOP, FileOpNames[FO_Abort]);
+        }
+        sIndex++;
+    }
+    QMap<QString, wavrXmlMessage>::iterator rIndex = receiveFileMap.begin();
+    while(rIndex != receiveFileMap.end()) {
+        wavrXmlMessage fileData = rIndex.value();
+        FileOp fileOp = (FileOp)wavrHelper::indexOf(FileOpNames, FO_Max, fileData.data(XML_FILEOP));
+        if(fileOp == FO_Request) {
+            updateFileMessage(FM_Receive, FO_Abort, fileData.data(XML_FILEID));
+            rIndex.value().removeData(XML_FILEOP);
+            rIndex.value().addData(XML_FILEOP, FileOpNames[FO_Abort]);
+        }
+        rIndex++;
+    }
+}
+
 void wavrMessageLog::saveMessageLog(QString filePath) {
     if(messageLog.isEmpty())
         return;
@@ -278,9 +340,9 @@ void wavrMessageLog::restoreMessageLog(QString filePath, bool reload) {
         reloadMessageLog();
 }
 
-void wavrMessageLog::log_LinkClicked(QUrl url) {
+void wavrMessageLog::log_linkClicked(QUrl url) {
     QString linkPath = url.toString();
-
+    qDebug() << "link clicked ";
     // this is a hack so qdesktopservices can open a network path
     if (linkPath.startsWith("file")) {
         // strip out the 'file:' prefix and get the path
@@ -298,6 +360,26 @@ void wavrMessageLog::log_LinkClicked(QUrl url) {
         return;
     }
 
+    QStringList linkData = linkPath.split("/", QString::SkipEmptyParts);
+    FileMode mode;
+    FileOp op;
+
+    if(linkData[2].compare(acceptOp) == 0) {
+        mode = FM_Receive;
+        op = FO_Accept;
+    } else if(linkData[2].compare(declineOp) == 0) {
+        mode = FM_Receive;
+        op = FO_Decline;
+    } else if(linkData[2].compare(cancelOp) == 0) {
+        mode = FM_Send;
+        op = FO_Cancel;
+    } else	// unknown link command
+        return;
+
+    //	Remove the link and show a confirmation message.
+    updateFileMessage(mode, op, linkData[3]);
+
+    fileOperation(linkData[3], linkData[2], linkData[1], mode);
 }
 
 void wavrMessageLog::log_contentsSizeChanged(QSize size) {
@@ -408,6 +490,121 @@ void wavrMessageLog::appendMessage(QString* lpszUserId, QString* lpszUserName, Q
 
     hasData = true;
 }
+
+// This function is called to display a file request message on chat box
+void wavrMessageLog::appendFileMessage(MessageType type, QString* lpszUserName, wavrXmlMessage* pMessage,
+                                      bool bReload) {
+    Q_UNUSED(type);
+    QString htmlMsg;
+    QString caption;
+    QString fileId = pMessage->data(XML_FILEID);
+    QString tempId;
+    QString szStatus;
+    QString fileType;
+
+    switch(type) {
+    case MT_File:
+        fileType = "file";
+        break;
+    case MT_Folder:
+        fileType = "folder";
+        break;
+    default:
+        return;
+        break;
+    }
+
+    htmlMsg = themeData.reqMsg;
+    htmlMsg.replace("%iconpath%", "qrc"IDR_FILEMSG);
+
+    FileOp fileOp = (FileOp)wavrHelper::indexOf(FileOpNames, FO_Max, pMessage->data(XML_FILEOP));
+    FileMode fileMode = (FileMode)wavrHelper::indexOf(FileModeNames, FM_Max, pMessage->data(XML_MODE));
+
+    if(fileMode == FM_Send) {
+        qDebug() << "inside fmsend message";
+        tempId = "send" + fileId;
+        caption = tr("Sending '%1' to %2.");
+        htmlMsg.replace("%sender%", caption.arg(pMessage->data(XML_FILENAME), *lpszUserName));
+        htmlMsg.replace("%message%", "");
+        htmlMsg.replace("%fileid%", tempId);
+
+        switch(fileOp) {
+        case FO_Request:
+            sendFileMap.insert(fileId, *pMessage);
+            pMessage->addData(XML_TEMPID, tempId);
+            htmlMsg.replace("%links%", "<a href='wavr://" + fileType + "/" + cancelOp + "/" + fileId + "'>" + tr("Cancel") + "</a>");
+            break;
+        case FO_Cancel:
+        case FO_Accept:
+        case FO_Decline:
+        case FO_Error:
+        case FO_Abort:
+        case FO_Complete:
+            szStatus = getFileStatusMessage(FM_Send, fileOp);
+            htmlMsg.replace("%links%", szStatus);
+            break;
+        default:
+            return;
+            break;
+        }
+    } else {
+        tempId = "receive" + fileId;
+        if(autoFile) {
+            if(type == MT_File)
+                caption = tr("%1 is sending you a file:");
+            else
+                caption = tr("%1 is sending you a folder:");
+            htmlMsg.replace("%sender%", caption.arg(*lpszUserName));
+            htmlMsg.replace("%message%", pMessage->data(XML_FILENAME) + " (" +
+                wavrHelper::formatSize(pMessage->data(XML_FILESIZE).toLongLong()) + ")");
+            htmlMsg.replace("%fileid%", "");
+        } else {
+            if(type == MT_File)
+                caption = tr("%1 sends you a file:");
+            else
+                caption = tr("%1 sends you a folder:");
+            htmlMsg.replace("%sender%", caption.arg(*lpszUserName));
+            htmlMsg.replace("%message%", pMessage->data(XML_FILENAME) + " (" +
+                wavrHelper::formatSize(pMessage->data(XML_FILESIZE).toLongLong()) + ")");
+            htmlMsg.replace("%fileid%", tempId);
+        }
+
+        switch(fileOp) {
+        case FO_Request:
+            receiveFileMap.insert(fileId, *pMessage);
+            pMessage->addData(XML_TEMPID, tempId);
+
+            if(autoFile) {
+                htmlMsg.replace("%links%", tr("Accepted"));
+                if(!bReload)
+                    fileOperation(fileId, acceptOp, fileType);
+            } else {
+                htmlMsg.replace("%links%",
+                    "<a href='wavr://" + fileType + "/" + acceptOp + "/" + fileId + "'>" + tr("Accept") + "</a>&nbsp;&nbsp;" +
+                    "<a href='wavr://" + fileType + "/" + declineOp + "/" + fileId + "'>" + tr("Decline") + "</a>");
+            }
+            break;
+        case FO_Cancel:
+        case FO_Accept:
+        case FO_Decline:
+        case FO_Error:
+        case FO_Abort:
+        case FO_Complete:
+            szStatus = getFileStatusMessage(FM_Receive, fileOp);
+            htmlMsg.replace("%links%", szStatus);
+            break;
+        default:
+            return;
+            break;
+        }
+    }
+
+    QWebFrame* frame = page()->mainFrame();
+    QWebElement document = frame->documentElement();
+    QWebElement body = document.findFirst("body");
+    body.appendInside(htmlMsg);
+}
+
 QString wavrMessageLog::getFontStyle(QFont* pFont, QColor* pColor, bool size) {
     QString style = "font-family:\"" + pFont->family() + "\"; ";
     if(pFont->italic())
@@ -445,6 +642,77 @@ QString wavrMessageLog::getChatStateMessage(ChatState chatState) {
     }
 
     return message;
+}
+
+QString wavrMessageLog::getFileStatusMessage(FileMode mode, FileOp op) {
+    QString message;
+
+    switch(op) {
+    case FO_Accept:
+        message = (mode == FM_Send) ? tr("Accepted") : tr("Accepted");
+        break;
+    case FO_Decline:
+        message = (mode == FM_Send) ? tr("Declined") : tr("Declined");
+        break;
+    case FO_Cancel:
+        message = (mode == FM_Send) ? tr("Canceled") : tr("Canceled");
+        break;
+    case FO_Error:
+    case FO_Abort:
+        message = (mode == FM_Send) ? tr("Interrupted") : tr("Interrupted");
+        break;
+    case FO_Complete:
+        message = (mode == FM_Send) ? tr("Completed") : tr("Completed");
+        break;
+    default:
+        break;
+    }
+
+    return message;
+}
+
+
+void wavrMessageLog::fileOperation(QString fileId, QString action, QString fileType, FileMode mode) {
+    wavrXmlMessage fileData, xmlMessage;
+
+    MessageType type;
+    if(fileType.compare("file") == 0)
+        type = MT_File;
+    else if(fileType.compare("folder") == 0)
+        type = MT_Folder;
+    else
+        return;
+
+    if(action.compare(acceptOp) == 0) {
+        fileData = receiveFileMap.value(fileId);
+        xmlMessage.addData(XML_MODE, FileModeNames[FM_Receive]);
+        xmlMessage.addData(XML_FILETYPE, FileTypeNames[FT_Normal]);
+        xmlMessage.addData(XML_FILEOP, FileOpNames[FO_Accept]);
+        xmlMessage.addData(XML_FILEID, fileData.data(XML_FILEID));
+        xmlMessage.addData(XML_FILEPATH, fileData.data(XML_FILEPATH));
+        xmlMessage.addData(XML_FILENAME, fileData.data(XML_FILENAME));
+        xmlMessage.addData(XML_FILESIZE, fileData.data(XML_FILESIZE));
+    }
+    else if(action.compare(declineOp) == 0) {
+        fileData = receiveFileMap.value(fileId);
+        xmlMessage.addData(XML_MODE, FileModeNames[FM_Receive]);
+        xmlMessage.addData(XML_FILETYPE, FileTypeNames[FT_Normal]);
+        xmlMessage.addData(XML_FILEOP, FileOpNames[FO_Decline]);
+        xmlMessage.addData(XML_FILEID, fileData.data(XML_FILEID));
+    }
+    else if(action.compare(cancelOp) == 0) {
+        qDebug() << "cancel pressed";
+        if(mode == FM_Receive)
+            fileData = receiveFileMap.value(fileId);
+        else
+            fileData = sendFileMap.value(fileId);
+        xmlMessage.addData(XML_MODE, FileModeNames[mode]);
+        xmlMessage.addData(XML_FILETYPE, FileTypeNames[FT_Normal]);
+        xmlMessage.addData(XML_FILEOP, FileOpNames[FO_Cancel]);
+        xmlMessage.addData(XML_FILEID, fileData.data(XML_FILEID));
+    }
+
+    emit messageSent(type, &peerId, &xmlMessage);
 }
 
 //	Called when message received, before adding to message log

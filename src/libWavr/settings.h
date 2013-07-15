@@ -86,6 +86,8 @@
 #define IDS_UDPPORT_VAL         50000
 #define IDS_TCPPORT             "Connection/TCPPort"
 #define IDS_TCPPORT_VAL         50000
+#define IDS_AUTOFILE			"FileTransfer/AutoFile"
+#define IDS_AUTOFILE_VAL		false
 
 #define IDS_THEME				"Appearance/Theme"
 #define IDS_THEME_VAL			":/themes/Classic"

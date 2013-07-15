@@ -164,6 +164,14 @@ void wavrNetwork::initSendFile(QString* lpszReceiverId, QString* lpszAddress, QS
     pTcpNetwork->initSendFile(lpszReceiverId, lpszAddress, lpszData);
 }
 
+void wavrNetwork::initReceiveFile(QString* lpszSenderId, QString* lpszAddress, QString* lpszData) {
+    pTcpNetwork->initReceiveFile(lpszSenderId, lpszAddress, lpszData);
+}
+
+void wavrNetwork::fileOperation(FileMode mode, QString* lpszUserId, QString* lpszData) {
+    pTcpNetwork->fileOperation(mode, lpszUserId, lpszData);
+}
+
 /**
  * @brief Method for acknowledgement of settings changed in UI.
  *  Calls the UdpNetwork and TcpNetwork settingsChanged methods.
